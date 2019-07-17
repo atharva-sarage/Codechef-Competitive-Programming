@@ -1,0 +1,32 @@
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,k,s;
+		scanf("%d %d %d",&n,&k,&s);
+		if(k>n )
+		{
+			printf("-1\n");
+			continue;
+		}
+		else if(n*6-k*7 <0 && s>6)
+		{
+			printf("-1\n");
+		}
+		else
+		{
+			s=s*k;
+			if(s%n==0)
+			{
+				printf("%d\n",s/n);
+			}
+			else
+			{
+				printf("%d\n",(s/n +1));
+			}
+		}
+	}
+}

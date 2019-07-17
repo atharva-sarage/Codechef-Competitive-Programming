@@ -1,0 +1,60 @@
+#include<bits/stdc++.h> 
+# define IOS ios::sync_with_stdio(0),cin.tie(0)
+using namespace std; 
+typedef int long long ll;
+ll pow1(ll a, ll b, ll mod) 
+{
+  if (a==0)
+    return 0;
+
+    ll x=1,y=a; 
+    while(b > 0)
+    {
+        if(b%2 == 1)
+        {
+            x=(x*y);
+            if(x>mod) x%=mod;
+        }
+        y = (y*y);
+        if(y>mod) y%=mod; 
+        b /= 2;
+    }
+    return x%mod;
+}
+ll inverse(ll a,ll mod)
+{
+  return pow1(a,mod-2,mod);
+}
+ll nCr(ll n,ll r,ll mod)
+{
+  ll final=1,final2=1;
+  for(int i=n;i>=n-r+1;i--)
+    final=(final*i)%mod;
+  for(int i=r;i>=1;i--)
+    final2=(final2*i)%mod;
+  return (final*inverse(final2,mod))%mod;
+}
+int main()
+{
+  IOS;
+  int t;
+  cin>>t;
+  while(t--)
+  {
+  ll n,k,final=0,mod;
+  mod=1000000007;
+  cin>>n>>k;
+  if(k>n)
+  {
+    cout<<0<<endl;
+    continue;
+  }
+  for(ll i=k-1;i>=0;i--)
+  {
+    final+=((pow1(2,i,mod)*nCr(k-1,i,mod))%mod *nCr(n-k+1,i+1,mod))%mod;
+    final%=mod;
+  }
+  final=(final*2LL)%mod;
+  cout<<final<<endl;
+}
+}

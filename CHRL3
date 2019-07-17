@@ -1,0 +1,51 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf 1e9
+# define mx2 100005
+# define mx 100005
+int main()
+{
+	IOS;
+	int n;
+	cin>>n;
+	set<int> s;
+	int x;
+	cin>>x;
+	s.insert(x);
+	for(int i=2;i<=n;i++)	
+		{
+			int x;
+			cin>>x;
+			auto itr=s.upper_bound(x);
+			if(*s.begin()>x)
+				s.insert(x);
+			if(itr==s.begin())
+			{	
+				s.erase(itr);
+				s.insert(x);
+			}
+			else
+				itr--;
+
+			if(*s.begin()<x)
+			{
+				int temp=*itr;
+				s.erase(temp);
+				s.insert(x);
+			}
+		}
+		cout<<s.size()<<endl;
+
+}

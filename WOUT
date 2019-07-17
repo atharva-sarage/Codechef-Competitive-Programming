@@ -1,0 +1,49 @@
+#include<stdio.h>
+#include<limits.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int long n,h,i,j,min=LONG_MAX;
+		scanf("%ld %ld",&n,&h);
+		int long sum[101]={0};
+		int grid[101][101]={0};
+		for(i=0;i<101;i++)
+		{
+			for(j=0;j<101;j++)
+			{
+				grid[i][j]=1;
+			}
+		}
+		for(i=0;i<n;i++)
+		{
+			int long l1,h1;
+			scanf("%ld %ld",&l1,&h1);
+			for(j=l1;j<=h1;j++)
+			grid[j][i]--;
+		}
+		for(i=0;i<n;i++)
+		{
+			for(j=0;j<n;j++)
+			{
+				sum[i]=sum[i]+grid[i][j];
+			}
+			//printf("%ld**\n",sum[i]);
+		
+		}
+		for(i=0;i<=n-h;i++)
+		{
+				int long temp=0;
+			for(j=i;j<i+h;j++)
+			{
+				temp=temp+sum[j];
+			}
+			//printf("%ld\n",temp);
+			if(min>temp)
+				min=temp;
+		}
+		printf("%ld\n",min);
+	}
+}

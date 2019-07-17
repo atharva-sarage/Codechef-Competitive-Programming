@@ -1,0 +1,57 @@
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,m,i,j,k,sat=0;
+		scanf("%d %d",&n,&m);
+		char str[11];
+		scanf("%s",str);
+		int no=strlen(str);
+		for(i=0;i<n;i++)
+		{
+			for(j=0;j<m;j++)
+			{
+			
+				int flag=0;
+				int hor=0,ver=0;
+				
+				for(k=0;k<no;k++)
+				{
+					if(str[k]=='L')
+						hor--;
+					if(str[k]=='R')
+						hor++;
+					else if(str[k]=='U')
+						ver++;
+					else if(str[k]=='D')
+						ver--;
+					if(hor>m-j-1 || hor<(-j))
+					{
+						flag=1;
+						break;
+					}
+					if(ver>n-i-1 || ver<(-i))
+					{
+						flag=1;
+						break;
+					}	
+					
+				}
+				if(flag==0)
+				{
+					printf("safe\n");
+					sat=1;
+					break;
+				}
+			}
+			if(sat==1)
+			break;
+		}
+		
+		if(sat==0)
+			printf("unsafe\n");
+	}
+}

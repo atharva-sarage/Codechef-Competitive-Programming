@@ -1,0 +1,239 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf 1e9
+# define mx2 550
+# define mx 300005
+ll n,q,k;
+unordered_map <ll,ll> m,m2;
+ll just_nxt[mx],just_nxt2[mx];
+ll fact[mx];
+ll a[mx],b[mx];
+bool bad[mx],good[mx];
+vector <ll> vec;
+ll nxt3[mx2][mx],id[mx],id2[mx],inverse[mx];
+vector <ll> blk[mx],where[mx];
+ll inv(ll b);
+void preprocess()
+{
+	fact[0]=1;
+	for(ll i=1;i<=mx;i++)
+		fact[i]=(fact[i-1]*i)%mod;
+	for(ll i=1;i<=mx2;i++)
+		inverse[i]=inv(i);
+	for(ll i=0;i<vec.size();i++)
+	{
+		ll curr=n+1;
+		for(ll j=n;j>=1;j--)
+		{
+			if(a[j]==vec[i])
+				curr=j;
+			nxt3[i][j]=curr;
+		}
+	}
+}
+inline ll get(ll i)
+{
+	return fact[i];
+}
+
+ll inv(ll b)
+{
+	ll ans = 1,tmp = b%mod, e = (mod-2);
+	while(e)
+	{
+		if(e&1) ans = (ans * tmp)%mod;
+		e >>= 1;
+		tmp = (tmp*tmp)%mod; 
+	}
+	return ans;
+}
+ll pow1(ll b,ll i)
+{
+	ll ans = 1,tmp = b%mod, e = i;
+	while(e)
+	{
+		if(e&1) ans = (ans * tmp)%mod;
+		e >>= 1;
+		tmp = (tmp*tmp)%mod; 
+	}
+	return ans;
+}
+inline ll get_block(ll i)
+{
+	return (i+k-1)/k ;
+}
+ll curr[mx+5];
+ll ans[mx2+5];
+void preprocess_bad()
+{
+	for(ll i=1;i<=n;i++)
+	{
+		for(auto l:where[b[i]])
+		{
+			if(l>i)continue;
+			ll j=get_block(l);
+			//cout<<l<<" "<<a[i]<<" "<<j<<" "<<curr[l]<<endl;
+			if(curr[l])
+			{
+				ans[j]=((ans[j]*(inverse[curr[l]])%mod)*(curr[l]+1))%mod;
+				ans[j]%=mod;
+			}
+			curr[l]++;
+		}
+		// processed the updates
+		blk[i].pb(1);
+		//cout<<i<<" : ";
+		for(ll j=1;j<mx2;j++)
+		{
+			blk[i].pb(ans[j]);
+			//cout<<ans[i]<<" ";
+		}		
+		// put answer of all the blocks
+	}
+}
+ll get_occurrence(ll i,ll r)
+{
+	ll low=0;
+	ll high=where[b[i]].size()-1;
+	ll mid;
+	while(high>=low)
+	{
+		mid=low+(high-low)/2;
+		if(where[b[i]][mid]>r)
+			high=mid-1;
+		else
+			low=mid+1;
+	}
+	ll t2=where[b[i]][high];
+	//cout<<t2<<" "<<high<<endl;
+	if(t2>r)
+		return id2[i]-id2[t2];
+	return id2[i]-id2[t2]+1;
+}
+ll query(ll l,ll r)
+{
+	//cout<<"###"<<endl;
+	ll b1=get_block(l);
+	ll b2=get_block(r);
+	ll ans1=1;
+	//cout<<b1<<" "<<b2<<" "<<l<<" "<<r<<endl;
+	for(ll i=b2;i>b1;i--)
+	{
+		ans1=(ans1*blk[r][i])%mod;
+		//cout<<blk[r][i]<<"???"<<endl;
+	}
+	//cout<<ans1<<"??"<<endl;
+	//cout<<min(r,(b2-1)*k)<<endl;
+	for(ll i=l;i<=min(r,b1*k);i++)
+	{
+		if(bad[b[i]])
+		ans1*=get_occurrence(i,r); // at what position i was it from r 
+		//cout<<i<<" "<<r<<" "<<get_occurrence(i,r)<<endl;
+		ans1%=mod;
+	}
+	//cout<<"$$$"<<endl;
+	return ans1;
+}
+int main()
+{
+	for(int i=0;i<mx2;i++)
+		ans[i]=1;
+	// IOS;
+	// cin>>n>>q;
+	scanf("%lld %lld",&n,&q);
+
+	k=sqrt(n);
+	int count1=1;
+	for(ll i=1;i<=n;i++)
+		{
+			scanf("%lld",&a[i]);
+			if(!m[a[i]])
+				m[a[i]]=(++count1);
+		}
+	for(int i=1;i<=n;i++)
+	{
+		b[i]=m[a[i]];
+		m2[b[i]]++;
+	}
+	
+	for(auto v:m2){
+		if(v.ss>k)
+			{good[v.ff]=true;vec.pb(v.ff);}
+		else
+			bad[v.ff]=true;
+	}
+	for(ll i=1;i<=n;i++)
+	{
+		if(bad[b[i]])
+		{
+			where[b[i]].push_back(i);			
+		}
+	}
+	for(ll i=n;i>=1;i--)
+	{
+		if(just_nxt[b[i]] && !good[b[i]])
+			id2[i]=1+id2[just_nxt[b[i]]];
+		else
+			id2[i]=1;
+
+		just_nxt[b[i]]=i;			
+	}
+	for(ll i=n;i>=1;i--)
+	{
+		if(good[b[i]])
+		{
+			if(just_nxt2[b[i]])
+				id[i]=1+id[just_nxt2[b[i]]];
+			else
+				id[i]=1;
+
+			just_nxt2[b[i]]=i;
+		}
+	}
+	preprocess();
+	preprocess_bad();
+	// for(int i=1;i<=n;i++)
+	// 	cout<<id2[i]<<" ";
+	// cout<<endl;
+	ll a1=0;
+	while(q--)
+	{
+		ll l,r,l1,r1,l2,r2,prev=0,prev2=0;
+		//cin>>l1>>l2>>r1>>r2;
+		scanf("%lld %lld %lld %lld",&l1,&l2,&r1,&r2);
+		l=(l1*a1+l2)%n;
+		r=(r1*a1+r2)%n;
+		l++;r++;
+		if(l>r)
+		swap(l,r);
+		// cin>>l>>r;
+		//scanf("%lld %lld",&l,&r);
+		// //cout<<l<<" "<<r<<endl;
+		ll denom=1;
+		for(ll i=0;i<vec.size();i++)
+		{
+			ll id1=id[nxt3[i][l]];
+			ll id2=id[nxt3[i][r+1]];
+			denom=(denom*fact[(id1-id2)]);			
+		}
+		ll ans2=query(l,r);
+		denom=(denom*ans2)%mod;
+		//cout<<ans2<<" "<<get(r-l+1)<<endl;
+		a1=(fact[(r-l+1)]*inv(denom))%mod;
+		//cout<<a1<<"\n";
+		printf("%lld\n",a1);
+	}
+	
+}

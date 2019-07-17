@@ -1,0 +1,59 @@
+#include<stdio.h>
+#include<string.h>
+int checksubstr(char s[],int size1,char string[],int size2)
+{
+	int i;
+	if(size2>size1)
+		return 0;
+	else
+	{
+		for(i=0;i<size1;i++)
+		{
+			int j=0;
+			while(s[i+j]==string[j] && j<size2)
+			{
+				j++;
+			}
+			if(j==size2)
+			return 1;
+			
+		}
+	}
+	return 0;
+}
+int main()
+{
+	int n,i,j,k,flag;
+	scanf("%d %d",&k,&n);
+	char string[50][5000];
+	for(i=0;i<k;i++)
+	{
+		scanf("%s",string[i]);
+	}
+	
+	for(i=0;i<n;i++)
+	{
+		flag=0;
+		char s[50];
+		scanf("%s",s);
+	
+		if(strlen(s)>=47)
+		{
+			flag=1;
+			printf("Good\n");
+			continue;
+		}
+		for(j=0;j<k;j++)
+		{
+			if(checksubstr(s,strlen(s),string[j],strlen(string[j])))
+			{
+				flag=1;
+				printf("Good\n");
+				break;
+			}
+		}
+		if(flag==0)
+		printf("Bad\n");
+		
+	}
+}

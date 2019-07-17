@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef unsigned long long ll;
+# define mod 1000000007
+# define mx 100005
+vector <ll> adj[mx];
+ll final[mx],c;
+ll pow1(ll a,ll b)
+{
+    ll x=1,y=a;
+    while(b > 0)
+    {
+        if(b%2 == 1)
+        {
+            x=(x*y);
+            if(x>mod) x%=mod;
+        }
+        y = (y*y);
+        if(y>mod) y%=mod;
+        b /= 2;
+    }
+    return x%mod;
+}
+void addedge(ll u,ll v)
+{
+	adj[u].push_back(v);	
+}
+void dfs(ll u,ll par,ll val,ll fac)
+{
+	final[u]=val;
+	ll j=0LL;	
+	for(auto k:adj[u])
+	{
+		dfs(k,u,(val+(j*fac)%mod)%mod,(fac*adj[u].size())%mod);
+		j=(j+1LL)%mod;
+	}
+}
+int main()
+{
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll n;
+		cin>>n;
+		for(ll i=1;i<=n;i++)
+		{
+			ll x;
+			cin>>x;
+			for(ll j=1;j<=x;j++)
+			{
+				ll y;cin>>y;
+				addedge(i,y);
+			}
+		}
+		dfs(1,-1,1,1);
+		for(ll i=1;i<=n;i++)
+			cout<<final[i]<<" ";
+		cout<<endl;
+		for(ll i=1;i<=n;i++)
+		{
+			if(!adj[i].empty())
+				adj[i].clear();
+		}
+	}
+}

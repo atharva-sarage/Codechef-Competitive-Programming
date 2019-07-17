@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define mp make_pair
+# define pb push_back
+# define ipair pair<ll,ll>
+# define ss second
+# define ff first
+typedef int long long ll;
+ll inf=pow(2,31)-1;
+ll inf1=1e15;
+ll dist[100005];
+vector <pair<ll,pair<ll,ll> > >adj[100005];
+void addedge(ll u,ll v,ll wt,ll val)
+{
+	adj[u].pb(mp(v,mp(wt,val)));
+	adj[v].pb(mp(u,mp(wt,val)));
+}
+void init()
+{
+	for(ll i=0;i<=100001;i++)
+		dist[i]=inf1;
+}
+void shortest(ll u,ll e,ll k)
+{
+	priority_queue<ipair,vector <ipair>,greater<ipair> > pq;
+	pq.push(make_pair(0,u));
+	dist[u]=0;
+	while(!pq.empty())
+	{
+		ll  x=pq.top().ss;
+		if(x==e)
+			return;
+		pq.pop();
+		for(ll  i=0;i<adj[x].size();i++)
+		{
+			ll  v=adj[x][i].ff;
+			ll  wt=adj[x][i].ss.ff;
+			ll 	val=adj[x][i].ss.ss;
+			if((val&k)!=k)
+				continue;			
+			if(dist[v]>dist[x]+wt)
+				{				
+					dist[v]=dist[x]+wt;					
+					pq.push(make_pair(dist[v],v));
+				}
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	ll n,m,mind=inf1;
+	cin>>n>>m;
+	for(ll i=0;i<m;i++)
+	{
+		ll a,b,c,v;
+		cin>>a>>b>>c>>v;
+		addedge(a,b,c,v);
+	}
+	ll s,t,k;
+	cin>>s>>t>>k;
+	init();
+	shortest(s,t,k);
+	if(dist[t]<mind)
+		mind=dist[t];
+	while(k<=inf)
+	{
+		init();
+		k=k+(k&-k);
+		shortest(s,t,k);
+		if(dist[t]<mind)
+			mind=dist[t];
+	}
+	if(mind==inf1)
+		cout<<-1<<endl;
+	else
+		cout<<mind<<endl;
+}

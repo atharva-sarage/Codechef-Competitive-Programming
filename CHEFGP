@@ -1,0 +1,147 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		char str[100005];
+		scanf("%s",str);
+		int x,y,counta=0,countb=0,diff,ans,i,j,k;
+		scanf("%d %d",&x,&y);
+		int n=strlen(str);
+		for(i=0;i<n;i++)
+		{
+			if(str[i]=='a')
+				counta++;
+			else 
+				countb++;
+		}
+		if(countb>=counta)
+		{
+			diff=countb-counta;
+		
+		// diff can at max decrease by counta*(x-1)
+		if(diff-(counta*(x-1))<0)
+			{
+				for(j=0;j<diff/(x-1);j++)
+				{
+					for(k=0;k<x;k++)
+						printf("b");
+					printf("a");
+				}
+				for(j=0;j<(countb-((diff)/(x-1))*x-counta+diff/(x-1));j++)
+					printf("b");
+				for(j=0;j<counta-diff/(x-1);j++)
+				{
+					printf("ba");
+				}
+
+			}
+		else // some b's are still left
+			{
+				//printf("#");
+				for(j=0;j<counta;j++)
+				{
+					for(k=0;k<x;k++)
+						printf("b");
+					printf("a");
+				}
+				//printf("#");
+				diff=diff-(counta*(x-1));
+				int diff1=diff;
+				//printf("%d\n",diff);
+				if(diff%y==0 && diff!=0) //check once
+				{
+					diff--;
+				}
+
+				{
+					for(j=0;j<diff/(y);j++)
+						{
+							for(k=0;k<y;k++)
+							printf("b");
+					printf("*");
+				}
+				}
+				if(diff1%y==0 && diff1!=0)
+				{
+					for(k=0;k<y;k++)
+							printf("b");	
+				}
+				for(k=0;k<diff1%y;k++)
+					printf("b");
+				
+			
+				
+		}
+			printf("\n");
+		}
+		// now we condider for counta>countb
+
+		else
+		{
+			diff=counta-countb;
+
+			if(diff-(countb*(y-1))<0)
+			{
+				for(j=0;j<diff/(y-1);j++)
+				{
+					for(k=0;k<y;k++)
+						printf("a");
+					printf("b");
+				}
+				for(j=0;j<(counta-((diff)/(y-1))*y-countb+diff/(y-1));j++)
+					printf("a");
+				for(j=0;j<countb-diff/(y-1);j++)
+				{
+					printf("ab");
+				}
+
+			}
+		else // some b's are still left
+			{
+				for(j=0;j<countb;j++)
+				{
+					for(k=0;k<y;k++)
+						printf("a");
+					printf("b");
+				}
+
+				diff=diff-(countb*(y-1));
+				//printf("%d\n",diff);
+				int diff2=diff;
+				
+				if(diff%x==0 && diff!=0) //check once
+				{
+					diff--;
+				}
+
+				{
+					for(j=0;j<diff/(x);j++)
+						{
+							for(k=0;k<x;k++)
+							printf("a");
+					printf("*");
+				}
+				}
+				if(diff2%y==0 && diff2!=0)
+				{
+					for(k=0;k<x;k++)
+							printf("a");	
+				}
+				for(k=0;k<diff2%y;k++)
+					printf("a");
+				
+				
+			
+				
+		}
+			printf("\n");
+		}
+	}
+}
+
+
+	

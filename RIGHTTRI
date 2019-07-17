@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		double h;
+		int count=0;
+		unsigned long long int  s;
+		scanf("%lf %llu",&h,&s);
+		double c1=pow(h*h+4*s,0.5);
+		double c2=pow(2*s,0.5);
+		unsigned long long int  c4=h*h;
+		double c3=2*s;
+		double low=0;
+		double high=c2;
+		double mid,mid1;
+		double error = 0.000000000000001;
+				
+		if(c4<4*s || s<1)
+		{
+			printf("-1\n");
+			continue;
+		}
+		while(high>=low)
+		{
+			count++;
+			if(count>200)
+			{
+			break;
+			}
+			mid=low+(high-low)/2;
+			if (mid+(c3/mid)==c1)
+				break;
+			else if(mid+(c3/mid)<c1 )
+				high=mid-error;
+			else 
+			low=mid+error;
+		}
+		
+		
+		mid1=c3/mid;
+		if(mid>=mid1)
+		{
+			printf("%lf %lf %lf\n",mid1,mid,h);
+		}
+		else
+		{
+			printf("%lf %lf %lf\n",mid,mid1,h);	
+		}
+		
+		
+		
+	}
+}

@@ -1,0 +1,29 @@
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,k,i,j;
+		scanf("%d %d",&n,&k);
+		int no_of_par=n/k;
+		if(k==2 || k==1)
+		{
+			printf("impossible\n");
+		}
+		else
+		{
+			for(i=0;i<no_of_par;i++)
+			{
+				printf("a");
+				for(j=0;j<k-2;j++)
+				{
+					printf("b");
+				}
+				printf("a");
+			}
+			printf("\n");
+		}
+	}
+}

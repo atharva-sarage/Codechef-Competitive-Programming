@@ -1,0 +1,41 @@
+#include<stdio.h>
+ int gcd( int a,int b)
+{
+	if(a==0)
+	return b;
+	else
+	return gcd(b%a,a);
+}
+int main()
+{
+	int n,q,i,j;
+	scanf("%d",&n);
+	int a[1005];
+	for(i=0;i<n;i++)
+		scanf("%d",&a[i]);
+	scanf("%d",&q);
+	for(j=0;j<q;j++)
+	{
+		int type;
+		int l,r;
+		scanf("%d",&type);
+		if(type==1)
+		{
+			
+			scanf("%d %d",&l,&r);
+			a[l-1]=r;
+		}
+		else
+		{
+			int g,count=0;
+			scanf("%d %d %d",&l,&r,&g);
+			for(i=l-1;i<r;i++)
+			{
+				if(gcd(a[i],g)==1)
+					count++;
+			}
+			printf("%d\n",count);
+			
+		}
+	}
+}

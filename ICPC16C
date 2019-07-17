@@ -1,0 +1,16 @@
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n;
+		scanf("%d",&n);
+		int ans=n%9;
+		if(ans==0)
+			printf("1\n");
+		else 
+			printf("%d\n",ans+1);
+	}
+}

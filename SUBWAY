@@ -1,0 +1,117 @@
+        #include<bits/stdc++.h>
+        using namespace std;
+        # define mx 5005
+        vector <int> mat[mx][mx];
+        int parent1[mx];
+        int visited[mx];
+        vector<int> vec;
+        typedef pair<int,int> ipair;
+        vector <ipair> adj[mx];
+        void addedge(int u,int v,int w)
+        {
+                adj[u].push_back(make_pair(v,w));
+                adj[v].push_back(make_pair(u,w));
+        }
+        void dfs(int u,int e,int parent)
+        {
+                visited[u]=true;
+         
+                if(u==e)
+                        return ;
+                for(int i=0;i<adj[u].size();i++)
+                {
+                        int v=adj[u][i].first;
+                        if(!visited[v] && v!=parent)
+                                {
+                                        parent1[v]=u;
+                                        dfs(v,e,u);
+                                }
+                }
+        }
+        int main()
+        {
+                int n,m;
+                cin>>n>>m;
+                for(int i=0;i<m;i++)
+                {
+                        int u,v,w;
+                        cin>>u>>v>>w;
+                        u--;v--;
+                        addedge(u,v,w);
+                        mat[u][v].push_back(w);
+                        mat[v][u].push_back(w);
+                }
+                int q;
+                cin>>q;
+                for(int t=0;t<q;t++)
+                {
+                        int s,e;
+                        cin>>s>>e;
+                        for(int k=0;k<n;k++)
+                                {
+                                        parent1[k]=-1;
+                                        visited[k]=false;
+                                }
+                                        
+                        s--;e--;
+                        dfs(s,e,-1);
+                        while(e!=-1)
+                        {
+                                //cout<<e+1<<" ";
+                                vec.push_back(e);
+                                e=parent1[e];
+                        }
+                        reverse(vec.begin(),vec.end());
+                        int ans=vec.size()-2;
+                        if(s==e)
+                        {
+                                cout<<0<<endl;
+                                continue;
+                        }
+                        for(int i=0;i<vec.size()-2;i++)
+                        {
+
+                                if(mat[vec[i]][vec[i+1]].size()==1)
+                                {
+         
+                                        int prev=mat[vec[i]][vec[i+1]][0];
+                                        i++;
+                                        if(i>=vec.size()-1)
+                                                break;
+                                        
+                                        while(mat[vec[i]][vec[i+1]].size()<=2 && mat[vec[i]][vec[i+1]].size()>0 && i<vec.size()-1)
+                                        {
+                                                
+                                                if(mat[vec[i]][vec[i+1]].size()==1)
+                                                {
+                                                        if(mat[vec[i]][vec[i+1]][0]==prev)
+                                                                {                                                               
+                                                                        ans--;
+                                                                }
+                                                                i--;
+                                                        break;
+                                                }
+                                                if(mat[vec[i]][vec[i+1]][0]==prev || mat[vec[i]][vec[i+1]][1]==prev )
+                                                {
+                                                        //printf("%d**\n",prev);
+                                                        if(mat[vec[i]][vec[i+1]][0]==prev)
+                                                                prev=mat[vec[i]][vec[i+1]][1];
+                                                        else
+                                                                prev=mat[vec[i]][vec[i+1]][0];
+                                                }
+                                                else
+                                                {
+                                                        break;                                                  
+                                                }       
+                                                
+                                                i++;
+                                                if(i>=vec.size()-1)
+                                                        break;
+                                        }
+                                }
+                        }
+                        vec.clear();
+                        cout<<ans<<endl;
+                        
+                }
+        }  

@@ -1,0 +1,45 @@
+#include<stdio.h>
+int long min(int long a,int long b)
+{
+	if(a>=b)
+		return b;
+	return a;
+}
+
+int main()
+{
+	int long lookup[1000001]={0};
+	int n,i,j;
+	scanf("%d",&n);
+	int long a[51],m;
+	
+	for(i=0;i<n;i++)
+	{
+		scanf("%ld",&a[i]);
+		
+	}
+	for(i=0;i<n;i++)
+	{
+		lookup[a[i]]++;
+	}
+	
+	for(i=0;i<n;i++)
+	{
+		m=a[i];
+		for(j=i+1;j<n;j++)
+		{
+			m=min(a[j],m);
+			lookup[m]++;
+		}
+	}
+	int q;
+	scanf("%d",&q);
+	for(i=0;i<q;i++)
+	{
+		int long k;
+		scanf("%ld",&k);
+		printf("%ld\n",lookup[k]);
+	}
+
+
+}

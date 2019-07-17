@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+int ones(ll a)
+{
+	int count =0;
+	while(a>=1)
+	{
+		if(a%2==1)
+			count++;
+		a=a/2;
+	}
+	return count;
+}
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		ll a,b;
+		cin>>a>>b;
+		if(a==b)
+		{
+		    printf("0\n");
+			continue;
+		}
+		else if(b==0 || (b==1 && a!=0))
+		{
+			printf("-1\n");
+			continue;
+		}
+		else if(b==1 && a==0)
+		{
+			printf("1\n");
+			continue;
+		}
+ 
+		int count=1;
+		b--;
+		int c1=ones(b);
+		int c2=ones(a);
+ 
+		if(c1>=c2)
+		{
+			count=c1-c2+1;
+		}
+		else
+		{
+			count=2;
+		}
+		printf("%d\n",count );
+	}
+ 
+} 
+

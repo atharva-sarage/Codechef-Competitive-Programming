@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+		int t;
+		cin>>t;
+		while(t--)
+		{
+			int n;
+			cin>>n;
+			vector <pair<int,int> > pos;
+			int final=0,a,b;
+
+			for(int i=0;i<n;i++)
+			{
+				int x,y;
+				cin>>x>>y;
+				pos.push_back(make_pair(x,y));
+			}
+			sort(pos.begin(),pos.end());
+			int count=0;
+			for(int i=0;i<pos.size();i++)
+			{
+				if(count==0)
+					{
+						a=pos[i].first;
+						b=pos[i].second;
+					}	
+				a=max(a,pos[i].first);
+				b=min(b,pos[i].second);
+				if(a>b)
+				{
+					final++;
+					a=pos[i].first;
+					b=pos[i].second;
+				}
+
+				count++;
+			}
+			final++;
+			printf("%d\n",final );
+			pos.clear();
+		}
+
+
+}

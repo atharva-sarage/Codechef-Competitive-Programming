@@ -1,0 +1,183 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf (ll)1e18
+# define mx2 258
+# define mx 5005
+# define N 22000
+// refrence from gangup editorial 1187G 
+// https://codeforces.com/blog/entry/68111
+struct apple
+{
+	ll x,y,p,q,h;
+};
+struct edge
+{
+	ll y, c, f, cost;
+	edge() {};
+	edge(ll y, ll c, ll f, ll cost) : y(y), c(c), f(f), cost(cost) {};
+};
+apple tree[mx];
+ll n,m,z,t;
+string str[mx2];
+ll s=2*N-2,tt=2*N-1;
+vector<edge> e;
+vector<ll> g[2*N];
+vector<pair<pair<ll,ll>,ll>> vec[mx2][mx2];
+long long ans = 0,snakes=0;
+long long d[2*N+5];
+ll p[2*N+5];
+ll pe[2*N+5];
+ll inq[2*N+5];
+const long long INF64 = (long long)(1e18);
+ll dc[]={1,0,-1,0};
+ll dr[]={0,-1,0,1};
+bool valid(ll x,ll y)
+{
+	if(x>=0 && x<n && y>=0 && y<m && str[x][y]!='#')
+		return true;
+	return false;
+}
+ll rem(ll x)
+{
+	return e[x].c - e[x].f;
+}
+
+void push_flow()
+{
+	for(ll i = 0; i < 2*N; i++) d[i] = INF64, p[i] = -1, pe[i] = -1, inq[i] = 0;
+	d[s] = 0;
+	queue<ll> q;
+	q.push(s);
+	inq[s] = 1;
+	while(!q.empty())
+	{
+		ll k = q.front();
+		//cout<<k<<"?"<<endl;
+		q.pop();
+		inq[k] = 0;
+		for(auto x : g[k])
+		{
+			if(!rem(x)) continue;
+			//cout<<x<<"**"<<" "<<e[x].y<<" "<<e[x].c<<" "<<e[x].f<<" "<<k<<endl;
+			ll c = e[x].cost;
+			ll y = e[x].y;
+			//cout<<d[y]<<" "<<d[k]<<" "<<c<<endl;
+			if(d[y] > d[k] + c)
+			{
+				d[y] = d[k] + c;
+				p[y] = k;
+				pe[y] = x;
+				if(inq[y] == 0)
+				{
+					inq[y] = 1;
+					q.push(y);
+				}
+			}
+		}
+		
+	}
+	ll cur = tt;
+	while(cur != s)
+	{
+		assert(pe[cur]!=-1);
+		e[pe[cur]].f++;
+		e[pe[cur] ^ 1].f--;
+		cur = p[cur];
+	}
+	assert(d[tt]!=INF64);
+	ans += d[tt];
+}
+
+void addedge(ll x, ll y, ll c, ll cost)
+{
+	//cout<<x<<" "<<y<<" "<<c<<" "<<cost<<endl;
+	g[x].push_back(e.size());
+	e.push_back(edge(y, c, 0, cost));
+	g[y].push_back(e.size());
+	e.push_back(edge(x, 0, 0, -cost));
+}
+void add_source_edges()
+{
+	for(ll i=0;i<n;i++)
+		for(ll j=0;j<m;j++)
+			if(str[i][j]=='S')
+				{addedge(s,i*m+j,1,0);snakes++;}
+}	
+void add_sink_edges()
+{
+	for(ll i=0;i<n;i++)
+		for(ll j=0;j<m;j++)
+			{addedge(t*n*m+i*m+j+N,tt,1,0);}
+}
+int main()
+{
+	IOS;
+	cin>>n>>m>>z>>t;
+	for(ll i=0;i<n;i++)	
+		cin>>str[i];
+	//cout<<str[0][0]<<" "<<str[0][1]<<" "<<str[0][2]<<endl;
+	for(ll i=1;i<=z;i++)
+	{
+		ll x,y,p,q,h;
+		cin>>x>>y>>p>>q>>h;
+		tree[i]={x,y,p,q,h};
+		vec[x][y].pb({{p,q},h});
+	}
+	add_source_edges();
+	add_sink_edges(); // some problem here
+	for(ll i=0;i<=t;i++)
+	{
+		for(ll j=0;j<n;j++)
+		{
+			for(ll k=0;k<m;k++)
+			{
+				// vertex number is i*n*m+j*n+k
+				addedge(i*n*m+j*m+k,i*n*m+j*m+k+N,1,0);
+				if(i==t)continue;
+				if(str[j][k]=='.' || str[j][k]=='S')
+				{
+					//printf("**\n");
+					for(ll l=0;l<4;l++)
+					{
+						ll cost=0;
+						ll cap=inf;
+						if(valid(j+dr[l],k+dc[l]))
+						{
+							//cout<<j<<" "<<k<<" "<<j+dr[l]<<" "<<k+dc[l]<<endl;
+							addedge(i*n*m+j*m+k+N,i*n*m+n*m+(j+dr[l])*m+(k+dc[l]),cap,cost);
+						}
+					}
+					//cout<<j<<" "<<k<<" "<<vec[j][k].size()<<"/////"<<endl;
+					ll cost=0;
+					ll cap=inf;
+					ll max1=0;
+					for(auto p:vec[j+1][k+1]) // stay there
+					{
+						//printf("$$$$$$$\n");
+						if(i>=p.ff.ff && i<p.ff.ss) // valid time
+							max1=max(max1,p.ss);
+					}	
+					cost-=max1;
+					addedge(i*n*m+j*m+k+N,i*n*m+j*m+k+n*m,cap,cost);
+				}
+			}
+		}
+	}
+	//cout<<snakes<<endl;
+	for(ll i=0;i<snakes;i++)
+		push_flow();
+	assert(-ans>=0);
+	cout<<-ans<<endl;
+}

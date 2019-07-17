@@ -1,0 +1,129 @@
+        /*
+            Author-Atharva Sarage
+                IIT HYDERABAD
+                */
+         
+        #include<bits/stdc++.h>
+        using namespace std;
+         int long long fact[20000007];
+         int long long MOD=1000000007;
+         int long long N=20000007;
+          int long long invfact[20000007];
+
+        long long pow1(int a, int b, int MOD) 
+        {
+            long long x=1,y=a; 
+            while(b > 0)
+            {
+                if(b%2 == 1)
+                {
+                    x=(x*y);
+                    if(x>MOD) x%=MOD;
+                }
+                y = (y*y);
+                if(y>MOD) y%=MOD; 
+                b /= 2;
+            }
+            return x;
+        }
+         
+         
+        long long InverseEuler(int n, int MOD)
+        {
+            return pow1(n,MOD-2,MOD);
+        }
+         
+    void calculateFactorial()
+ {
+        fact[0] = 1;
+        int long long i;
+        for(i=1; i<=N; i++) {
+            fact[i] = (i * fact[i-1]) % MOD;
+        }
+
+        invfact[N-1] = InverseEuler(fact[N-1],MOD);
+     
+        for(i=N-1; i>=1; i--) 
+        {
+            {
+                invfact[i-1] = (i * invfact[i]) % MOD;
+                
+            }
+        }
+    }
+
+    
+     
+       
+        int long long modInverse(int long long a, int long long m)
+        {
+            int long long m0 = m;
+            int long long y = 0;
+            int long long x=1;
+         
+         
+         
+            while (a > 1)
+            {
+             
+                int long long q = a / m;
+                int long long t = m;
+         
+              
+                m = a % m, a = t;
+                t = y;
+         
+              
+                y = x - q * y;
+                x = t;
+            }
+         
+         
+            if (x < 0)
+               x += m0;
+         
+            return x;
+        }
+    long long nck(int long n,int long k,int long MOD)
+{
+    if(n < k) 
+        return 0;
+     
+        int long long ans = fact[n]; 
+        ans=ans*invfact[k]%MOD;
+        ans=ans*invfact[n-k]%MOD;
+        return ans;
+}
+     
+        int main()
+        {
+            calculateFactorial();
+            int long long n,k,a,b,ans=0,i;
+            int long long M=1000000007;
+            scanf("%lld %lld %lld %lld",&n,&k,&a,&b);
+            int long long c1=(2*a+(4*b)%M*k)%M;
+            int long long c2=(a*a)%M;
+            if(n==1)
+            {
+                printf("%lld\n",k);
+                return 0;
+            }
+            for(i=0;i<=n/2;i++)
+            {
+     
+                int long long final=nck(2*(n)-2*i-2,n-i-1,M);
+                final=(final*nck(n-i,i,M))%M;
+                final=(final*pow1(c1,n-2*i,M))%M;
+                final=(final*pow1(c2,i,M))%M;
+                final=(final*modInverse(n-i,M))%M;
+                final=(final*modInverse(pow1(2,2*n-2*i-1,M),M))%M;
+                if(i%2==1)
+                    ans=(ans-final+M)%M;
+                else
+                ans=(ans+final)%M;
+            }
+            ans=(ans*modInverse(2*b,M))%M;
+     
+                printf("%lld\n",ans);
+         
+        }  

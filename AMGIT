@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int IND=1;
+int getind(unordered_map<string,int> &mpi,vector<int> &gr,const string &s) {
+	if(mpi.count(s)) return mpi[s];
+	gr.push_back( mpi[s] = IND);
+	return IND++;
+}
+
+void dfs(int u,int dp[][2],vector<int> gr[],bool add[],int l=0)
+{
+	if(!gr[u].size()){	dp[u][0]=add[u]; dp[u][1]=!add[u]; return; }
+
+	
+	dp[u][0]=dp[u][1]=1; int tmp0,tmp1;
+	for(int v:gr[u]){
+		dfs(v,dp,gr,add,l+1);
+		dp[u][0]+=dp[v][1]; dp[u][1]+=dp[v][0];
+	}
+
+	tmp0=dp[u][1]-1; tmp1=dp[u][0]-1;
+	dp[u][0]=min(dp[u][0],tmp0); dp[u][1]=min(dp[u][1],tmp1);
+}
+
+int main()
+{
+	int t,n,i;
+	cin>>t;
+	while(t--)
+	{
+		IND=1;
+		unordered_map<string, int> mp[10000];
+		vector<int> gr[10000];
+		bool add[10000]={};
+		int dp[10000][2]={};
+		string t="",s,p;	int root,ver=getind(mp[0],gr[0],t); root=ver;
+		cin>>n;
+		while(n--)
+		{
+			cin>>p>>s;
+			for(i=1;i<s.length();i++){
+				if(s[i]=='/'){
+					ver = getind(mp[ver],gr[ver],t);
+					t = "";
+				}
+				else t = t+s[i];
+			}
+			add[ver=getind(mp[ver],gr[ver],t)]=(p[0]=='s'); ver=root; t="";
+		}
+		dfs(root,dp,gr,add);
+		cout<<(dp[root][0])<<endl;
+	}	
+}

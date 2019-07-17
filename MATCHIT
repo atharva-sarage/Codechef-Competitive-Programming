@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define pb push_back
+# define ff first
+# define mp make_pair
+# define ss second
+vector <pair<int,int> > grid;
+set<pair<int,int> > s;
+int n;	
+void print(int i,int j)
+{
+	cout<<j-i+1<<" ";
+	for(int l=i;l<=j;l++)
+		cout<<grid[l].ff<<" "<<grid[l].ss<<" ";
+	printf("\n");
+
+}
+int main()
+{
+	int m;
+	cin>>n>>m;
+	for(int i=0;i<2*m;i++)
+	{
+		int x,y;
+		cin>>x>>y;
+		s.insert(mp(x,y));
+	}
+	for(int i=0;i<n;i++)
+	{
+		for(int j=0;j<n;j++)
+		{
+			int x;cin>>x;
+		}
+	}
+	for(int i=1;i<=n;i++)
+	{
+		if(i%2==1)
+		{
+			for(int j=1;j<=n;j++)
+				grid.pb(mp(i,j));
+		}
+		else
+		{
+			for(int j=n;j>=1;j--)
+				grid.pb(mp(i,j));
+		}
+	}
+	int prev,flag=0;
+	for(int i=0;i<n*n;i++)
+	{
+		if(s.find({grid[i].ff,grid[i].ss})!=s.end() && flag==1)
+		{
+			print(prev,i);
+			flag=0;
+		}
+		else if(s.find({grid[i].ff,grid[i].ss})!=s.end() && flag==0)
+		{
+			prev=i;flag=1;
+		}
+	}
+}

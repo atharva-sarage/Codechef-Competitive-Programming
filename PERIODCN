@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define pb push_back
+# define ll long long 
+vector <int> vec[50];
+vector <int> vec3;
+ll dig(ll i)
+{
+	ll c1=0;
+	while(i>=1)
+	{
+		i/=2;c1++;
+	}
+	return c1;
+}
+void pre()
+{
+	for(int i=1;i<=32;i++)
+	{
+		for(ll j=1;j*j<=i;j++)
+		{
+		if(i%j==0)
+		{
+			if(j==i/j)
+				vec[i].pb(j);
+			else
+			{
+				vec[i].pb(j);vec[i].pb(i/j);
+			}
+		}
+		}
+	}
+}
+void calc()
+{
+	for(int i=1;i<=32;i++)	
+	{
+	for(auto k:vec[i])
+	{
+		// generate for given k and i
+		ll num=0;
+		for(ll l=i;l>0;l--)
+		{
+			if(((l+k-1)/k)%2 == ((i+k-1)/k)%2 )
+				num+=pow(2LL,l-1);
+		}
+		vec3.pb(num);
+	}
+	}	
+}
+int main()
+{
+	pre();
+	calc();
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll l,r,final=0;
+		cin>>l>>r;
+		for(auto k:vec3)		
+		{
+			if(k>=l && k<=r)
+				final++;
+		}
+		cout<<final<<endl;
+	}
+}

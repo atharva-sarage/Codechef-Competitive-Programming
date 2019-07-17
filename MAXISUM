@@ -1,0 +1,61 @@
+int min(int a,int b)
+{
+	if(a>=b)
+	return b;
+	else
+	return a;
+}
+int max(int a,int b)
+{
+	if(a>=b)
+	return a;
+	else
+	return b;
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,i,j;
+		int long long k;
+		int long long a[100001];
+		int long long b[100001];
+		
+		int long long greatest=0,pro=0;
+		int index;
+		
+		scanf("%d %lld",&n,&k);
+		for(i=0;i<n;i++)
+		{
+			scanf("%lld",&a[i]);
+		}
+		for(j=0;j<n;j++)
+		{
+			scanf("%lld",&b[j]);
+			pro=pro+b[j]*a[j];
+			if(greatest<abs(b[j]))
+			{
+				index=j;
+				greatest=abs(b[j]);
+			}
+			
+		}
+	
+		pro=pro-(a[index]*b[index]);
+		
+			if(b[index]>=0)
+			{
+				a[index]=a[index]+k;
+			}
+			else
+			{
+				a[index]=a[index]-k;
+			}
+		
+		pro=pro+(a[index]*b[index]);
+			printf("%lld\n",pro);
+}
+}

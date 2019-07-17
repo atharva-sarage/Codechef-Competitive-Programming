@@ -1,0 +1,72 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int a[505];
+		int n;
+		cin>>n;
+		int top[7],mark[8][8],flag=0;
+		memset(mark,0,sizeof(mark));
+		for(int i=0;i<n;i++)
+		{
+			cin>>a[i];
+			if(i==0)continue;
+			if(a[i]==a[i-1])
+				flag=1;
+			mark[a[i]][a[i-1]]=1;
+			mark[a[i-1]][a[i]]=1;
+		}
+		if(flag==1)
+			{cout<<-1<<endl;continue;}
+		for(int i=1;i<=6;i++)
+		{
+			for(int j=1;j<=6;j++)
+			{
+				if(i==j)continue;
+				if(mark[i][j]==0)
+				{
+					for(int k=1;k<=6;k++)
+					{
+						for(int l=1;l<=6;l++)
+						{
+							if(k!=i && k!=j && l!=i && l!=j && l!=k)
+							{
+								if(mark[l][k]==0)
+								{
+									vector <int> vec;
+									for(int m=1;m<=6;m++)
+									{
+										if(m!=i && m!=j && m!=k && m!=l)
+											vec.push_back(m);
+									}
+									if(mark[vec[0]][vec[1]]==0)
+									{
+										top[k]=l;
+										top[l]=k;
+										top[i]=j;
+										top[j]=i;
+										top[vec[0]]=vec[1];
+										top[vec[1]]=vec[0];
+										flag=1;
+										for(int i=1;i<=6;i++)
+											cout<<top[i]<<" ";
+										printf("\n");
+										goto l;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		l:
+		if(flag==0)
+			cout<<-1<<endl;
+
+	}
+}

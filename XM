@@ -1,0 +1,119 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf 1e9
+# define mx2 17
+# define mx (1<<17)
+ll n;
+ll dp[31][mx],a[mx];
+vector <ll> vec[mx2][mx];
+ll get(ll k,ll s,ll e,ll par)
+{
+	e=min(n-1,e);
+	ll t1=dp[k][e]-dp[k][s-1];	
+	//cout<<k<<" "<<s<<" "<<e<<" "<<par<<" "<<dp[k][e]<<" "<<dp[k][s-1]<<"?"<<" "<<t1<<" "<<e-s+1-t1<<endl;
+	if(par)
+		return t1;
+	else
+		return e-s+1-t1;
+}
+void pre1()
+{
+	for(ll i=0;i<=30;i++)
+		for(ll j=0;j<n;j++)
+			dp[i][j]=((a[j]&(1<<i))?1:0)+((j==0)?0:dp[i][j-1]);
+}
+void pre2()
+{
+	for(ll i=0;i<mx2;i++)
+	{
+		ll c1=(1<<i);
+		ll c2=(1<<(i+1));
+		for(ll j=0;j<c2;j++)
+		{
+			vec[i][j].clear();
+			ll par=0;
+			for(ll k=j;k<n;k+=c1)
+			{
+				// block starts from k to k+c1-1 get the sum in this block depending on parity of block
+				//prllf("# %d\n",j);
+				par=par^1;
+				if(vec[i][j].empty())
+					vec[i][j].pb(get(i,k,k+c1-1,par));
+				else
+					vec[i][j].pb(vec[i][j].back()+get(i,k,k+c1-1,par));			
+			}			
+		}
+	}
+}
+ll higher(ll l,ll r)
+{
+	ll ans=0;
+	for(ll j=mx2;j<=30;j++)
+		ans+=((1<<j)*(dp[j][r]-((l==0)?0:dp[j][l-1])));
+	return ans;
+}
+ll solve(ll l,ll r)
+{
+	ll final=0;
+	for(ll i=0;i<mx2;i++)
+	{
+		ll c1=(1<<i);
+		ll c2=(1<<(i+1));
+		ll t1=l?;
+		ll s1=(l-t1)/c1;
+		ll e1=(r-t1)/c1;
+		ll s2=l+(e1-s1)*c1;
+		ll p1=((e1-s1)%2==0) ? 1:0;
+		final+=get(i,s2,r,p1)*c1;
+		//cout<<final<<" "<<i<<" "<<s2<<" "<<r<<" "<<e1<<" "<<s1<<endl;
+		//if(vec[i][t1].empty())continue;
+		if(s1>e1-1)continue;
+		assert(e1-1>=0);
+		(s1==0)?(final+=c1*(vec[i][t1][e1-1])):(final+=c1*((vec[i][t1][e1-1]-vec[i][t1][s1-1])));
+		//cout<<i<<" "<<s1<<" "<<t1<<" "<<e1<<" "<<final<<endl;
+	}
+
+	return final+higher(l,r);
+}
+void init()
+{
+	memset(dp,0,sizeof(dp));
+	memset(a,0,sizeof(a));
+}
+int main()
+{
+
+	//IOS;
+	ll t;
+	scanf("%lld ",&t);
+	while(t--)
+	{
+		init();
+		ll q;
+		scanf("%lld%lld",&n,&q);
+		for(ll i=0;i<n;i++)
+			scanf("%lld",&a[i]);
+		pre1();
+		pre2();	
+		while(q--)
+		{
+			ll l,r;
+			scanf("%lld %lld",&l,&r);
+			r--;l--;
+			printf("%lld\n",solve(l,r));
+			//cout<<solve(l,r)<<"\n";
+		}
+	}	
+}

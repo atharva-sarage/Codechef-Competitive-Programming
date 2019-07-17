@@ -1,0 +1,44 @@
+#include<stdio.h>
+int min(int a,int b)
+{
+	if(a>=b)
+	return b;
+	return a;
+}
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,m,x,k,i;
+		int o=0,e=0,counto=0,counte=0;
+		scanf("%d %d %d %d",&n,&m,&x,&k);
+		char str[1000001];
+		scanf("%s",str);
+	
+		for(i=0;i<k;i++)
+		{
+			if(str[i]=='E')
+			counte++;
+			else
+			counto++;
+		}
+		if(m%2==0)
+		{
+			o=m/2;
+			e=m/2;
+		}
+		else
+		{
+			o=m/2+1;
+			e=m/2;
+		}
+		int long total=(min(x*o,counto))+(min(x*e,counte));
+		
+		if(total>=n)
+		printf("yes\n");
+		else
+		printf("no\n");
+	}
+}

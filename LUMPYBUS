@@ -1,0 +1,75 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int long t;
+	cin>>t;
+	while(t--)
+	{
+		int n,i,t=0,count=0;
+		unsigned long long int p,q,value;
+		cin>>n>>p>>q;
+		unsigned long long int a[100001];
+		unsigned long long int c[100001];
+		for(i=0;i<n;i++)
+		{
+			cin>>a[i];					
+		}		
+		sort(a,a+n);
+		
+		for(i=0;i<n;i++)
+		{
+			
+			value=q+p/2 ;
+			if(a[i]%2==0)
+			{
+				if(value>=a[i]/2 && q>=a[i]/2)
+				{
+					q=q-a[i]/2 ;
+					count++;
+					
+					
+				}
+				else if(value>=a[i]/2 && q<a[i]/2)
+				{
+					q=0;
+					p=p-(a[i]-2*q);
+					count++;
+				
+				}
+				
+			}
+			else
+			{
+				if(p>0)
+				{
+					a[i]=a[i]-1;
+					p--;
+					value=q+p/2 ;
+					
+					if(value>=a[i]/2 && q>=a[i]/2)
+				{
+					q=q-a[i]/2 ;
+					count++;
+				
+				}
+				else if(value>=a[i]/2 && q<a[i]/2)
+				{
+					
+					p=p-(a[i]-2*q);
+					q=0;
+					count++;
+					
+				}
+					
+				}
+				
+			}
+			
+			
+		}
+		
+	cout<<count<<endl;
+		
+	}
+}

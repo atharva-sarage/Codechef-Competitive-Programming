@@ -1,0 +1,54 @@
+#include<iostream>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+int main()
+{
+	int n,i,j,k,t=0;
+	int flag=0;
+	cin>>n;
+	int lookup[101][26];
+	string alpha("abcdefghijklmnopqrstuvwxyz");
+	string new1 ;
+	for(i=0;i<101;i++)
+	{
+		for(j=0;j<26;j++)
+		{
+			lookup[i][j]=0;
+		}
+	}
+
+	for(i=0;i<n;i++)
+	{
+		char str[101];
+		//scanf("%s",str);
+		cin>>str;
+		int no=strlen(str);
+		for(j=0;j<no;j++)
+		{
+			lookup[i][str[j]-'a']++;
+		}
+
+	}
+	for(j=0;j<26;j++)
+	{
+		int min=200;
+		for(i=0;i<n;i++)
+		{
+			if(lookup[i][j]<min)
+				min=lookup[i][j];
+		}
+		for(k=0;k<min;k++)
+			{
+				//printf("%c",97+j);
+				new1.push_back(alpha[j]);
+				
+			}
+	}
+	sort(new1.begin(),new1.end());
+	if(new1.empty())
+		cout<<"no such string"<<endl;
+	else
+	cout<<new1<<endl;
+
+}

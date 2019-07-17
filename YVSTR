@@ -1,0 +1,71 @@
+#include<bits/stdc++.h>
+# define pb push_back
+# define ll long long
+# define ff first
+# define ss second
+# define mp make_pair
+using namespace std;
+bool comp(pair<ll,ll> a,pair<ll,ll> b)
+{
+	return a.ff>b.ff;
+}
+int main()
+{
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		vector<pair<ll,ll> >vec;
+		vector<pair<ll,ll> >s[28][28];
+		ll n,ans=0;
+		cin>>n;
+		string str;
+		cin>>str;
+		str+='$';
+		ll freq[28];
+		for(ll i=0;i<26;i++)
+			freq[i]=0;
+		for(ll i=0;i<n;i++)
+		{
+			ll c=1;
+			while(i<=n-1 && str[i]==str[i+1])
+			{
+				c++;i++;
+			}
+			if(freq[str[i]-'a']<c)
+				freq[str[i]-'a']=c;
+
+			vec.pb({c,str[i]-'a'});c=0;
+		}
+		for(ll i=0;i<26;i++)
+			{ans+=freq[i];}
+		for(ll i=0;i<vec.size()-1;i++)
+			{
+				s[vec[i].ss][vec[i+1].ss].push_back(mp(vec[i].ff,vec[i+1].ff));
+			}
+		for(ll i=0;i<26;i++)
+		{
+			for(ll j=0;j<26;j++)
+			{
+				if(s[i][j].empty())continue;
+				sort(s[i][j].begin(),s[i][j].end(),comp);
+				ll prev=0;
+				for(auto k:s[i][j])
+				{
+					if(prev>=k.ss)continue;
+					else
+					{
+						ans+=(k.ss-prev)*k.ff;
+						prev=k.ss;
+					}
+				}
+				//printf("%c %c %lld\n",(char)i+97,(char)j+97,ans );
+			}
+		}
+
+		cout<<ans<<endl;
+	}
+}
+//dggguqcftwfsgbaqbyguwmprb
+

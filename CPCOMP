@@ -1,0 +1,71 @@
+#include<bits/stdc++.h> // gcd code from wikipedia
+using namespace std;
+# define mx 5005
+# define IOS ios::sync_with_stdio(0),cin.tie(0)
+vector <int> adj[mx];
+int visited[mx];
+int n,cc=0;
+int gcd(int u,int v) // source lemire.me
+{
+    int shift;
+    if (u == 0) return v;
+    if (v == 0) return u;
+    shift = __builtin_ctz(u | v);
+    u >>= __builtin_ctz(u);
+    do {
+        v >>= __builtin_ctz(v);
+        if (u > v) {
+            unsigned int t = v;
+            v = u;
+            u = t;
+        }  
+        v = v - u;
+    } while (v != 0);
+    return u << shift;
+}
+void addedge(int u,int v)
+{
+	adj[u].push_back(v);
+	adj[v].push_back(u);
+}
+void dfs(int u,int par)
+{
+	visited[u]=true;
+	for(int i=0;i<adj[u].size();i++)
+	{
+		int v=adj[u][i];
+		if(visited[v] || v==par)
+			continue;
+		dfs(v,u);
+	}
+}
+void DFS()
+{
+	memset(visited,false,sizeof(visited));
+	for(int i=0;i<n;i++)
+	{
+		if(!visited[i])
+		{
+			cc++;
+			dfs(i,-1);
+		}
+	}
+}
+int main()
+{
+	//IOS;
+	int a[mx];
+	cin>>n;
+	for(int i=0;i<n;i++)
+		cin>>a[i];
+	for(int i=0;i<n-1;i++)
+	{
+		for(int j=i+1;j<n;j++)
+		{
+			if(gcd(a[i],a[j])==1)
+				addedge(i,j);
+		}
+	}
+	DFS();
+	cout<<cc<<endl;
+}

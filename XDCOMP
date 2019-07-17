@@ -1,0 +1,138 @@
+/**************************
+*	Author-Atharva Sarage *
+*		IIT HYDERABAD     *
+**************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define mx 100005
+# define ll long long 
+# define db double
+# define inf 1e9
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define endl "\n"
+ll mark[mx],a[mx],x,dp[mx][2],deg[mx],n,parent[mx],root;
+vector <ll> adj[mx];
+vector <ll> adj2[mx];
+ll pow1(ll a, ll b)
+{
+    if (a==0)
+        return 0;
+
+    ll x=1,y=a;
+    while(b > 0)
+    {
+        if(b%2 == 1)
+        {
+            x=(x*y);
+            if(x>mod) x%=mod;
+        }
+        y = (y*y);
+        if(y>mod) y%=mod;
+        b /= 2;
+    }
+    return x%mod;
+}
+void addedge(ll u,ll v)
+{
+	adj[u].pb(v);
+	adj[v].pb(u);
+}
+void dfs(ll u,ll par)
+{
+	parent[u]=par;
+	for(auto k:adj[u])
+	{
+		if(k==par)continue;
+		dfs(k,u);
+	}
+}
+void compress()
+{
+	queue<ll>q;
+	for(ll i=2;i<=n;i++)
+	{
+		if(deg[i]==1)
+			q.push(i);
+	}
+	while(!q.empty())
+	{
+		ll u=q.front();
+		q.pop();
+		//cout<<u<<" "<<a[u]<<" "<<parent[u]<<endl;
+		if(a[u]==0 || a[u]==x)
+			{mark[u]=true;root=u;}
+		else if(parent[u]!=-1)
+			a[parent[u]]^=a[u];
+		if(parent[u]!=-1)
+			deg[parent[u]]--;
+		if(parent[u]!=-1 && deg[parent[u]]==1)
+			q.push(parent[u]);
+	}
+	if(a[1]==0 || a[1]==x)
+		{mark[1]=true;root=1;}
+}
+void asli_compress(ll u,ll par,ll anc)
+{
+	if(mark[u]) 
+		{			
+			if(anc!=-1)
+				{adj2[anc].pb(u);}
+			anc=u;
+		}
+	for(auto k:adj[u])
+	{
+		if(k==par)continue;
+			asli_compress(k,u,anc);
+	}
+}
+void solve(ll u)
+{
+	//cout<<sub[u]<<" "<<u<<endl;
+	if(a[u]==x)
+		{dp[u][1]=1;dp[u][0]=0;}
+	else
+		{dp[u][1]=0;dp[u][0]=1;}
+
+	for(auto k:adj2[u])
+	{
+		solve(k);
+		// do not cut edge
+		ll temp1,temp2;
+		temp1=((dp[u][0]*dp[k][0])%mod+(dp[u][1]*dp[k][1])%mod)%mod;;
+		temp2=((dp[u][0]*dp[k][1])%mod+(dp[u][1]*dp[k][0])%mod)%mod;temp2%=mod;
+		// cut edge
+		temp1+=(dp[u][0]*dp[k][1])%mod;temp1%=mod;
+		temp2+=(dp[u][1]*dp[k][1])%mod;temp2%=mod;
+		dp[u][0]=temp1;
+		dp[u][1]=temp2;
+	}
+}
+int main()
+{
+	IOS;
+	cin>>n>>x;
+	for(ll i=1;i<=n;i++)
+		cin>>a[i];
+	for(ll i=0;i<n-1;i++)
+	{
+		ll x,y;
+		cin>>x>>y;
+		addedge(x,y);
+		deg[x]++;deg[y]++;
+	}
+	if(x==0)
+	{
+		cout<<pow1(2,n-1)<<endl;
+		return 0;
+	}
+	dfs(1,-1);
+	compress();
+	asli_compress(root,-1,-1);
+	solve(root);
+	cout<<dp[root][1]<<endl;
+}

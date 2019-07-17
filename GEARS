@@ -1,0 +1,210 @@
+    /*
+    	Author-Atharva Sarage
+    		IIT Hyderabad
+    		*/
+     
+    #include<bits/stdc++.h>
+    # define mx 100005
+    using namespace std;
+    vector <int> adj[mx];
+    int colour[mx];
+    int colour2[mx];
+     
+    int parent[mx];
+    int ranks[mx];
+    int flag[mx];
+    void addedge(int x,int y)
+    {
+    	adj[x].push_back(y);
+    	adj[y].push_back(x);
+     
+    }
+    long long gcd(long long a, long long b)
+    {
+        if (a == 0)
+            return b;
+        return gcd(b%a, a);
+    }
+     
+    int find(int a)
+    {
+    	if(a==parent[a])	return a;
+    	int x=find(parent[a]);
+    	parent[a]=x;
+    	
+    	return x;
+    }
+     
+    void unite(int a, int b)
+    {
+    	int x=find(a),y=find(b);
+    	
+    	if(x==y)	return ;
+    	
+    	if(ranks[x]>ranks[y])
+    		swap(x,y);
+    	
+    	parent[x]=y;
+    	ranks[y]+=ranks[x];
+    	return ;
+    	
+    }
+    void dfs(int u,int parent, int visited[])
+    {
+    	visited[u]=true;
+    	//printf("%d**\n",u );
+    	swap(colour[u],colour2[u]);
+    	for(int i=0;i<adj[u].size();i++)
+    	{
+    		if(!visited[adj[u][i]] && adj[u][i]!=parent)
+    		dfs(adj[u][i],u,visited);
+    	}
+    }
+    int main()
+    {
+    	int n,m;
+    	
+    	long long a[mx];
+    	
+    	memset(flag,0,sizeof(flag));
+    	cin>>n>>m;
+    	int visited[n];
+    	memset(visited,false,sizeof(visited));
+    	for(int i=0;i<n;i++)
+    		{
+    			cin>>a[i];
+    			colour[i]=0;
+    			colour2[i]=0;
+    			parent[i]=i;
+    			ranks[i]=1;
+    		}
+    	for(int i=0;i<m;i++)
+    	{
+    		long long type,x,y,v;
+    		cin>>type;
+    		if(type==1)
+    		{
+    			cin>>x>>y;
+    			x--;
+    			a[x]=y;
+    		}
+    		else if(type==2)
+    		{
+    			int flag3=0;
+    			cin>>x>>y;
+    			x--;y--;
+    			
+     
+    			if(find(x)==find(y))
+    			{
+    				//printf("%d ****%d\n",colour[x],colour[y]);
+    				if(colour[x]==colour[y]) // odd length cycle found
+    				{
+    					flag[find(x)]=1;
+    				}
+    			}
+    			// if they do not belong to same connected compnent
+    			else
+    			{
+    				
+    				if(colour[x]==0 && colour[y]==0)
+    			{
+    				colour[x]=1;
+    				colour[y]=2;
+    				colour2[x]=2;
+    				colour2[y]=1;
+    				
+    			}
+    			else if(colour[x]==0 && colour[y]!=0)
+    			{
+    				if(colour[y]==1)
+    				{
+    					colour[x]=2;
+    					colour2[x]=1;
+    				}
+    				else
+    				{
+    					colour[x]=1;
+    					colour2[x]=2;
+    				}
+    			}
+     
+    			else if(colour[y]==0 && colour[x]!=0)
+    			{
+    				
+    				if(colour[x]==1)
+    				{
+    					colour[y]=2;
+    					colour2[y]=1;
+    				}
+    				else if(colour[x]==2)
+    				{
+    					colour[y]=1;
+    					colour2[y]=2;
+    				}
+    								
+    			}
+    			else if(colour[x]!=0 && colour[y]!=0)
+    			{
+    				if(colour[x]==colour[y])
+    				{
+    					//cout<<ranks[find(x)]<<"***"<<ranks[find(y)]<<endl;
+    					
+    					if(flag[find(x)]==1 || flag[find(y)]==1)
+    						flag3=1;
+    					if(ranks[find(x)]>=ranks[find(y)])
+    						dfs(y,-1,visited);
+    					else
+    						dfs(x,-1,visited);
+    					memset(visited,false,sizeof(visited));
+    				}
+    				else
+    				{
+    					if(flag[find(x)]==1 || flag[find(y)]==1)
+    						flag3=1;
+    				}
+    			}
+    		}
+     
+    			unite(x,y);
+    			if(flag3==1)
+    				flag[find(y)]=1;
+    			
+    			addedge(x,y);
+    			
+    		}
+    		else
+    		{
+    			cin>>x>>y>>v;
+    			x--;y--;
+    			
+    			//printf("%d %d\n",find(x),find(y) );
+    			if(find(x)!=find(y) || flag[find(x)]==1)
+    			{
+    				cout<<0<<endl;
+    			}
+    			else
+    			{
+    				int flag2=0;
+    				long long temp1=a[x]*v;
+    				//cout<<colour[x]<<"****"<<colour[y]<<endl;
+    				if(colour[x]!=colour[y])
+    				{
+    					flag2=1;
+    				}
+    				if(flag2==1)
+    				{
+    					printf("-%lld/%lld\n",temp1/gcd(temp1,a[y]),a[y]/gcd(temp1,a[y]) );
+    				}
+    				else if(flag2==0)
+    				{
+    					printf("%lld/%lld\n",temp1/gcd(temp1,a[y]),a[y]/gcd(temp1,a[y]) );
+    				}
+    			}
+     
+     
+    		}
+     
+    	}
+     
+    } 

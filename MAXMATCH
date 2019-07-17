@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define ll long long
+ll dp1[2005],dp2[2005],p[2005];
+ll mod;
+ll mul(ll a,ll b)
+{
+	return (a*b)%mod;
+}
+void pre()
+{
+	p[0]=1;
+	for(ll i=1;i<=2002;i++)
+		p[i]=(p[i-1]*2)%mod;
+}
+int main()
+{
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	ll t,m;
+	cin>>t>>m;
+	mod=m;
+	pre();
+	dp1[0]=0;dp2[0]=0;
+	dp1[1]=1;dp2[1]=1;
+	for(ll i=2;i<2002;i++)
+		{
+			for(ll j=0;j<i;j++)
+			{
+				dp1[i]+=(dp1[j]+mul(mul((i-j),(j+1)),p[j]))%mod;
+				dp1[i]%=mod;
+				dp2[i]+=((dp2[j]+mul(mul(mul(2LL,(i-j)),(j+1)),dp1[j]))%mod+mul(mul((i-j),(j+1)),mul(mul((i-j),(j+1)),p[j])))%mod;
+				dp2[i]%=mod;
+			}
+		}
+	while(t--)
+	{
+		ll n;
+		cin>>n;
+		cout<<dp2[n-1]<<endl;
+	}
+}

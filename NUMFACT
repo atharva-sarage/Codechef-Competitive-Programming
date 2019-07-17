@@ -1,0 +1,40 @@
+#include <stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,i;
+		scanf("%d",&n);
+		unsigned long long pro=1,count=0,final=1,count1,k;
+		unsigned long long a[100];
+		for(i=0;i<n;i++)
+		{
+			scanf("%llu",&a[i]);
+			pro=pro*a[i];
+		}
+		while(pro%2==0)
+		{
+			count++;
+			pro=pro/2;
+		}
+		final=final*(count+1);
+		for ( k= 3; k*k<= pro; k = k+2)
+    	{
+        count1=0;
+       
+        while (pro%k == 0)
+        {
+           count1++;
+            pro = pro/k;
+        }
+        final=final*(count1+1);
+		}
+		if(pro>2)
+		{
+			final=final*2;
+		}
+printf("%llu\n",final);
+}
+}

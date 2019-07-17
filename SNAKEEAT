@@ -1,0 +1,78 @@
+#include<algorithm>
+#include<iostream>
+using namespace std;
+
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int i,n,q,j;
+		int long long a[100001]={0},max=0;
+		unsigned long long int add[100001]={0};
+		cin>>n;
+		cin>>q;
+		for(i=0;i<n;i++)
+		{
+			cin>>a[i];
+			
+		}
+		sort(a,a+n);
+		for(i=0;i<n;i++)
+		{
+			if(i==0)
+			add[0]=a[0];
+			else 
+			add[i]=add[i-1]+a[i];
+		}
+		
+		
+		for(j=0;j<q;j++)
+		{
+			int long long x;
+			int long long ans=0;
+			cin>>x;
+			if(a[n-1]<x)
+			{
+				cout<<"0"<<endl;
+				continue;
+			}
+			if(x<=a[0])
+			{
+				cout<<n<<endl;
+				continue;
+			}
+			int long ub=lower_bound(a,a+n,x)-a;
+			//cout<<ub<<endl;
+			ans=n-ub;
+		
+			//if(res[0]>ub-1)
+			if(x+add[ub-2]-add[ub-1]>ub-1)
+				{
+					cout<<ans<<endl;
+					continue;
+				}
+			int low=0;
+			int high=ub-1;
+			int mid;
+			while(high>=low)
+			{
+				mid=low+(high-low)/2;
+				//cout<<"mid"<<mid<<"--"<<x*(ub-mid)-(add[ub-1]-add[mid-1])<<endl;
+				
+				if(mid==x*(ub-mid)-(add[ub-1]-add[mid-1]))
+					break;
+				else if((mid)<x*(ub-mid)-(add[ub-1]-add[mid-1]))
+				low=mid+1;
+				else
+				high=mid-1;
+				
+			}
+			if((mid)<x*(ub-mid)-(add[ub-1]-add[mid-1]))
+				mid++;
+			
+			cout<<ans+ub-mid<<endl;
+		}
+	}
+}

@@ -1,0 +1,37 @@
+#include<stdio.h>
+int main()
+{
+	int n,q,i,j;
+	scanf("%d %d",&n,&q);
+	double p[100005];
+	for(i=0;i<n;i++)
+	scanf("%lf",&p[i]);
+	for(i=0;i<q;i++)
+	{
+		int t;
+		scanf("%d",&t);
+		if(t==0)
+		{
+			int l,r;
+			scanf("%d %d",&l,&r);
+			double ans=1;
+			for(j=l-1;j<r;j++)
+			{
+				ans=ans*(1-p[j]);
+			}
+			printf("%.8lf\n",ans);
+		}
+		else 
+		{
+			int l,r;
+			double v;
+			scanf("%d %d",&l,&r);
+			scanf("%lf",&v);
+			
+			for(j=l-1;j<r;j++)
+			{
+				p[j]=p[j]*v;
+			}
+		}
+	}
+}

@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+# define mod 8589934592
+using namespace std;
+
+int main()
+{
+	int t;
+	cin>>t;
+	for(int i=1;i<=t;i++)
+	{
+		cout<<"Case "<<i<<": ";
+		long long int  no;
+		string n;
+		cin>>n;
+		if(n.length()>2 || (no=stoi(n))>=33){
+			cout<<mod-1<<endl; continue;
+		}
+		else
+			cout<<((1LL<<no)-1)<<endl;
+
+	}
+}

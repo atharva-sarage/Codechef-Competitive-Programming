@@ -1,0 +1,51 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf 1e9
+# define mx2 100005
+# define mx 1024
+int a[mx];
+bool mark[mx];
+int main()
+{
+	IOS;
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		memset(mark,false,sizeof(mark));
+		int n,k;
+		cin>>n>>k;
+		int final=0;
+		mark[0]=true;
+		for(int i=0;i<n;i++)
+			cin>>a[i];		
+		for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<=1023;j++) // total xor possible
+			{
+				if(mark[j])
+					mark[j^a[i]]=true;
+			}
+		}
+		for(int i=0;i<1024;i++)
+		{
+			if(mark[i])
+				final=max(final,k^i);
+		}
+		cout<<final<<endl;
+	}
+
+	
+}

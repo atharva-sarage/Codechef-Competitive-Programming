@@ -1,0 +1,48 @@
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		
+		int size,i,j,l;
+		
+		scanf("%d",&size);
+		int long a[101];
+		for(i=0;i<size;i++)
+		{
+			scanf("%ld",&a[i]);
+		}
+		int k;
+		scanf("%d",&k);
+		int long z=a[k-1];
+		
+		for(i=0;i<size;i++)
+		{
+			for(j=0;j<size-i-1;j++)
+			{
+				if(a[j]>a[j+1])
+				{
+					int temp=a[j];
+					a[j]=a[j+1];
+					a[j+1]=temp;
+					
+				}
+			}
+		}
+		
+		for(l=0;l<size;l++)
+		{
+			if(z==a[l])
+			{
+				printf("%d\n",l+1);
+				break;
+			}
+			
+		}
+		
+	}
+	
+return 0;
+} 

@@ -1,0 +1,78 @@
+    #include "bits/stdc++.h"
+    using namespace std;
+     
+    typedef long long ll;
+     
+    ll fact[100001];
+    ll inv[100001];
+    const ll mod = 1e9+7;
+     
+    ll exp(ll a,ll p){
+    	if(!p) return 1LL;
+    	ll t = exp(a,p/2);
+    	t = t*t % mod;
+    	if(p&1)
+    		return t*a % mod;
+    	return t;
+    }
+     
+    int main(int argc, char const *argv[])
+    {	
+    	ios_base :: sync_with_stdio(false);
+    	// freopen("input.txt","r",stdin);
+    	// freopen("output.txt","w",stdout);
+    	fact[0] = 1;
+    	inv[0] = 1;
+    	for(int i=1;i<=100000;i++){
+    		fact[i] = fact[i-1]*i % mod;
+    		inv[i] = exp(fact[i],mod-2);
+    	}
+    	int t; cin >> t;
+    	while(t--){
+    		int n; cin >> n;
+    		ll arr[n],x;
+    		unordered_map < ll , int > mp;
+    		int cnt=0;
+    		for(int i=0;i<n;i++) {
+    			cin >> x;
+    			mp[x]++;
+    		}
+    		ll ans = 1;
+     
+    		for(auto x : mp){
+    			if(x.first == 1) {
+    				cnt = x.second;
+    				continue;
+    			}
+    			ans = ans * inv[x.second] % mod;
+    		}
+    		if(cnt==n){
+    			if(n%2)
+    				cout << 1 << endl;
+    			else
+    				cout << 0 << endl;
+    			continue;
+    		}
+    		ll finalAns = 0;
+    		ll tmp;
+    		for(int i=0;i<cnt;i+=2){
+    			tmp = (fact[n-i] * ans % mod) * inv[cnt-i] % mod;
+    			tmp = tmp - ((fact[n-i-1]*ans % mod) * inv[cnt-i-1] % mod);
+    			tmp+=mod;
+    			tmp%=mod;
+    			finalAns+=tmp;
+    			finalAns%=mod;
+    			// cout << "for i = " << i << " , ans : " << tmp << endl;
+    		}
+    		if(cnt%2==0 and cnt < n) {finalAns += ans*fact[n-cnt] % mod;
+    			// cout << "for i = " << cnt << " , ans : " << ans*fact[n-cnt] % mod << endl;
+    		}
+    		if(cnt==1){
+    			finalAns = ans*fact[n]%mod - ans*fact[n-1]%mod;
+    			finalAns+=mod;
+    		}
+    		finalAns %= mod;
+    		cout << finalAns << "\n";
+    	}	
+    	return 0;
+    }	 

@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef unsigned long long ll;
+typedef pair<ll ,ll > ipair;
+vector <ipair> adj[100005];
+ll dist1[100005];
+ll dist2[100005];
+ll dist3[100005];
+void addedge(ll u,ll v,ll w)
+{
+	adj[u].push_back(make_pair(v,w));
+	adj[v].push_back(make_pair(u,w));
+}
+void shortest(ll u,ll dist[])
+{
+	priority_queue<ipair,vector <ipair>,greater<ipair> > pq;
+	pq.push(make_pair(0,u));
+	dist[u]=0;
+	while(!pq.empty())
+	{
+		ll  x=pq.top().second;
+		pq.pop();
+		for(ll  i=0;i<adj[x].size();i++)
+		{
+			ll  v=adj[x][i].first;
+			ll  wt=adj[x][i].second;
+			
+			if(dist[v]>dist[x]+wt)
+				{				
+					dist[v]=dist[x]+wt;					
+					pq.push(make_pair(dist[v],v));
+				}
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		ll n,m,s,t,v;
+		ll mini=1e17;
+		cin>>n>>m>>s>>t>>v;
+		for(int i=0;i<=n;i++)
+			adj[i].clear();
+		for(ll i=0;i<m;i++)
+		{
+			ll x,y,w;
+			cin>>x>>y>>w;
+			addedge(x,y,w);
+		}
+		for(ll i=1;i<=n;i++)
+			dist1[i]=dist2[i]=dist3[i]=1e17;
+			
+		shortest(s,dist1);
+		shortest(t,dist2);
+		shortest(v,dist3);
+		for(ll i=1;i<=n;i++)
+		{
+			mini=min((dist1[i]+dist2[i]+dist3[i]),mini);
+		}
+		cout<<mini<<endl;
+	}
+}

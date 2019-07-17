@@ -1,0 +1,74 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define pb push_back
+# define mp make_pair
+# define ff first
+# define ss second
+# define ipair pair<int,int>
+# define mx 100005
+vector <ipair> ans(200001);
+vector <ipair> ed;
+set <ipair> s;
+vector <ipair> adj[mx];
+int deg[mx],visited[2*mx];
+void addedge(int u,int v,int id)
+{
+	adj[u].pb(mp(v,id));
+	adj[v].pb(mp(u,id));
+}
+void con(int u,int par)
+{
+	visited[u]=true;
+	for(auto k:adj[u])
+	{
+		if(visited[k.ff] || k.ff==par)continue;
+		con(k.ff,u);
+	}
+}
+void dfs(int u,int par)
+{
+	for(auto k:adj[u])
+	{
+		if(visited[k.ss] || k.ff==par)continue;
+		ans[k.ss]=(mp(u,k.ff));	
+		visited[k.ss]=true;
+		dfs(k.ff,u);
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	int n,e;
+	cin>>n>>e;
+	for(int i=0;i<e;i++)
+	{
+		int x,y;
+		cin>>x>>y;
+		addedge(x,y,i);			
+		deg[x]++;deg[y]++;
+	}
+	for(int i=1;i<=n;i++)
+	{
+		if(deg[i]%2==1 || deg[i]==0)
+			{cout<<"NO"<<endl;return 0;}
+	}
+	con(1,-1);
+	for(int i=1;i<=n;i++)
+	{
+		if(!visited[i])
+			{cout<<"NO"<<endl;return 0;}
+	}
+	memset(visited,0,sizeof(visited));
+	dfs(1,-1);
+	for(int i=0;i<e;i++)
+	{
+		if(!visited[i])
+			{cout<<"NO"<<endl;return 0;}
+	}
+	cout<<"YES"<<endl;
+	for(int i=0;i<e;i++)
+		cout<<ans[i].ff<<" "<<ans[i].ss<<endl;
+
+
+
+}

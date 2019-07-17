@@ -1,0 +1,66 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf 1e9
+# define mx2 100005
+# define mx 100005
+ll s[mx],w[mx];
+vector <pair<int,int>> vec;
+ll rand(ll a, ll b) {
+    return a + rand() % (b - a + 1);
+}
+bool cmp(pair<int,int> p1,pair<int,int> p2)
+{
+	return p1.ff<p2.ff;
+}
+int main()
+{
+	srand(time(NULL));
+	IOS;
+	ll n,m;
+	cin>>n>>m;
+	for(ll i=1;i<=n;i++)
+		cin>>s[i];
+	for(ll i=1;i<=m;i++)
+		{cin>>w[i];vec.pb({w[i],i});}
+	sort(vec.begin(),vec.end(),cmp);
+	for(ll i=1;i<=m;i++)
+	{
+		ll u,v;
+		cin>>u>>v;
+		//addedge(u,v);
+	}
+	ll rem=rand(m/2,5*m/6);
+	for(int i=0;i<rem;i++)
+	{
+		ll z=vec[i].ss;
+		cout<<z<<endl;
+		ll x,y,type;
+		cin>>type;	
+		if(type==1 || type==0)
+			{cin>>x;cin>>y;}
+	}
+
+	
+	
+	cout<<-1<<endl;
+	for(ll i=1;i<=n;i++)
+	{
+		ll x=rand(1,2);
+		if(x%2==0)
+			cout<<'C';
+		else
+			cout<<'G';
+	}
+}

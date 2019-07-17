@@ -1,0 +1,72 @@
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		char str[100001];
+		char temp;
+		int i,j,count,count1,sum,sum1,count_a=0,count_b=0;
+		sum=0;
+		sum1=0;
+		scanf("%s",str);
+		int n=strlen(str);
+		for(i=0;i<n;i++)
+		{
+			
+			if(str[i]=='A')
+			{
+				count_a++;
+			}
+			if(str[i]=='B')
+			{
+				count_b++;
+			}
+		}
+		
+		for(i=0;i<n;i++)
+		{
+			
+			
+			if(str[i]=='.'&& str[i-1]=='A')
+			{
+				j=i;
+				count=0;
+				while(str[j]=='.')
+				{
+				
+					count++;
+					j=j+1;
+					
+				}
+					if(str[j]=='A')
+					{
+						sum=sum+count;
+					}					
+				}
+				
+			}
+			for(i=0;i<n-1;i++)
+			{	
+			if(str[i]=='.'&& str[i-1]=='B')
+			{
+				j=i;
+				count1=0;
+				while(str[j]=='.')
+				{
+				
+					count1++;
+					j=j+1;
+				}
+					if(str[j]=='B')
+					{
+						sum1=sum1+count1;
+					}					
+				}
+				
+			}
+			
+	
+		printf("%d %d\n",sum+count_a,sum1+count_b);	
+	}
+}

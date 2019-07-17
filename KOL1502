@@ -1,0 +1,47 @@
+using namespace std;
+#include<bits/stdc++.h>
+# define mx 10000
+# define mod 10000000
+# define ll long long
+ll a[1005];
+ll dp[3][10015];
+ll n;
+ll c=0;
+void build()
+{
+	dp[0][0]=1;
+	for(ll i=1;i<=n;i++)
+	{
+		c=c^1;
+		for(ll j=0;j<=mx;j++)
+		{
+			dp[c][j]=dp[c^1][j];
+		}
+		for(ll j=0;j<=mx;j++)
+		{
+			dp[c][j+a[i]]+=dp[c^1][j];
+			dp[c][j+a[i]]%=mod;
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll final=0,s=0;
+		memset(dp,0,sizeof(dp));
+		cin>>n;
+		for(ll i=1;i<=n;i++)
+			{cin>>a[i];s+=a[i];}
+		build();
+		for(ll i=0;i<=mx;i++)
+		{
+			final=(final+(dp[c][i]*abs(s-2*i))%mod)%mod;
+			final%=mod;
+		}
+		cout<<final<<endl;
+	}
+}

@@ -1,0 +1,113 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define mx 100005
+int lo[4*mx+1],hi[4*mx+1],c[mx],delta[4*mx+1][4];
+int m[]={0,0,0,1,0,2};
+void init(int i,int a,int b)
+{
+	lo[i]=a;
+	hi[i]=b;
+	if(a==b)
+		return;
+	int m=(a+b)/2;
+	init(2*i,a,m);
+	init(2*i+1,m+1,b);
+}
+void prop(int i)
+{
+	for(int j=0;j<3;j++)
+	{
+	delta[2*i][j]+=delta[i][j];
+	delta[2*i+1][j]+=delta[i][j];
+	delta[i][j]=0;
+	}
+}
+void update(int i,int a,int b,int val)
+{
+	if(b<lo[i] || hi[i]<a)
+		return ;
+	if(a<=lo[i] && hi[i]<=b)
+		{
+		c[a]=val;
+		for(int j=0;j<3;j++)
+			delta[i][j]=0;								
+		return ;
+		}
+	prop(i);
+	update(2*i,a,b,val);
+	update(2*i+1,a,b,val);	
+}
+void range(int i,int a,int b,int val) 
+{
+	if(b<lo[i] || hi[i]<a)
+		return ;
+	if(a<=lo[i] && hi[i]<=b)
+		{
+		delta[i][m[val]]++;
+		return ;
+		}
+	prop(i);
+	range(2*i,a,b,val);
+	range(2*i+1,a,b,val);	
+}
+int query(int i,int l,int r)
+{
+	if(r<lo[i] || hi[i]<l)
+		{
+		return 0;
+		}
+	if(l<=lo[i] && hi[i]<=r)
+	{
+		int temp=c[l],c2=0,c1=0,c3=0;
+		while(temp%2==0)
+		{
+			temp/=2;
+			c1++;
+		}
+		while(temp%3==0)
+		{
+			temp/=3;
+			c2++;
+		}
+		while(temp%5==0)
+		{
+			temp/=5;
+			c3++;
+		}
+		return temp*pow(2,max(0,c1-delta[i][0]))*pow(3,max(0,c2-delta[i][1]))*pow(5,max(0,c3-delta[i][2]));
+	}
+	prop(i);
+	int rr=query(2*i,l,r);
+	int ll=query(2*i+1,l,r);	
+	return rr+ll;
+}
+
+int main()
+{
+	int n,m;
+	cin>>n;
+	for(int i=1;i<=n;i++)
+	{
+		cin>>c[i];
+	}
+	cin>>m;
+	init(1,1,n);
+	while(m--)
+	{
+		int x,y,p,z;
+		cin>>x;
+		if(x==1)
+		{
+			cin>>y>>z>>p;
+			range(1,y,z,p);
+		}
+		else
+		{
+			cin>>y>>z;
+			update(1,y,y,z);
+		}
+	}
+	for(int i=1;i<=n;i++)
+		cout<<query(1,i,i)<<" ";
+	printf("\n");
+}

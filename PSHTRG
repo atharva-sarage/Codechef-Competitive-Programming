@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n,q,i,u,j;
+	scanf("%d %d",&n,&q);
+	int long a[100005];
+	for(i=0;i<n;i++)
+	{
+		scanf("%ld",&a[i]);
+	}
+	for(u=0;u<q;u++)
+	{
+		int type,l,r;
+		scanf("%d %d %d",&type,&l,&r);
+		if(type==1)
+			{
+				a[l-1]=r;
+				continue;	
+			}
+		else
+		{
+
+		vector <int long> copy;
+		if((r-l)<2)
+			{
+				printf("0\n");
+				continue;
+			}
+		for(i=l-1;i<r;i++)
+			copy.push_back(a[i]);
+		sort(copy.begin(),copy.end());
+		int c2=copy.size();
+		
+		int k=c2-1;
+			int valid=0;
+			
+	
+		for(j=c2-2;j>0;j--)
+		{
+			int flag=0;
+			
+				if(copy[j]+copy[j-1]>copy[k])
+					{
+						int long ans=copy[j]+copy[j-1]+copy[k];
+						printf("%ld\n",ans);
+						flag=1;
+						valid=1;
+						break;
+					}
+			k--;	
+			}
+		
+		
+		
+		if(valid==0)
+			printf("0\n");
+	
+	copy.clear();
+	}
+	}
+	
+	
+}

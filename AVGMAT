@@ -1,0 +1,153 @@
+// We are Invincibles
+#include<bits/stdc++.h>
+using namespace std;
+# define mx 300
+# define mx2 610
+typedef int long long ll;
+ll dp[mx][mx][mx2+5];
+ll dp2[mx][mx][mx2+5];
+ll dp3[mx][mx][mx2+5];
+string grid[mx];
+ll n,m;
+void init()
+{
+	for(ll i=0;i<mx;i++)
+	{
+		for(ll j=0;j<mx;j++)
+		{
+			for(ll k=0;k<mx2+5;k++)
+				{
+				dp2[i][j][k]=0LL;
+				dp3[i][j][k]=0LL;
+				dp[i][j][k]=0LL;
+				}
+		}
+	}
+}
+void pre()
+{	
+	for(ll j=0;j<m;j++)
+	{
+		if(grid[0][j]=='1')
+			dp2[0][j][j]=1;
+	}
+	for(ll j=0;j<n;j++)
+	{
+		if(grid[j][0]=='1')
+			dp2[j][0][j]=1;
+	}
+	for(ll j=1;j<m;j++)
+	{
+		for(ll k=0;k<mx2;k++)
+		{
+			dp2[0][j][k]+=dp2[0][j-1][k];
+		}
+	}
+	for(ll j=1;j<n;j++)
+	{
+		for(ll k=0;k<mx2;k++)
+		{
+			dp2[j][0][k]+=dp2[j-1][0][k];
+		}
+	}
+	for(ll i=1;i<n;i++)
+	{
+		for(ll j=1;j<m;j++)
+		{
+			if(grid[i][j]=='1')
+				dp2[i][j][i+j]=1;
+			for(ll k=0;k<mx2;k++)
+				dp2[i][j][k]+=dp2[i-1][j][k]+dp2[i][j-1][k]-dp2[i-1][j-1][k];
+		}
+	}
+}
+void pre2()
+{
+	for(ll j=0;j<m;j++)
+	{
+		if(grid[0][j]=='1')
+			{
+			dp3[0][j][-j+mx]=1;
+			}
+	}
+	for(ll j=0;j<n;j++)
+	{
+		if(grid[j][0]=='1')
+			dp3[j][0][j+mx]=1;
+	}
+	for(ll j=1;j<m;j++)
+	{
+		for(ll k=0;k<mx2;k++)
+		{
+			dp3[0][j][k]+=dp3[0][j-1][k];
+		}
+	}
+	for(ll j=1;j<n;j++)
+	{
+		for(ll k=0;k<mx2;k++)
+		{
+			dp3[j][0][k]+=dp3[j-1][0][k];
+		}
+	}
+	for(ll i=1;i<n;i++)
+	{
+		for(ll j=1;j<m;j++)
+		{
+			if(grid[i][j]=='1')
+				dp3[i][j][i-j+mx]=1;
+			for(ll k=0;k<mx2;k++)
+				dp3[i][j][k]+=dp3[i-1][j][k]+dp3[i][j-1][k]-dp3[i-1][j-1][k];
+		}
+	}
+}
+
+void solve()
+{
+	for(ll i=0;i<n;i++)
+	{
+		for(ll j=0;j<m;j++)
+		{
+			for(ll k=1;k<mx2;k++)
+			{			
+			if(i>0 && j>0 )
+			dp[i][j][k]=dp[i-1][j][k]+dp[i][j-1][k]-dp[i-1][j-1][k];
+			else if(i>0 && j==0)
+			dp[i][j][k]=dp[i-1][j][k];
+			else if(i==0 && j>0)
+			dp[i][j][k]=dp[i][j-1][k];			
+			}
+			if(grid[i][j]=='0')
+				continue;
+
+			for(ll k=0;k<mx2;k++)
+			{		 	
+			if((i!=0 || j!=0) && i+j-k>=0 )
+			dp[i][j][k]+=dp2[i][j][i+j-k];
+			
+			if(i>0 && j>=0 && i-j-k+mx>=0 )
+			dp[i][j][k]+=dp3[i-1][m-1][i-j-k+mx]-dp3[i-1][j][i-j-k+mx];			
+			}
+		}
+	}
+}
+int main()
+{
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		cin>>n>>m;
+		for(ll i=0;i<n;i++)
+			cin>>grid[i];
+		init();
+		pre(); 
+		pre2();
+		solve();
+		for(ll i=1;i<=n+m-2;i++)
+			cout<<dp[n-1][m-1][i]<<" ";
+		cout<<endl;
+		
+	}
+
+}
+

@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct point
+{
+	double x,y;
+};
+point getinter(point a,point b,int axis,int x)
+{
+	if(axis==1) // x axis
+	{
+		point p;
+		p.x=((x-a.y)*(b.x-a.x))/(double)(b.y-a.y) + a.x;
+		p.y=0;
+		return p;
+	}
+	else
+	{
+		point p;
+		p.y=((x-a.x)*(b.y-a.y))/(double)(b.x-a.x) + a.y;
+		p.x=0;
+		return p;
+	}
+}
+void print(point a)
+{
+	cout<<a.x<<" "<<a.y<<endl;
+}
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		double a,b,x,y;
+		cin>>a>>b>>x>>y;
+		point p1={0,y+b};
+		point p2={a,y+b};
+		point p3=getinter(p1,{x,y},1,0);
+		point p4=getinter(p2,{x+b,y},1,0);
+		if(p4.x<=p3.x)
+		{
+			cout<<"yes"<<endl;continue;
+		}
+		point p5={x+b,a};
+		point p6={x+b,0};
+		point p7=getinter(p5,{x,y+b},0,0);
+		point p8=getinter(p6,{x,y},0,0);
+		if(p7.y<=p8.y)
+		{
+			cout<<"yes"<<endl;continue;
+		}
+		point p9={a,y};
+		point p10={0,y};
+		point p11=getinter(p9,{x+b,y+b},1,a);
+		point p12=getinter(p10,{x,y+b},1,a);
+		if(p11.x<=p12.x)
+		{
+			cout<<"yes"<<endl;continue;
+		}
+		point p13={x,a};
+		point p14={x,0};
+		point p15=getinter(p13,{x+b,y+b},0,a);
+		point p16=getinter(p14,{x+b,y},0,a);
+		if(p15.y<=p16.y)
+		{
+			cout<<"yes"<<endl;continue;
+		}
+		cout<<"no"<<endl;
+	}
+}

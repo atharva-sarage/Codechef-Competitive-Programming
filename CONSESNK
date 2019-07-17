@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define loop(i,j,k) for(int i=j;i<k;i++)
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	//cin.tie(NULL);
+	int t,n,l,a,b;
+	ll sum,ans,sum1,sum2;
+	cin>>t;
+	while(t--){
+		sum=0;
+		sum1=sum2=0;
+		cin>>n>>l>>a>>b;
+		int s[n],arr[n];
+		loop(i,0,n) cin>>s[i];
+		sort(s,s+n);
+		loop(i,0,n) arr[i] = s[i]-i*l;
+		sort(arr, arr+n);
+		loop(i,0,n){
+			sum1+=abs(a-s[i]+i*l);
+			}
+		loop(i,0,n){
+			sum2+=abs(b-n*l-s[i]+i*l);
+		}
+		if(sum2<sum1) sum1=sum2;
+		if(n%2==0)
+		ans = arr[n/2]/2 + arr[n/2 - 1]/2;
+		else ans = arr[n/2];
+		if(ans<a) ans=a;
+		else if(ans>(b-n*l)) ans=b-n*l;
+		loop(i,0,n){
+			sum+=abs(ans-s[i]+i*l);
+		}
+		if(sum1>sum) sum1=sum;
+		cout<<sum1<<"\n";
+	}
+}

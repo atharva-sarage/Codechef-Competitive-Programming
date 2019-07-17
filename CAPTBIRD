@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct point 
+{
+	double x,y;
+};
+double dist(point a,point b)
+{
+	return sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+}
+double calc(point a,point b,point c)
+{
+	double d1=(dist(a,c)*dist(a,c))+(dist(b,c)*dist(b,c))-(dist(a,b)*dist(a,b));
+	double d2=2.0*dist(a,c)*dist(b,c);
+	return acos(d1/(double)d2);
+}
+bool compare(point a,point b)
+{
+	return a.x<b.x;
+}
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n;
+		cin>>n;
+		struct point p[n+5];
+		for(int i=1;i<=n;i++)
+			{
+				double x;
+				cin>>x;
+				p[i]={x,0.0};
+			}	
+		double p1,q1;
+		cin>>p1>>q1;
+		point b={p1,q1};
+		sort(p+1,p+n+1,compare);
+		double final=0.0;
+		for(int i=1;i<=n/2;i++)
+		{
+			final+=calc(p[i],p[n-i+1],b);
+		}
+		printf("%.12lf\n",final);
+	}
+}

@@ -1,0 +1,229 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define nosync ios_base::sync_with_stdio(false), cin.tie(NULL) 
+int main()
+{
+	  
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		char grid[105][105];
+		char temp[105][105];
+		int n,m,flag=0,flag1=0;
+		cin>>n>>m;
+		
+		for(int i=0;i<n;i++)
+		{
+			cin>>grid[i];
+		}
+		// make a right up matrix
+		for(int i=0;i<n;i++)
+		{
+			int count1=0;
+			for(int j=0;j<m;j++)
+			{
+				if(grid[i][j]=='1')
+					count1++;
+			}			
+			for(int j=0;j<m-count1;j++)
+				temp[i][j]='0';
+			for(int j=m-count1;j<m;j++)
+				temp[i][j]='1';
+		}
+	
+
+		for(int j=0;j<m;j++)
+		{
+			int count1=0;
+			for(int i=0;i<n;i++)
+			{
+				if(temp[i][j]=='1')
+					count1++;
+			}
+			for(int i=0;i<count1;i++)
+				temp[i][j]='1';
+			for(int i=count1;i<n;i++)
+				temp[i][j]='0';
+		}
+
+		char str[20005];
+		cin>>str;
+		if(str[0]=='U' || str[0]=='D')
+		{
+			for(int j=0;j<m;j++)
+		{
+			int count1=0;
+			for(int i=0;i<n;i++)
+			{
+				if(grid[i][j]=='1')
+					count1++;
+			}
+			for(int i=0;i<count1;i++)
+				temp[i][j]='1';
+			for(int i=count1;i<n;i++)
+				temp[i][j]='0';
+		}
+		int count1=0;
+			for(int i=0;i<n;i++)
+		{
+			int count1=0;
+			for(int j=0;j<m;j++)
+			{
+				if(temp[i][j]=='1')
+					count1++;
+			}			
+			for(int j=0;j<m-count1;j++)
+				temp[i][j]='0';
+			for(int j=m-count1;j<m;j++)
+				temp[i][j]='1';
+		}
+
+		}
+		int size=strlen(str);
+		int hor=0,ver=0;
+		for(int i=0;i<size;i++)
+		{
+				if(str[i]=='R' || str[i]=='L')
+					flag=1;
+				if(str[i]=='D' || str[i]=='U')
+					flag1=1;
+				if(str[i]=='R')
+					hor=0;
+				if(str[i]=='L')
+					hor=1;
+				if(str[i]=='U')
+					ver=0;
+				if(str[i]=='D')
+					ver=1;	
+		}
+		if(flag==0)
+		{
+			for(int j=0;j<m;j++)
+				{
+					int count1=0;
+					for(int i=0;i<n;i++)
+					{
+						if(grid[i][j]=='1')
+							count1++;
+					}
+					for(int i=0;i<count1;i++)
+						temp[i][j]='1';
+					for(int i=count1;i<n;i++)
+						temp[i][j]='0';
+				}
+
+			if(ver==0)
+			{
+				
+
+				for(int i=0;i<n;i++)
+				{
+					for(int j=0;i<m;j++)
+					{
+						cout<<temp[i][j];
+					}
+					printf("\n");
+				}
+
+			}
+			else
+			{
+				for(int i=n-1;i>=0;i--)
+				{
+					for(int j=0;j<m;j++)
+					{
+						cout<<temp[i][j];
+					}
+					printf("\n");
+				}
+			}
+			continue;
+		}
+		if(flag1==0)
+		{
+			
+			for(int i=0;i<n;i++)
+		{
+			int count1=0;
+			for(int j=0;j<m;j++)
+			{
+				if(grid[i][j]=='1')
+					count1++;
+			}
+			for(int j=0;j<m-count1;j++)
+				temp[i][j]='0';
+			for(int j=m-count1;j<m;j++)
+				temp[i][j]='1';
+		}
+
+
+			if(hor==0)
+			{
+				
+				for(int i=0;i<n;i++)
+				{
+					for(int j=0;j<m;j++)
+					{
+						cout<<temp[i][j] ;
+					}
+					printf("\n");
+				}
+			}
+
+			else
+			{
+				for(int i=0;i<n;i++)
+				{
+					for(int j=m-1;j>=0;j--)
+					{
+						cout<<temp[i][j] ;
+					}
+					printf("\n");
+				}
+			}
+			continue;
+		}
+		if(ver==0 && hor==0)
+		{
+			for(int i=0;i<n;i++)
+			{
+				for(int j=0;j<m;j++)
+					cout<<temp[i][j] ;
+				printf("\n");
+			}
+			
+		}
+		else if(ver==0 && hor==1)
+		{
+			for(int i=0;i<n;i++)
+			{
+				for(int j=m-1;j>=0;j--)
+					cout<<temp[i][j] ;
+				printf("\n");
+			}
+			
+		}
+
+		else if(ver==1 && hor==0)
+		{
+			for(int i=n-1;i>=0;i--)
+			{
+				for(int j=0;j<m;j++)
+					cout<<temp[i][j] ;
+				printf("\n");
+			}			
+		}
+		else
+		{
+			for(int i=n-1;i>=0;i--)
+			{
+				for(int j=m-1;j>=0;j--)
+					cout<<temp[i][j] ;
+				printf("\n");
+			}
+			
+		}
+
+	}
+}

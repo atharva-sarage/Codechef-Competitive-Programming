@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef int long long ll;
+int main()
+{
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		vector <ll> col[50];
+		ll dp1[55][55],dp2[55][55];
+		ll n,m,dis=0;
+		cin>>n>>m;
+		for(ll i=0;i<n;i++)
+		{
+			ll x;
+			ll y;
+			cin>>x>>y;
+			col[x].push_back(y);
+		}
+		memset(dp1,0,sizeof(dp1));
+		memset(dp2,0,sizeof(dp2));
+		for(ll i=0;i<=n;i++)
+			{
+				dp1[i][0]=1;
+			}
+		for(ll i=1;i<=n;i++)
+		{
+			for(ll j=1;j<=n;j++)
+			{
+				dp1[i][j]=dp1[i-1][j];
+				dp2[i][j]=dp2[i-1][j];
+			}
+			if(!col[i].empty())
+			{
+				for(ll j=1;j<=i;j++)
+				{
+					dp1[i][j]+=dp1[i-1][j-1]*(pow(2,col[i].size())-1);
+					dp2[i][j]+=dp2[i-1][j-1]*(pow(2,col[i].size())-1);					
+					dp2[i][j]+=dp1[i-1][j-1]*(pow(2,col[i].size()-1))*accumulate(col[i].begin(),col[i].end(),0);					
+				}
+			}
+		}
+		ll num=0,den=0;	
+		for(ll i=m;i<=n;i++)
+		{
+			num+=dp2[n][i];
+			den+=dp1[n][i];
+		}
+		printf("%.9lf\n",num/(double)den);
+	}
+
+}

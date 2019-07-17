@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n,k,m=0,to=0;
+		cin>>n>>k;
+		vector <int> motu;
+		vector <int> tomu;
+		int a[100005];
+		for(int i=0;i<n;i++)
+		{
+			cin>>a[i];
+			if(i%2==0)
+				{
+					motu.push_back(a[i]);
+					m=m+a[i];
+				}
+			else
+				{
+					tomu.push_back(a[i]);
+					to=to+a[i];
+				}
+		}
+
+		sort(motu.begin(),motu.end());
+		sort(tomu.begin(),tomu.end());
+		int flag=0;
+		int count=0;
+		int s=motu.size();
+		if(to>m)
+		{
+			cout<<"YES"<<endl;
+			continue;
+
+		}
+
+		//cout<<to<<" "<<m<<endl;
+
+		while(count<k && count<=s)
+		{
+			int flag1=0;
+			if(motu[s-count-1]>tomu[count])
+			{
+				flag1=1;
+				m=m-motu[s-count-1]+tomu[count];
+				to=to+motu[s-count-1]-tomu[count];
+				//cout<<to<<" "<<m<<endl;
+				if(to>m)
+				{
+					flag=1;
+					break;
+				}
+			}
+			if(flag1==0)
+				break;
+			count++;
+		}
+		if(flag==1)
+			cout<<"YES"<<endl;
+		else
+			cout<<"NO"<<endl;
+
+		motu.clear();
+		tomu.clear();
+	}
+}

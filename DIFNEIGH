@@ -1,0 +1,147 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define pb push_back
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n,m,ans=0;
+		cin>>m>>n;
+		int c=1;
+		vector <int>vec[2];
+		vector <int>vec1[2];
+		if(n==1 && m==1)
+		{
+			cout<<1<<endl;cout<<1<<endl;continue;
+		}
+		if(n==1 && m==2)
+		{
+			cout<<1<<endl;cout<<1<<endl;cout<<1<<endl;continue;
+		}
+		if(n==1)
+		{
+			printf("2\n");
+			vector <int> temp;
+			int k=1;
+			for(int i=0;i<m;i=i+2)
+			{
+				temp.pb(k);temp.pb(k);
+				k=3-k;
+			}
+			for(int i=0;i<m;i++)
+				cout<<temp[i]<<endl;
+			continue;
+		}
+		if(n==2 && m==1)
+		{
+			cout<<1<<endl;
+			cout<<1<<" "<<1<<endl;continue;
+		}
+		if(n==2 && m==2)
+		{
+			cout<<2<<endl;
+			cout<<1<<" "<<1<<endl;
+			cout<<2<<" "<<2<<endl;
+			continue;
+		}
+		if(m==2)
+		{
+			cout<<3<<endl;
+			for(int i=0;i<n;i++)
+			{
+				if(i%3==0)
+					printf("1 ");
+				else if(i%3==1)
+					printf("2 ");
+				else
+					printf("3 ");
+			}
+			printf("\n");
+			for(int i=0;i<n;i++)
+			{
+				if(i%3==0)
+					printf("1 ");
+				else if(i%3==1)
+					printf("2 ");
+				else
+					printf("3 ");
+			}
+			printf("\n");
+			continue;
+
+		}
+		
+		if(n==2)
+		{
+			cout<<3<<endl;
+			for(int i=0;i<m;i++)
+			{
+				if(i%3==0)
+					cout<<1<<" "<<1<<endl;
+				if(i%3==1)
+					cout<<2<<" "<<2<<endl;
+				if(i%3==2)
+					cout<<3<<" "<<3<<endl;
+			}
+			continue;
+		}
+		while(vec[1].size()<n)
+		{
+			if(c==1 && vec[1].size()<n)
+				{vec[0].pb(1);vec[1].pb(2);ans=max(ans,1);}
+			if(c==1 && vec[1].size()<n)
+				{vec[0].pb(1);vec[1].pb(2);c=2;}
+			if(c==2 && vec[1].size()<n)
+				{vec[0].pb(2);vec[1].pb(1);ans=max(ans,2);}
+			if(c==2 && vec[1].size()<n)
+				{vec[0].pb(2);vec[1].pb(1);c=1;}
+		}
+		if(m>1)
+		{
+		int temp;
+		temp=c=++ans;
+		while(vec1[1].size()<n)
+		{
+			if(c==temp && vec1[1].size()<n)
+				{vec1[0].pb(temp);vec1[1].pb(temp+1);ans=max(ans,temp);}
+			if(c==temp && vec1[1].size()<n)
+				{vec1[0].pb(temp);vec1[1].pb(temp+1);c++;}
+			if(c==temp+1 && vec1[1].size()<n)
+				{vec1[0].pb(temp+1);vec1[1].pb(temp);ans=max(ans,temp+1);}
+			if(c==temp+1 && vec1[1].size()<n)
+				{vec1[0].pb(temp+1);vec1[1].pb(temp);c++;c=temp;}			
+		}
+		}
+		cout<<ans<<endl;
+		for(int i=0;i<m;i++)
+		{
+			if(i%4==0)
+			{
+				for(auto k:vec[0])
+					cout<<k<<" ";
+				printf("\n");
+			}
+			else if(i%4==1)
+			{
+				for(auto k:vec1[0])
+					cout<<k<<" ";
+				printf("\n");
+			}
+			else if(i%4==2)
+			{
+				for(auto k:vec[1])
+					cout<<k<<" ";
+				printf("\n");
+			}
+			else if(i%4==3)
+			{
+				for(auto k:vec1[1])
+					cout<<k<<" ";
+				printf("\n");
+			}
+		}
+
+	}
+}

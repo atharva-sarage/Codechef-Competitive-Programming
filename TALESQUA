@@ -1,0 +1,31 @@
+    #include<stdio.h>
+#include<stdlib.h>
+    int cmp(const void *a,const void *b)
+    {
+        return(*(int*)a-*(int*)b);
+    }
+    int main(){
+       int t;
+       scanf("%d",&t);
+       while(t--)
+        {
+            int k,x[3];
+            int long a;
+            double ans;
+            scanf("%ld%d%d%d%d",&a,&k,&x[0],&x[1],&x[2]);
+            qsort(x,3,sizeof(int),cmp);
+            if((x[2]-x[0])>=(2*k+a))
+                {
+                    printf("0.0\n");
+                    continue;
+                }
+            else if(((x[2]-x[0]))<=2*k)
+                printf("%ld\n",(a*a));
+            else
+            {
+                ans=(2*k+a+x[0]-x[2])*a;
+                printf("%.6lf\n",ans);
+            }
+        }
+    }
+     

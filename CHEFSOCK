@@ -1,0 +1,14 @@
+#include <stdio.h>
+int main() {    
+    int j, s, m, rem, p;
+    scanf("%d%d%d",&j,&s,&m);
+    rem=m-j;
+    p=(rem/s)%2;
+    if(p==1){
+        printf("Unlucky Chef\n");
+    }
+    else{
+        printf("Lucky Chef\n");
+    }
+    return 0;
+} 

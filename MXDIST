@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef int long long ll;
+struct point 
+{
+	ll x,y;
+};
+ll calc(point a,point b)
+{
+	return (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y);
+}
+struct point p[3005];
+int main()
+{
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	ll n;
+	cin>>n;
+	for(ll i=1;i<=n;i++)
+	{
+		ll x,y;
+		cin>>x>>y;
+		p[i]={x,y};
+	}
+	ll q;
+	cin>>q;
+	for(ll i=0;i<q;i++)
+	{
+		ll ans=0;
+		ll f,t;
+		cin>>f>>t;
+		for(ll l=f;l<t;l++)
+		{
+			for(ll j=l+1;j<=t;j++)
+			{
+				ans=max(ans,calc(p[l],p[j]));
+			}
+		}
+		cout<<ans<<endl;
+	}
+}

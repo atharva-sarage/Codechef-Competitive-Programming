@@ -1,0 +1,36 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		char str[2015];
+		scanf("%s",str);
+		int i,n=strlen(str);
+		for(i=n-1;i>=3;i--)
+		{
+			if((str[i]=='F'|| str[i]=='?')&&(str[i-1]=='E'|| str[i-1]=='?') && (str[i-2]=='H'|| str[i-2]=='?') &&(str[i-3]=='C'|| str[i-3]=='?'))
+			{
+				if(str[i]=='?')
+					str[i]='F';
+				if(str[i-1]=='?')
+					str[i-1]='E';
+				if(str[i-2]=='?')
+					str[i-2]='H';
+				if(str[i-3]=='?')
+					str[i-3]='C';
+				
+			}
+		}
+		for(i=0;i<n;i++)
+		{
+			if(str[i]=='?')
+				str[i]='A';
+		}
+		
+		printf("%s\n",str);
+		
+	}
+} 

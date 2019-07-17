@@ -1,0 +1,72 @@
+ int gcd( int a,int b)
+{
+	if(a==0)
+	return b;
+	else
+	return gcd(b%a,a);
+}
+int is_prime(int n)
+{
+	int i,flag;
+	if(n==1)
+		return 1;
+	
+	if(n==2|| n==3)
+	{
+		return 0;
+	}
+	
+	for(i=2;i*i<=n;i++)
+	{
+		flag=1;
+		if(n%i==0)
+		{
+			flag=0;
+			break;
+		}
+	}
+	if(flag==1)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
+
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,k,i;
+		scanf("%d %d",&n,&k);
+		int a[100005];
+		for(i=0;i<n;i++)
+			{
+				scanf("%d",&a[i]);
+			}
+		int ans=a[0];
+		for(i=1;i<n;i++)
+			ans=gcd(ans,a[i]);
+		
+		int c1=ans;
+		for(i=2;i*i<=c1;i++)
+		{
+			while(!is_prime(i) && i<=k && ans%i==0 && ans>=1)
+					ans=ans/i;			
+		}
+		
+		if(ans<=k)
+		printf("YES\n");
+		else
+		printf("NO\n");
+		
+			
+		
+		
+	}
+}

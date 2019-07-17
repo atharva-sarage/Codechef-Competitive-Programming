@@ -1,0 +1,41 @@
+#include<stdio.h>
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	
+	while(t--)
+	{
+		int long long a[1000001];
+		
+		int long n,i,flag=0;
+		scanf("%ld",&n);
+		
+		for(i=0;i<n;i++)
+		{
+			scanf("%lld",&a[i]);
+			
+		}
+		
+		for(i=0;i<n-2;i++)
+		{
+			int flag_1=0;
+			if(a[i]>a[i+1] && a[i]>a[i+2])
+			{
+				flag=1;
+				break;
+			}
+			else if(a[i]>a[i+1] && a[i]<a[i+2])
+			{
+				i++;
+			}
+			
+		}
+
+		if(flag==1)
+			printf("NO\n");
+		else
+			printf("YES\n");
+	}
+}

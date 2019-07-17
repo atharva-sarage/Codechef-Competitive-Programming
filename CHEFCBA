@@ -1,0 +1,65 @@
+#include<stdio.h>
+#include<math.h>
+
+int  check_perfect(unsigned long long int n)
+{
+   unsigned long long int sum=0,i=1;
+   
+   while(sum<n)
+    {
+        sum += i;
+        if (sum == n)
+            return 1;
+        i=i+2;
+    }
+    return 0;
+}
+int main()
+{
+	int i,j,flag;
+
+	unsigned long long int pro=1,sq;
+	int a[4];
+	for(i=0;i<4;i++)
+	{
+		scanf("%d",&a[i]);
+		pro=pro*a[i];
+	}
+	if(!check_perfect(pro))
+	printf("Impossible\n");
+	
+	if(check_perfect(pro))
+	{
+
+	sq=sqrt(pro);
+	for(i=0;i<4;i++)
+	{
+		flag==0;
+		for(j=0;j<4;j++)
+		{
+			if(i!=j)
+			{
+				if(a[i]*a[j]==sq)
+				{
+					flag=1;
+					break;
+				}
+			}
+		}
+		if(flag==1)
+		{
+			break;
+		}
+	}
+	
+	if(flag==1)
+	{
+		printf("Possible\n");
+	}
+	else
+	{
+		printf("Impossible\n");
+	}
+}
+return 0;
+} 

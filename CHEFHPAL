@@ -1,0 +1,121 @@
+#include<stdio.h>
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,k,i,j ;
+		scanf("%d %d",&n,&k);
+
+if(n<=k)
+{
+	printf("1 ");
+	for(i=0;i<n;i++)
+	{
+		printf("%c",i+97);
+	}
+	printf("\n");
+}
+
+else
+{
+		if(k==1)
+		{
+			
+			printf("%d ",n);
+			for(i=0;i<n;i++)
+			{
+				printf("a");
+			}
+			printf("\n");
+		}
+		else if(k==2)
+		{
+			if(n==3)
+			{
+				printf("2 aab\n");
+			}
+			if(n==4)
+			{
+				printf("2 aabb\n");
+			}
+
+
+
+			else if(n==5 || n==6 || n==7 || n==8)
+			{
+				printf("3 ");
+				
+				for(i=0;i<n-3;i=i+2)
+			{
+				printf("a");
+			}
+			printf("bab");
+			for(i=0;i<n-4;i=i+2)
+			{
+				printf("b");
+			}
+ 
+			printf("\n");
+				
+				
+			}
+			else if(n>8)
+			{
+				printf("4 ");
+				
+				for(i=0;i<n/6;i++)
+				{	
+					printf("aababb");
+				}
+				if(n%6==1)
+				{
+					printf("a");
+				}
+				else if(n%6==2)
+				{
+					printf("aa");
+				}
+				else if(n%6==3)
+				{
+					printf("aab");
+				}
+				else if(n%6==4)
+				{
+					printf("aaba");
+				}
+				else if(n%6==5)
+				{
+					printf("aabab");
+				}
+			
+				
+				
+			printf("\n");
+		}
+	}
+
+		
+		else if (k>2)
+		{
+			printf("1 ");
+			for(i=0;i<n/k;i++)
+			{
+				for(j=97;j<97+k;j++)
+				{
+					printf("%c",j);
+				}
+
+			}
+			for(i=97;i<97+n%k;i++)
+			{
+				printf("%c",i);
+
+			}
+			printf("\n");
+		}
+	}
+}
+}

@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<math.h>
+#include<limits.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,i,j;
+		int long k,count=0;
+		scanf("%d %ld",&n,&k);
+		int long  a[1001];
+		int long min=LONG_MAX;
+		for(i=0;i<n;i++)
+		{
+			scanf("%ld",&a[i]);
+		}
+		for(i=0;i<n;i++)
+		{
+			for(j=0;j<n;j++)
+			{
+				if(i!=j)
+				{
+					if(fabs(a[i]+a[j]-k)<min)
+						min=fabs(a[i]+a[j]-k);
+				}
+			}
+		}
+		for(i=0;i<n-1;i++)
+		{
+			for(j=i+1;j<n;j++)
+			{
+				
+					//printf("%ld\n",a[i]+a[j]);
+					if(fabs(a[i]+a[j]-k)==min)
+						count++;
+				
+			}
+		}
+		printf("%ld %ld\n",min,count);
+
+	}
+}

@@ -1,0 +1,76 @@
+/*
+	Author-Atharva Sarage
+		IIT HYDERABAD
+*/		
+
+#include<bits/stdc++.h>
+using namespace std;
+# define ff first
+# define ss second
+# define mp make_pair
+typedef int long long ll;
+ll n,d;
+ll calc(ll n)
+{
+	ll sum=0;
+	while(n>=1)
+	{
+	    sum+=n;
+		n/=10;
+	}
+	return sum;
+}
+
+ll ans=0;
+void bfs(ll u,ll dst)
+{
+	queue<pair<ll,ll> > q;
+	set<ll> s;
+	q.push(mp(u,0));
+	s.insert(u);
+	while(!q.empty())
+	{
+		ll v=q.front().ff;
+		ll w=q.front().ss;
+		q.pop();
+		if(v==dst)
+			{
+			ans=w;
+			break;
+			}
+		if(s.find(calc(v))==s.end())
+			{s.insert(calc(v));
+			q.push(mp(calc(v),w+1));}
+		if(s.find(v+d)==s.end())
+			{s.insert(v+d);
+			q.push(mp(v+d,w+1));}
+	}
+}
+ll dig2(ll n)
+{
+    if(calc(n)<10)
+		return calc(n);
+	else
+		return dig2(calc(n));
+}
+int main()
+{
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll min1=100;
+		cin>>n>>d;
+
+		for(ll i=9;i>=0;i--)
+		{
+			if(dig2(n+d*i)<=min1)
+			{
+				min1=dig2(n+d*i);
+			}
+		}	
+		bfs(n,min1);	
+		cout<<min1<<" "<<ans<<endl;
+		ans=0;
+}
+}

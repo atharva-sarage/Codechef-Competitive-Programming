@@ -1,0 +1,15 @@
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		unsigned long long int n,m;
+		scanf("%llu %llu",&n,&m);
+		if(n>m)
+			printf("%llu\n",n-m);
+		else
+			printf("%llu\n",m-n);
+	}
+}

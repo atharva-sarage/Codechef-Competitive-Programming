@@ -1,0 +1,123 @@
+#include<bits/stdc++.h>
+#include <chrono> 
+using namespace std;
+# define mp make_pair
+# define ff first
+# define ss second
+# define lim 1e18
+typedef int long long ll;
+bool mark[50000005];
+vector <ll> vec;
+void sieve(ll limit)
+{
+	memset(mark,true,sizeof(mark));
+	mark[1]=false;
+	for(ll i=2;i*i<=limit;i++)
+	{
+		if(mark[i]==true)
+		{
+			for(ll j=i*2;j<=limit;j+=i)
+				mark[j]=false;
+		}
+	}
+	for(ll i=2;i<=limit;i++) // primes till sqrt b
+	{
+		if(mark[i])
+			vec.push_back(i);			
+	}
+}
+ll calc(ll n,ll prime,ll t)
+{
+	ll ans=0;
+	while(n/prime>0)
+	{
+		ans+=n/prime;
+		n/=prime;
+		if(ans>t)break;
+	}
+	return ans;
+}
+int main()
+{
+	sieve(50000005);	
+	ll t1;
+	cin>>t1;
+	while(t1--)
+	{
+		ll l,h,pl,ph,t,ur,ul,rl,rr,flag=1,final=0;
+		cin>>l>>h>>pl>>ph>>t;
+		for(ll i=pl-1;i<=ph-1;i++)
+		{
+			ll v=vec[i];
+			if(v>t+1)
+				{
+					rl=max(l,v*t);
+					rr=min(h,v*(t+1)-1);				
+					if(rl>rr)
+						{
+						if(h<rl)
+							break;
+						else
+							continue;
+						}
+				}
+			else
+			{
+			ll low=l;
+			ll high=h;
+			ll mid;
+			while(high>=low)
+			{
+				mid=low+(high-low)/2; 				
+				if(calc(mid,v,t)<t)
+					low=mid+1;
+				else
+					high=mid-1;
+			}	
+
+			if(calc(low,v,t)!=t || low>h)
+				continue;
+
+			rl=low;
+			low=l;
+			high=h;
+			while(high>=low)
+			{
+				mid=low+(high-low)/2;
+				if(calc(mid,v,t)<t+1)
+					low=mid+1;
+				else
+					high=mid-1;
+			}
+			low--;
+			rr=low;	
+			}
+			//if(rl>rr)continue;
+
+			if(flag==1)	
+			{
+				ul=rl;
+				ur=rr;
+				flag=0;
+			}
+			else
+			{
+				if(rl>ur)
+				{
+					final+=ur-ul+1LL;
+					ul=rl;
+					ur=rr;
+				}
+				else
+					ur=max(ur,rr);	
+			}
+		}		
+		if(flag==1)
+		{
+			cout<<0<<endl;continue;
+		}		
+		cout<<final+ur-ul+1<<endl;				
+	}
+
+}
+

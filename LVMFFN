@@ -1,0 +1,100 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf 1e9
+# define mx2 100005
+# define mx 5000005
+ll jump[mx],prefix[mx];
+ll max_count=1;
+void compute_jumps(ll k)
+{
+	ll prev=2*k+1; // first success
+	jump[1]=2;
+	prefix[1]=2;
+	ll j=2;
+	//cout<<jump[1]<<" ";
+	//cout<<prev<<" ";
+	while(prev<=1e18)
+	{
+		jump[j]=(prev+(k-2))/(k-1)-1;
+		prev=prev+jump[j];
+		prefix[j]=prefix[j-1]+jump[j];
+		//cout<<prefix[j]<<" ";
+		//cout<<prev<<" ";
+		j++;
+		max_count++;
+	}	
+}
+
+int main()
+{
+	IOS;
+	ll k,q;
+	cin>>k>>q;
+	compute_jumps(k);
+	while(q--)
+	{
+		ll n,m;
+		cin>>n>>m;
+		
+		ll cutoff;
+		if(k==2)
+		{
+			if(n==1)
+				{cout<<m<<"\n";continue;}
+			else if(n==2)
+				{cout<<"Thrown off the roof."<<"\n";continue;}
+			else if(n==3)
+				{cout<<m<<"\n";continue;}
+			else if(n==4)
+				{cout<<m-2<<"\n";continue;}
+			else
+			{
+				cutoff=2*m+1;
+				if(n<=cutoff)
+				{
+					cout<<max(0LL,(m-3)-((n-5)/2))<<"\n";
+					continue;
+				}
+			
+			}			
+		}
+		else
+		{	
+			if(m-n/k>=0)
+				{cout<<m-n/k<<"\n";continue;}
+			cutoff=m*k+(k-1); // if n is greater than this but n<=1e18 so this also less than 1e18
+		}
+		// missed its cutoff
+		ll curr=cutoff;
+		ll j=1;
+		ll low=1;
+		ll high=max_count;
+		ll mid;
+		while(high>=low)
+		{	
+			mid=low+(high-low)/2;
+			if(cutoff+prefix[mid]>n)
+				high=mid-1;
+			else
+				low=mid+1;
+		}
+		// 
+		//cout<<n<<" "<<cutoff+prefix[high]<<endl;
+		if(n==cutoff+prefix[high])
+			cout<<0<<"\n";
+		else
+			cout<<"Thrown off the roof."<<"\n";
+	}
+}

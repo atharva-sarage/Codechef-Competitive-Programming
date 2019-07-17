@@ -1,0 +1,95 @@
+/*
+	Author-Atharva Sarage
+		IIT HYDERABAD
+		*/
+
+#include<bits/stdc++.h>
+using namespace std;
+map <int long long,int long long> v;
+
+int long long clock(int long long a,int long long c1)
+{
+
+	int long long M=1000000007;
+	if(a==1)
+
+		return c1;
+	//    v.insert(pair<long int,long int>(x,y));
+	else if(a%2==0)
+	{
+		if(v.count(a))
+			return v[a];
+		else
+			{
+				v.insert(pair<long long int,long long int> (a,(2*clock(a/2,c1)*clock(a/2,c1))%M-1));
+				return v[a];
+			}
+	}
+	else
+
+		{
+			if(v.count(a))
+				return v[a];
+			else
+				{
+					v.insert(pair<long long int,long long int> (a,(2*clock((a+1)/2,c1)*clock(a/2,c1)-c1)%M));
+					return  v[a];
+		}
+	}
+
+
+}
+int long long modInverse(int long long a, int long long m)
+{
+    int long long m0 = m;
+    int long long y = 0;
+    int long long x=1;
+ 
+ 
+ 
+    while (a > 1)
+    {
+        // q is quotient
+        int long long q = a / m;
+        int long long t = m;
+ 
+        // m is remainder now, process same as
+        // Euclid's algo
+        m = a % m, a = t;
+        t = y;
+ 
+        // Update y and x
+        y = x - q * y;
+        x = t;
+    }
+ 
+    // Make x positive
+    if (x < 0)
+       x += m0;
+ 
+    return x;
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		v.clear();
+		int long long l,d;
+		int long long t,M;
+		M=1000000007;
+		
+		scanf("%lld %lld %lld",&l,&d,&t);
+		int long long c1=(d*modInverse(l,M) % M);
+		//printf("%lld\n",c1);
+		
+
+		//printf("%lld\n",(clock(t,c1)));
+		
+		int long long ans=((clock(t,c1)*l)%M+M)%M;
+		printf("%lld\n",ans);
+		
+	}
+}

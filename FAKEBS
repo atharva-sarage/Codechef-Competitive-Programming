@@ -1,0 +1,129 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int  t;
+	cin>>t;
+	while(t--)
+	{
+		int long  n,q;
+		cin>>n>>q;
+		int long  a[100005]={0};
+		int long  b[100005]={0};
+		map <int long ,int long > c;
+		map <int long ,int long > pos;
+		for(int long  i=0;i<n;i++)
+			{
+				int long  y;
+				cin>>y;
+				a[i]=y;
+				pos.insert(pair<int long ,int long >(y,i));
+				b[i]=y;
+			}
+		sort(b,b+n);
+		for(int long  i=0;i<n;i++)
+			c.insert(pair<int long ,int long >(b[i],i));
+		for(int long  i=0;i<q;i++)
+		{
+			int long  x,flag=0;
+			cin>>x;
+			int long  low=0;
+			int long  high=n-1;
+			int long  mid;
+			map<int long ,int long >:: iterator itr;
+			map <int long ,int long > :: iterator itr2;
+			itr2=pos.find(x);
+			itr=c.find(x);
+			int long  c2=itr->second;
+			int long  c4=n-1-c2;
+			int long  c3=itr2->second;
+			int long  c5=c2;
+			int long  c6=c4;
+			int long c7=0,c8=0;
+
+			//cout<<c2<<" "<<c3<<endl;
+			while(high>=low)
+			{
+				mid=(high+low)/2;
+				
+				if(a[mid]==x)
+					break;
+				else if(a[mid]>x)
+				{
+					if(c3>mid) // wrong region
+					{
+						
+						if(c2>0)
+							{
+								c2--;
+								low=mid+1;
+							}
+						else
+						{
+							flag=1;
+							break;
+						}
+					}
+					else
+					{
+						if(c4>0)
+						{
+							high=mid-1;
+							c4--;
+							c7++;
+						}
+						else
+						{
+							flag=1;
+							break;
+						}	
+					}
+					
+
+				}
+				else if(a[mid]<x)
+				{
+					if(c3<mid)
+					{
+						if(c4>0)
+							{
+								c4--;
+								high=mid-1;
+							}
+						else
+							{
+							flag=1;
+							break;
+							}
+					}
+					else
+					{
+						if(c2>0)
+						{
+							low=mid+1;
+							c2--;
+							c8++;
+						}
+							else
+							{
+							flag=1;
+							break;
+							}
+
+					}
+					
+				}
+			}
+			c4=c4+c7;
+			c2=c2+c8;
+			//printf("%ld %ld %ld %ld\n",c2,c5,c4,c6 );
+			if(flag==1)
+				printf("-1\n");
+			else
+				printf("%ld\n",max(c5-c2,c6-c4) );
+			
+		}
+		c.clear();
+		pos.clear();
+	}
+}

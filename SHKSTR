@@ -1,0 +1,76 @@
+    
+    /*
+  Author-Atharva Sarage
+    		IIT HYDERABAD
+    	*/
+    #include<bits/stdc++.h>
+    using namespace std;
+    multimap <string,int > p; 
+    multimap <string,int> :: iterator itr;
+    vector <string> vec1;
+    vector <string> vec3;
+     
+    int main()
+    {
+    	int n;
+    	cin>>n;
+    	
+    	string min3="zzzzzzzzzzzzzzz";
+    	for(int i=0;i<n;i++)
+    	{
+    		string str;
+    		cin>>str;
+    		int size=str.size();
+    		vec1.push_back(str);
+    		vec3.push_back(min(min3,str));
+    		min3=min(min3,str);
+    		for(int k=1;k<=size;k++)
+    		{
+    			p.insert(make_pair(str.substr(0,k),i));			
+    		}
+    	}
+    	
+    	int q;
+    	cin>>q;
+    	typedef multimap<string,int>:: iterator MAPiterator;
+    	for(int i=0;i<q;i++)
+    	{
+    		int x,count;
+    		string min1="zzzzzzzzzzz";
+    		cin>>x;
+    		string str2;
+    		cin>>str2;
+    		int size=str2.size();
+    		for(int k=size;k>=1;k--)
+    		{
+    			//cout<<str2.substr(0,k)<<endl;
+    			itr=p.find(str2.substr(0,k));
+    			if(itr==p.end())
+    				continue;
+    			pair<MAPiterator,MAPiterator> result=p.equal_range(str2.substr(0,k));
+    		
+    				for(MAPiterator it=result.first;it!=result.second;it++)
+    				{
+    					//cout<<it->second<<endl;
+    					if(it->second+1<=x)
+    						{
+    							if(vec1[it->second]<min1)
+    								min1=vec1[it->second];
+    						}
+    					else
+    						break;
+    					//cout<<it->second<<endl;					
+    				}
+    				break;
+    		}
+    		
+    		if(min1=="zzzzzzzzzzz")
+    		{
+    			min1=vec3[x-1];
+    		}
+    		cout<<min1<<endl;
+     
+    		
+     
+    	}
+    } 

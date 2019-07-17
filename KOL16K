@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define pb push_back
+# define mp make_pair
+# define ff first
+# define ss second
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n;
+		cin>>n;
+		double dp[n+2][n+2];
+		vector <pair<int,int> > vec;
+		vec.pb(mp(0,0));
+		for(int i=0;i<n;i++)
+		{
+			int x,y;
+			cin>>x>>y;
+			vec.pb(mp(x,y));
+		}
+		for(int i=1;i<=n+1;i++)
+		{
+			dp[i][1]=INFINITY;
+			for(int j=2;j<=n+1;j++)
+			{
+				dp[i][j]=-INFINITY;
+			}
+		}
+		sort(vec.begin()+1,vec.end());
+		dp[2][2]=(vec[2].ss-vec[1].ss)/(double)(vec[2].ff-vec[1].ff);
+		for(int i=3;i<=n;i++) // extending i see previous values
+		{
+			for(int j=1;j<i;j++)
+			{
+				double s1=(vec[i].ss-vec[j].ss)/(double)(vec[i].ff-vec[j].ff);
+				//cout<<s1<<endl;
+				int low=1;
+				int high=n;
+				int mid;
+				while(high>=low)
+				{
+					mid=(low+high)/2;
+					if(dp[j][mid]>=s1)
+					{
+						low=mid+1;
+					}
+					else
+					{
+						high=mid-1;
+					}
+				}
+				//cout<<high<<endl;
+				dp[i][high+1]=max(dp[i][high+1],s1);
+				//cout<<dp[i][high]<<endl;
+			}
+			for(int j=n-1;j>=1;j--)
+			{
+				dp[i][j]=max(dp[i][j],dp[i][j+1]);
+			}
+		}
+		int max1=0;
+		for(int i=1;i<=n;i++)
+		{
+			for(int j=n;j>=1;j--)
+			{
+				if(dp[i][j]!=-INFINITY)
+					{max1=max(max1,j);break;}
+			}
+		}
+		cout<<max1<<endl;
+
+
+
+	}
+
+}

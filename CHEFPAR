@@ -1,0 +1,18 @@
+#include<stdio.h>
+int main()
+{
+	int n,m,i;
+	int long k;
+	scanf("%d %d %ld",&n,&m,&k);
+	int long a[10005];
+	int long b[10005];
+	for(i=0;i<n;i++)
+		scanf("%ld",&a[i]);
+	for(i=0;i<m;i++)
+		scanf("%ld",&b[i]);
+
+	for(i=0;i<n;i++)
+		printf("%ld ",a[i]+k-1);
+	printf("\n");
+
+}

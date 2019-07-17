@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+# define mx 505
+# define pb push_back
+#define IOS ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
+# define mod 1000000007
+using namespace std;
+typedef int long long ll;
+vector<ll> adj[mx];
+ll n,m,dp[mx][20005];
+void addedge(ll u,ll v)
+{
+	adj[u].pb(v);
+	adj[v].pb(u);
+}
+void init()
+{
+	for(ll i=1;i<=n;i++)
+	{
+		for(ll j=1;j<=m;j++)
+			dp[i][j]=1;		
+	}
+}
+void dfs(ll u,ll v)
+{
+	for(auto k:adj[u])
+	{
+		if(k==v)continue;
+		dfs(k,u);
+		for(ll i=1;i<=m;i++)
+		{
+			ll temp=0LL;
+			for(ll j=i;j<=m;j=j+i) // check for i as factor
+				temp=(temp+dp[k][j])%mod;
+
+			dp[u][i]=(dp[u][i]*temp)%mod;
+		}
+	}
+
+}
+int main()
+{
+	//IOS;
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		cin>>n>>m;
+		for(ll i=0;i<n-1;i++)
+		{
+			ll x,y;
+			cin>>x>>y;
+			addedge(x,y);
+		}
+		init();
+		dfs(1,-1);
+		ll final=0;
+		for(ll i=1;i<=m;i++)
+			final=(final+dp[1][i])%mod;
+		cout<<final<<endl;
+		for(ll i=1;i<=n;i++)
+		{
+			adj[i].clear();
+		}
+	}
+}

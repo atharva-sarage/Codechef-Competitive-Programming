@@ -1,0 +1,83 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef int long long ll;
+unordered_set <ll> fac;
+vector <ll> vec;
+bool mark[1000005];
+bool isvalid(ll n)
+{
+	ll pr[]={2,4,6,10,12,16,18,22,28,30,36,40};
+	for(ll i=0;i<sizeof(pr);i++)
+	{
+		if(pr[i]==n)
+			return 1;
+	}
+	return 0;
+}
+void sieve(ll limit)
+{
+	memset(mark,true,sizeof(mark));
+	mark[1]=false;
+	for(ll i=2;i*i<=limit;i++)
+	{
+		if(mark[i]==true)
+		{
+			for(ll j=i*2;j<=limit;j+=i)
+				mark[j]=false;
+		}
+	}
+	for(ll i=2;i<=limit;i++) // primes till sqrt b
+	{
+		if(mark[i])
+			vec.push_back(i);			
+	}
+}
+void pre()
+{
+	for(auto k:vec)
+	{
+		ll x=k;
+		ll count=2;
+		while(x*k<=1e12)
+		{
+			x=x*k;
+			if(!isvalid(count))
+				{
+					count++;
+					continue;
+				}
+			fac.insert(x);
+		}
+	}
+}
+bool compare(ll a,ll b)
+{
+	return a>b;
+}
+int main()
+{
+	sieve(1000000);
+	pre();
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll n,flag=0;
+		cin>>n;
+		ll a[n+5];
+		for(ll i=0;i<n;i++)
+			cin>>a[i];
+		sort(a,a+n,compare);
+		for(ll i=0;i<n;i++)
+		{
+			if(fac.find(a[i])!=fac.end())
+			{
+				flag=1;
+				cout<<i+1<<" ";
+			}
+		}
+		if(flag==0)
+			cout<<"No supporter found.";
+		printf("\n");
+	}
+}

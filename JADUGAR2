@@ -1,0 +1,148 @@
+/*
+    Author-Atharva Sarage
+        IIT HYDERABAD
+        */
+
+#include<bits/stdc++.h>
+using namespace std;
+
+long long pow(int a, int b, int MOD) 
+{
+    long long x=1,y=a; 
+    while(b > 0)
+    {
+        if(b%2 == 1)
+        {
+            x=(x*y);
+            if(x>MOD) x%=MOD;
+        }
+        y = (y*y);
+        if(y>MOD) y%=MOD; 
+        b /= 2;
+    }
+    return x;
+}
+
+
+long long InverseEuler(int long long n, int long long MOD)
+{
+    return pow(n,MOD-2,MOD);
+}
+
+long long C(int long long n, int long long r, int long long MOD)
+{
+    vector<long long> f(n + 1,1);
+    for (int i=2; i<=n;i++)
+        f[i]= (f[i-1]*i) % MOD;
+    return (f[n]*((InverseEuler(f[r], MOD) * InverseEuler(f[n-r], MOD)) % MOD)) % MOD;
+}
+int long long modInverse(int long long a, int long long m)
+{
+    int long long m0 = m;
+    int long long y = 0;
+    int long long x=1;
+ 
+ 
+ 
+    while (a > 1)
+    {
+     
+        int long long q = a / m;
+        int long long t = m;
+ 
+      
+        m = a % m, a = t;
+        t = y;
+ 
+      
+        y = x - q * y;
+        x = t;
+    }
+ 
+
+    if (x < 0)
+       x += m0;
+ 
+    return x;
+}
+
+int long long calculate(int long long n,int long long k,int long long a,int long long b)
+{
+    int long long M=1000000007;
+    int long long ans=C(2*n-2,n-1,M);
+        //ans=ans/n;
+        ans=(ans*modInverse(n,M)%M);
+        
+        int long long ans2=pow((k),n,M);
+        int long long ans3=pow(b,n-1,M);
+        ans2=(ans2%M * ans3%M)%M;
+
+        int long long final=(ans%M*ans2%M)%M;
+
+        return final;
+}
+  int long long dp[1000005];
+     int long long prefix[1000005];
+int main()
+{
+  
+    int long long n,k,a,b,j,i;
+    int long long M=1000000007;
+    scanf("%lld %lld %lld %lld",&n,&k,&a,&b);
+    
+    int q;
+    scanf("%d",&q);
+
+    if(a==0)
+    {
+        dp[1]=k;
+        prefix[1]=(k*k)%M;
+        prefix[0]=0;
+        dp[2]=calculate(2,k,a,b);
+       // printf("%lld\n",dp[2]);
+        prefix[2]=(prefix[1]+(dp[2]*dp[2])%M)%M;
+       for(i=3;i<=n;i++)
+       {
+        dp[i]=(dp[i-1]*(b*(k*((2*i-3)*(2))%M)%M)%M)%M;
+        //dp[i]=(dp[i]*modInverse(i-1,M))%M;
+        dp[i]=(dp[i]*modInverse(i,M))%M;
+        prefix[i]=(prefix[i-1]+(dp[i]*dp[i])%M)%M;
+
+       }
+       
+        for(j=0;j<q;j++)
+        {
+            int long long x,y;
+            scanf("%lld %lld",&x,&y);
+            printf("%lld\n",(prefix[y]-prefix[x-1]+M)%M);
+            
+        }
+
+    }
+    else
+    {
+        
+   
+    dp[1]=k;
+    prefix[1]=(k*k)%M;
+     prefix[0]=0;
+    for(i=2;i<=n;i++)
+    {
+        dp[i]=(a*dp[i-1])%M;
+        for(j=1;j<n;j++)
+        {
+            dp[i]=(dp[i]+((b*dp[j])%M*dp[i-j])%M)%M;
+
+        }
+         prefix[i]=(prefix[i-1]+(dp[i]*dp[i])%M )%M;
+    }
+    
+    for(i=0;i<q;i++)
+    {
+      
+        int long l,r;
+        scanf("%ld %ld",&l,&r);
+        printf("%lld\n",(prefix[r]-prefix[l-1]+M)%M);
+    }
+}
+}

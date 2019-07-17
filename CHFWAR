@@ -1,0 +1,99 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf (ll)1e18
+# define mx2 100005
+# define mx 1000005
+ll a[mx];
+ll pw[30];
+int main()
+{
+	pw[0]=1;
+	for(ll i=1;i<25;i++)
+		pw[i]=pw[i-1]*2;
+	IOS;
+	ll t;
+	cin>>t;
+	while(t--)	
+	{
+		ll n,final=inf,f,flag=0,index1;
+		cin>>n;
+		deque <ll> dq;
+		for(ll i=1;i<n;i++)
+		{
+			cin>>a[i];
+			dq.push_back(a[i]);
+		}
+		cin>>f;
+		ll c=1;
+		for(ll i=1;i<n;i++)
+		{
+			// N i
+			ll ans1=0;
+			ll temp;
+			ll temp2=dq.size();
+			int j=1;
+			if(a[i]>f)
+				goto label;
+			//cout<<i<<"$$$$$$"<<endl;
+			// deque represents all alive members
+			if(i%2==0)
+				ans1=dq.back();
+
+			while(temp2>1)
+			{
+				// every 2*i+1 remain
+				if(temp2%2==0)// wont harm
+					{
+						temp2/=2;
+						j++;
+						continue;
+					} 
+				ll idx=(((dq.size()-1)/(ll)pw[j]) * (ll)pw[j]) +1;
+				assert(idx-1<dq.size());
+				ans1+=dq[idx-1];
+				temp2-=temp2/2;
+				j++;
+
+			}
+			//assert(pw[k]>=dq.size());
+			flag=1;
+			if(ans1<final)
+			{
+				final=ans1;
+				index1=i;
+			}
+			label:
+			temp=dq.front();
+			dq.pop_front();
+			if(c)
+				{dq.push_back(temp);}
+			c=c^1;
+
+			// for(auto l:dq)
+			// 	cout<<l<<" ";
+			// cout<<"???"<<endl;
+		}
+		if(flag)
+		{
+			cout<<"possible"<<endl;
+			cout<<index1<<" "<<final+f<<endl;
+		}
+		else
+			cout<<"impossible"<<endl;
+
+		dq.clear();
+
+	}
+}

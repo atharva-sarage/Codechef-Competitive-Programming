@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define ll long long
+# define mod 1000000007
+ll fact2[3000005];
+ll invfact2[3000005];
+
+ll pow1(ll a, ll b)
+{
+    if (a==0)
+        return 0;
+    ll x=1,y=a;
+    while(b > 0)
+    {
+        if(b%2 == 1)
+        {
+            x=(x*y);
+            if(x>mod) x%=mod;
+        }
+        y = (y*y);
+        if(y>mod) y%=mod;
+        b /= 2;
+    }
+    return x%mod;
+}
+ll inveuler(ll a)
+{
+    return pow1(a,mod-2);   
+}
+void calculateFactorial(ll n)
+ {
+                
+        fact2[0]=1LL;      
+        for(ll i=1;i<=n;i++)
+        {
+            fact2[i]=(i*fact2[i-1])%mod;
+        }
+        invfact2[n]=inveuler(fact2[n]);
+        for(ll i=n;i>=1;i--)
+        {
+            invfact2[i-1]=(i*invfact2[i])%mod;
+        }
+}
+ll nck(ll n,ll k)
+{
+
+    if(n<k)
+        return 0;
+    ll ans=fact2[n];
+    ans=(ans*invfact2[k])%mod;
+    ans=(ans*invfact2[n-k])%mod;
+    return ans;
+}
+int main()
+{
+	calculateFactorial(3000000);
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		ll n,k;
+		cin>>n>>k;
+		cout<<((nck(k+n+1,n-1)+nck(k+n+1,n-1))%mod-n+mod)%mod<<endl;
+	}
+}

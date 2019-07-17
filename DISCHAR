@@ -1,0 +1,26 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		char str[100001];
+		scanf("%s",str);
+		int count1=0,i;
+		int count[200]={0};
+		int n=strlen(str);
+		for(i=0;i<n;i++)
+		{
+			if(count[str[i]]==0)
+				{
+					count[str[i]]=1;
+					count1++;
+				}
+		}
+		printf("%d\n",count1);
+ 
+	}
+ 
+} 

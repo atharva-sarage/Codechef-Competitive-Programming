@@ -1,0 +1,85 @@
+#include<bits/stdc++.h>
+using namespace std;
+int a[1030][1030],b[1030][1030],type[1030],n,visited[1030],colour[1030],flag=0;
+vector <pair<int,int>> adj[1030];
+void addedge(int u,int v,int col)
+{
+	adj[u].push_back({v,col});
+	adj[v].push_back({u,col});
+}
+void dfs(int u,int par,int col)
+{
+	if(visited[u] && colour[u]!=col)
+		{flag=1;return;}
+	if(visited[u] && colour[u]==col)
+		return;
+	visited[u]=true;
+	colour[u]=col;
+	for(auto k:adj[u])
+	{
+		if(k.first==par)continue;
+		dfs(k.first,u,k.second^col);
+	}
+}
+void DFS()
+{
+	for(int i=0;i<n;i++)
+	{
+		if(!visited[i])
+			dfs(i,-1,0);
+		if(flag==1)
+			break;
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		cin>>n;flag=0;
+		for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<n;j++)
+			{
+				cin>>a[i][j];
+			}
+		}
+		for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<n;j++)
+			{
+				cin>>b[i][j];
+			}
+		}
+		for(int i=0;i<n;i++)
+		{
+			for(int j=i;j<n;j++)
+			{
+				if(a[i][j]==b[i][j] && a[j][i]==b[j][i] || a[i][j]==b[j][i] && a[j][i]==b[i][j])
+					{
+						if(a[i][j]==a[j][i])
+							continue;
+						int temp=!(a[i][j]==b[i][j] && a[j][i]==b[j][i]);
+						addedge(i,j,temp);//cout<<i<<" "<<j<<" "<<temp<<endl;
+					}
+				else
+					{
+						flag=1;break;			
+					}
+			}						
+		}
+		if(flag==1)
+			{cout<<"No"<<endl;goto l;}
+		DFS();
+		if(flag==0)
+			cout<<"Yes"<<endl;
+		else
+			cout<<"No"<<endl;
+		l:
+		for(int i=0;i<n;i++)
+			{adj[i].clear();visited[i]=false;}
+	}
+
+}

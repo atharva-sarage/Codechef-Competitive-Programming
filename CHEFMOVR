@@ -1,0 +1,83 @@
+#include<math.h>
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,k,i,flag,q,j;
+		int long long sum=0,count=0;
+		int long long x;
+		int long long sum1=0;
+		scanf("%d %d",&n,&k);
+		int long long a[100001];
+		int long  b[100001]={0};
+		int long long c[100001]={0};
+		
+		for(i=0;i<n;i++)
+		{	
+		scanf("%ld",&a[i]);
+		sum=sum+a[i];
+		}
+		x=sum/n;
+		
+		for(i=0;i<n;i++)
+		{
+			b[i%k]=b[i%k]+a[i]-x;
+			c[i%k]=c[i%k]+abs(a[i]-x);	
+		}
+		
+		if(sum%n==0)
+		{
+			flag=0;
+		 
+			for(i=0;i<k;i++)
+			{
+				if((b[i%k]!=0))
+				{
+					flag=1;
+					break;
+				}
+				
+			}
+			if(flag==1)
+			{
+				printf("-1\n");
+			}
+			
+			else if(flag==0)
+			{
+				for(q=0;q<k;q++)
+				{
+					for(j=q;j<n;j=j+k)
+					{
+						if(j%k==q)
+						{
+							if(x-a[j]>0)
+							{
+								count=count+x-a[j];
+								a[j+k]=a[j+k]-(x-a[j]);
+							}
+							else if(x==a[j])
+							{
+								continue;
+							}
+							else
+							{
+								count=count+a[j]-x;
+								a[j+k]=a[j+k]+(a[j]-x);
+							}
+						}
+					}
+				}
+				
+				printf("%lld\n",count);
+			}
+		}
+		else
+		{
+			printf("-1\n");
+		}
+	}
+}

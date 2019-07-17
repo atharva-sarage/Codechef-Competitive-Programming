@@ -1,0 +1,27 @@
+# Author- Atharva Sarage
+#       IIT HYDERABAD
+
+
+def all_sub_string(string):
+  
+  substr = []
+  length1 = len(string)
+
+  for i in range(length1):
+    for j in range(i,length1):
+      substr.append(string[i:j + 1]) 
+  return substr
+
+g = 0
+string1 = input()
+q1 = int(input())
+
+a = all_sub_string(string1)
+a.sort()
+b = ''.join(a)
+for i in range(q1):
+	p, m = [int(x) for x in input().split()]
+	k = (p*g)%m + 1
+	ans = b[k-1]
+	print(ans)
+	g += ord(ans)

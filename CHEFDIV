@@ -1,0 +1,91 @@
+// calculate prime factorisation using segmented sieve
+#include<bits/stdc++.h>
+# define mp make_pair
+using namespace std;
+typedef int long long ll;
+bool mark[1000005];
+map <ll,int> m[100005];
+map <ll,int> :: iterator itr1;
+vector <int> vec;
+ll c[100005];
+void sieve(int limit)
+{
+	memset(mark,true,sizeof(mark));
+	mark[1]=false;
+	for(int i=2;i*i<=limit;i++)
+	{
+		if(mark[i]==true)
+		{
+			for(int j=i*2;j<=limit;j+=i)
+				mark[j]=false;
+		}
+	}
+	for(int i=2;i<=limit;i++) // primes till sqrt b
+	{
+		if(mark[i])
+			vec.push_back(i);			
+	}
+}
+void segmented(ll a,ll b)
+{
+	for(ll i=a;i<=b;i++)
+		c[i-a]=i;
+	for(ll i=0;vec[i]*vec[i]<=b && i<vec.size();i++)
+	{
+		ll curr=vec[i];	
+		ll base=((a)/curr)*curr; 
+		if(base<a)
+			base+=curr;
+		for(ll j=base;j<=b;j+=curr)
+		{
+			ll j1=j;
+			while(j1%curr==0)
+				{
+					if(m[j-a].find(i)==m[j-a].end())
+						m[j-a].insert(mp(i,1));
+					else
+						m[j-a][i]++;					
+				    j1/=curr;
+				    c[j-a]/=curr;
+				}
+		}		
+	}
+	for(ll i=a;i<=b;i++)
+		{
+			if(c[i-a]!=1)
+				m[i-a].insert(mp(i,1));
+		}	
+}
+int main()
+{
+	ll a,b,fully_final=0;
+	cin>>a>>b;
+	sieve(1000000);	
+	segmented(a,b);		
+	for(ll i=a;i<=b;i++)
+	{
+		multiset<int>s;
+		multiset<int>::iterator itr;
+		for(itr1=m[i-a].begin();itr1!=m[i-a].end();++itr1)
+		{
+			s.insert(itr1->second);
+		}		
+		ll final=0;
+		while(!s.empty())
+		{
+			ll temp=1;
+			for(itr=s.begin();itr!=s.end();++itr)
+			{
+				temp=temp*(*itr+1);
+			}
+			final+=temp;
+			temp=*(--s.end());
+			s.erase(--s.end());
+			if(temp!=1)
+				s.insert(temp-1);
+		}
+		fully_final+=final;		
+	}
+	cout<<fully_final<<endl;
+
+}

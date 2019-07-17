@@ -1,0 +1,105 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define ll long long
+ll grid[155][155];
+ll pre[155][155];
+ll s;
+ll getsum(ll r2,ll c2,ll r1,ll c1)
+{
+	return pre[r2][c2]-((c1!=0)?pre[r2][c1-1]:0)-((r1!=0)?pre[r1-1][c2]:0)+((r1!=0 && c1!=0)?pre[r1-1][c1-1]:0);
+}
+void precomp(ll n,ll m)
+{
+	for(ll i=0;i<n;i++)
+	{
+		for(ll j=0;j<m;j++)
+		{
+			pre[i][j]=(grid[i][j]+((i!=0)?pre[i-1][j]:0)+((j!=0)?pre[i][j-1]:0)-((i!=0 && j!=0)?pre[i-1][j-1]:0));
+		}
+	}
+}
+ll merge(ll a[],ll b[],ll n1,ll c[],ll n2)
+{
+	ll i,j,k,ans,l,r;
+	i=j=ans=k=0;
+	l=r=0;	
+	for(ll i=0;i<n1;i++)
+	{
+		while(r<n2 && c[r]-b[i]<=s)
+			{r++;}
+		ans+=(r-l);
+	}
+	i=j=k=0;
+	while(i<n1 && j<n2)
+	{
+		if(b[i]>c[j])
+			a[k++]=c[j++];
+		else
+			a[k++]=b[i++];
+	}
+	while(i<n1)
+		a[k++]=b[i++];
+	while(j<n2)
+		a[k++]=c[j++];
+	return ans;
+}
+ll mergesort(ll a[],ll n)
+{
+	ll c[200];
+	ll b[200];
+	memset(c,0,sizeof(c));
+	memset(b,0,sizeof(b));
+	if(n==1)
+	{
+		return a[0]<=s;
+	}
+	ll ans=0;
+	ll size1=n/2;
+	ll size2=n-size1;
+	for(ll i=0;i<size1;i++)
+		b[i]=a[i];
+	for(ll i=size1;i<n;i++)
+		c[i-size1]=a[i];
+	ans=mergesort(b,size1);
+	ans+=mergesort(c,size2);
+	ans+=merge(a,b,size1,c,size2);
+	return ans;
+
+}
+int main()
+{
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+	ll n,m;
+	cin>>n>>m>>s;
+	for(ll i=0;i<n;i++)
+	{
+		for(ll j=0;j<m;j++)
+		{
+			cin>>grid[i][j];
+		}
+	}
+	precomp(n,m);
+	ll final=0;
+	for(ll i=0;i<m;i++)
+	{
+		for(ll j=i;j<m;j++)
+		{
+			// columns i between j
+			ll a[200];
+			memset(a,0,sizeof(a));
+			for(ll k=0;k<n;k++)
+			{
+				a[k]=getsum(k,j,0,i);
+				//cout<<getsum(k,j,0,i)<<" "<<k<<" "<<i<<" "<<j<<endl;
+			}
+			ll temp=mergesort(a,n);
+			final+=temp;
+		}
+	}
+	cout<<final<<endl;
+	}
+}

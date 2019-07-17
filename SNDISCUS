@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct snake
+{
+	int x1,y1,x2,y2;
+};
+int calc(int x,int y,struct snake s)
+{
+	if(s.x1==s.x2) // vertical snake
+	{
+		if((s.y1<=y && y<=s.y2) || (s.y2<=y && y<=s.y1))
+		return abs(x-s.x1);
+		else
+		return abs(x-s.x1)+min(abs(y-s.y1),abs(y-s.y2));
+	}
+	else
+	{
+		if((s.x1<=x && x<=s.x2) || (s.x2<=x && x<=s.x1))
+		return abs(y-s.y1);
+		else
+		return abs(y-s.y1)+min(abs(x-s.x1),abs(x-s.x2));
+	}
+}
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		struct snake s[60];
+		int n,final=1e8;
+		cin>>n;
+		for(int i=0;i<n;i++)
+		{
+			cin>>s[i].x1>>s[i].y1>>s[i].x2>>s[i].y2;
+		}
+		for(int i=1;i<=50;i++)
+		{
+			for(int j=1;j<=50;j++)
+			{
+				int ans=0;
+				for(int k=0;k<n;k++)
+					ans=max(ans,calc(i,j,s[k]));
+				final=min(ans,final);
+			}
+		}
+		cout<<final<<endl;
+	}
+}

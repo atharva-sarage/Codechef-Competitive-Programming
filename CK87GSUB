@@ -1,0 +1,56 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		char str[100005];
+		scanf("%s",str);
+		int n;
+		n=strlen(str);
+		int i,j;
+		int long count=0;
+		int long  ans=0;
+		
+		for(i=0;i<n-1;i++)
+		{
+			
+			if(str[i]==str[i+1])
+				count++;
+			if(str[i]!=str[i+1] || i==n-2)
+			{
+				ans=ans+(count*(count+1))/2 ;
+ 
+				count=0;
+			}
+			
+ 
+			//printf("%d %ld\n",count,ans);
+ 
+		}
+ 
+		for(i=1;i<n-1;i++)
+		{
+			//printf("%lld %lld\n",i,count );
+			if(str[i]==str[i+1])
+				count++;
+			if(str[i]!=str[i+1])
+			{
+				if(str[i+1]==str[i-count-1])
+				{
+					//printf("%lld %lld\n",i+1,i-count-1);
+					ans++;
+					
+				}
+				count=0;
+			}
+ 
+		}
+		
+		printf("%ld\n",ans);
+ 
+	}
+	return 0;
+}  

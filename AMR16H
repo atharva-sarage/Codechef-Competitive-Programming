@@ -1,0 +1,23 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef int long long ll;
+int main()
+{
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll n,final=0;
+		cin>>n;
+		ll a[n+5];
+		for(ll i=0;i<n;i++)
+			cin>>a[i];
+		sort(a,a+n);
+		for(ll i=n-2;i>=0;i--)
+		{
+			final+=a[i]*(i+2);
+		}
+		final+=a[n-1];
+		cout<<final<<endl;
+	}
+}

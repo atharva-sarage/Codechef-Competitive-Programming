@@ -1,0 +1,119 @@
+#include<stdio.h>
+ 
+#include<stddef.h>
+ /*Author Atharva Sarage
+ 			IIT Hyderabad
+ 			*/
+
+ 
+ 
+int main()	
+{
+	
+	int long n,a,a1,b1,b,c,d,flag,flag_1,k,l;
+	int long i,j;
+	
+	
+	char str[20];
+	while(scanf("%s",str)!=EOF)
+	{		
+		
+
+		j=0,a=0,b=0,c=0,d=0,a1=0,b1=0;
+		flag=1;
+			
+		for(l=0;l<10;l++)
+		{
+			if(l%2==0)
+			{
+				if(str[l]=='1')
+					a1++;
+			}
+			if(l%2==1)
+			{
+				if(str[l]=='1')
+					b1++;
+			}
+		}
+ 
+			
+	
+	if(a1==b1)
+	{
+		flag_1=0;
+		for(k=10;k<19;k=k+2)
+		{
+ 
+			if(str[k]!=str[k+1])
+			{
+ 
+				if(str[k]=='1')
+					{
+						//cout<<"TEAM-A "<<k+2<<endl;
+						printf("TEAM-A %ld\n",k+2 );
+ 
+						flag_1=1;
+						break;
+					}
+				else if(str[k+1]=='1')
+					{
+						//cout<<"TEAM-B "<<k+2<<endl;
+						printf("TEAM-B %ld\n",k+2 );
+						flag_1=1;
+						break;
+					}
+ 
+ 
+			}
+ 
+	}	
+	if(flag_1==0)
+	{
+		//cout<<"TIE"<<endl;
+		printf("TIE\n");
+	}	
+	}
+	
+		
+	
+	else
+	{
+ 
+ 
+	//while(c<=5-(j+1)/2  && d<=5-(j+1)/2)
+			while(a<=5-(d)  && b<=5-c )
+			{
+ 
+			if(j%2==0)
+			{
+				if(str[j]=='1')
+					a++;
+				else
+					c++;
+			}
+			else if(j%2==1)
+			{
+				if(str[j]=='1')
+					b++;
+				else
+					d++;
+			}
+			//printf("a-%ld , c-%ld ,b-%ld ,d-%ld and j is %ld\n",a,c,b,d,j);
+			j++;
+ 
+			}
+ 
+ 
+	if(a>b)
+		//cout<<"TEAM-A "<<j<<endl;
+		printf("TEAM-A %ld\n",j);
+	else if(b>a)
+		//cout<<"TEAM-B "<<j<<endl;
+		printf("TEAM-B %ld\n",j);
+		
+}
+	
+	}
+	}
+	
+ 

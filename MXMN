@@ -1,0 +1,165 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 998244353
+# define ll long long 
+# define db double
+# define inf 1e9
+# define mx 100005
+# define mx2 2005
+# define ipair pair<ll,ll>
+vector <ipair> adj1[mx],adj2[mx];
+vector <pair<ll,ipair>> edges1,edges2;
+vector <int> vec[mx2];
+ll parent[mx],ranks[mx],n;
+ll maxdist1[mx2][mx2];
+ll maxdist2[mx2][mx2];
+ll find(ll a)
+    {
+    	if(a==parent[a])
+    		return a;
+    	ll x=find(parent[a]);
+    	parent[a]=x;
+    	
+    	return x;
+    }
+     
+void unite(ll a, ll b)
+{
+	ll x=find(a),y=find(b);
+	
+	if(x==y)return;
+	
+	if(ranks[x]>ranks[y])
+		swap(x,y);
+	
+	parent[x]=y;
+	ranks[y]+=ranks[x];
+	return ;	
+}
+ll solve_20points()
+{
+	ll final=0;
+	for(ll i=1;i<=n;i++)
+	{
+		ranks[i]=1;
+		parent[i]=i;
+		vec[i].pb(i);
+	}
+	for(auto k:edges1)
+	{
+		if(find(k.ss.ff)!=find(k.ss.ss))
+		{
+			for(auto l:vec[find(k.ss.ff)])
+				for(auto p:vec[find(k.ss.ss)])
+					maxdist1[min(l,p)][max(l,p)]=k.ff;
+
+			if(vec[find(k.ss.ff)].size()>vec[find(k.ss.ss)].size())
+			{
+				for(auto l:vec[find(k.ss.ss)])
+					vec[find(k.ss.ff)].pb(l);
+				vec[find(k.ss.ss)].clear();
+			}
+			else
+			{
+				for(auto l:vec[find(k.ss.ff)])
+					vec[find(k.ss.ss)].pb(l);
+				vec[find(k.ss.ff)].clear();
+			}
+			unite(k.ss.ff,k.ss.ss);
+		}
+	}
+	for(ll i=1;i<=n;i++)
+	{
+		if(!vec[i].empty())
+			vec[i].clear();
+		ranks[i]=1;
+		parent[i]=i;
+		vec[i].pb(i);
+	}
+	for(auto k:edges2)
+	{
+		if(find(k.ss.ff)!=find(k.ss.ss))
+		{
+			for(auto l:vec[find(k.ss.ff)])
+				for(auto p:vec[find(k.ss.ss)])
+					maxdist2[min(l,p)][max(l,p)]=k.ff;
+
+			if(vec[find(k.ss.ff)].size()>vec[find(k.ss.ss)].size())
+			{
+				for(auto l:vec[find(k.ss.ss)])
+					vec[find(k.ss.ff)].pb(l);
+				vec[find(k.ss.ss)].clear();
+			}
+			else
+			{
+				for(auto l:vec[find(k.ss.ff)])
+					vec[find(k.ss.ss)].pb(l);
+				vec[find(k.ss.ff)].clear();
+			}			
+			unite(k.ss.ff,k.ss.ss);
+		}
+	}
+	for(int i=1;i<=n;i++)
+		for(int j=i+1;j<=n;j++)
+			final=(final+(maxdist1[i][j]*maxdist2[i][j])%mod)%mod;
+
+	return final;
+}
+ll solve_30points()
+{
+	for(ll i=1;i<=n;i++)
+	{
+		ranks[i]=1;
+		parent[i]=i;
+	}
+	ll final=0;
+	for(auto k:edges1)
+	{
+		if(find(k.ss.ff)!=find(k.ss.ss))
+		{
+			final+=(((k.ff*k.ff)%mod*(ranks[find(k.ss.ff)]))%mod*(ranks[find(k.ss.ss)]))%mod;
+			final%=mod;
+			unite(k.ss.ff,k.ss.ss);
+		}
+	}
+	return final;
+
+}
+int main()
+{
+	IOS;
+	ll m;
+	cin>>n>>m;
+	for(ll i=1;i<=m;i++)	
+	{
+		ll u,v,w;
+		cin>>u>>v>>w;
+		adj1[u].pb({v,w});
+		adj1[v].pb({u,w});
+		edges1.pb({w,{u,v}});
+	}
+	for(ll i=1;i<=m;i++)	
+	{
+		ll u,v,w;
+		cin>>u>>v>>w;
+		adj2[u].pb({v,w});
+		adj2[v].pb({u,w});
+		edges2.pb({w,{u,v}});
+	}
+	sort(edges1.begin(),edges1.end());
+	sort(edges2.begin(),edges2.end());
+	if(n<=2000)
+		cout<<solve_20points()<<endl;
+	else
+		cout<<solve_30points()<<endl;
+}
+

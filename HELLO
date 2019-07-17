@@ -1,0 +1,35 @@
+    #include<stdio.h>
+    int main()
+    {
+    	int t;
+    	scanf("%d",&t);
+    	while(t--)
+    	{
+    		float d;
+    		int u,n,i,index=0;
+    		scanf("%f %d %d",&d,&u,&n);
+    		float min=(float)u*d;
+    		for(i=0;i<n;i++)
+    		{
+    			float r;
+    			int m,c;
+    			float cost1=0;
+    			scanf("%d %f %d",&m,&r,&c);
+    			if(n%m==0)
+    			{
+    				cost1=c*(1.0)/(float)m +r*u ;
+    			}
+    			else
+    			{
+    				cost1=(float)c/(float)m +r*u ;
+    			}
+    			if(min>cost1)
+    				{
+    					min=cost1;
+    					index=i+1;
+    				}
+     
+    		}
+    		printf("%d\n",index);
+    	}
+    } 

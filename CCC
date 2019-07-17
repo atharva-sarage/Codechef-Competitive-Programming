@@ -1,0 +1,84 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define mx2 100005
+# define mx 1005
+// line container code taken from here
+//https://github.com/kth-competitive-programming/kactl/blob/master/content/data-structures/LineContainer.h
+struct Line {
+	mutable ll k, m, p;
+	bool operator<(const Line& o) const { return k < o.k; }
+	bool operator<(ll x) const { return p < x; }
+};
+ 
+struct LineContainer : multiset<Line, less<>> {
+	// (for doubles, use inf = 1/.0, div(a,b) = a/b)
+	const ll inf = LLONG_MAX;
+	ll div(ll a, ll b) { // floored division
+		return a / b - ((a ^ b) < 0 && a % b); }
+	bool isect(iterator x, iterator y) {
+		if (y == end()) { x->p = inf; return false; }
+		if (x->k == y->k) x->p = x->m > y->m ? inf : -inf;
+		else x->p = div(y->m - x->m, x->k - y->k);
+		return x->p >= y->p;
+	}
+	void add(ll k, ll m) {
+		auto z = insert({k, m, 0}), y = z++, x = y;
+		while (isect(y, z)) z = erase(z);
+		if (x != begin() && isect(--x, y)) isect(x, y = erase(y));
+		while ((y = x) != begin() && (--x)->p >= y->p)
+			isect(x, erase(y));
+	}
+	ll query(ll x) {
+		assert(!empty());
+		auto l = *lower_bound(x);
+		return l.k * x + l.m;
+	}
+};
+ll a[mx],dp[mx][mx];
+int main()
+{
+	IOS;
+	ll t;
+	cin>>t;
+	while(t--)	
+	{
+		ll n,z;
+		cin>>n>>z;
+		for(ll i=1;i<=n;i++)
+			cin>>a[i];
+		sort(a+1,a+n+1);
+		LineContainer line[1005];
+		line[0].add(0,0);
+		for(ll i=1;i<=n;i++)
+		{	
+			for(ll j=1;j<=min(i,z);j++)
+			{
+				if(!line[j-1].empty())
+					dp[i][j]=-line[j-1].query(a[n-i+1])+i*a[n-i+1];
+				//cout<<dp[i][j]<<" "<<i<<" "<<j<<endl;
+			}
+			for(ll j=1;j<=min(i,z);j++)
+			{
+				line[j].add(i,-(dp[i][j])); 
+				//cout<<-i<<" "<<(dp[i][j]+(i)*a[n-i+1])<<" ***"<<endl;
+			}
+			// this line is now available for next i
+		}
+		ll final=1e18;
+		for(int i=z;i<=n;i++)
+			final=min(final,dp[i][z]);
+		cout<<final<<endl;
+	}
+}

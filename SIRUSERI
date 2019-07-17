@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define mx 100005
+struct point 
+{
+	int f,s;
+};
+struct point d[mx];
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int a,b;
+		cin>>a>>b;
+		for(int i=1;i<=a*b;i++)
+		{
+			int x;cin>>x;
+			d[i].f=x;
+		}
+		set<int>s1;
+		set<int>s2;
+		set<int>:: iterator itr,itr1,itr2;
+		for(int i=1;i<=a*b;i++)
+		{
+			int x;cin>>x;
+			d[i].s=x;
+			if(d[i].f>d[i].s)
+				s1.insert(d[i].f);
+			else
+				s2.insert(d[i].s);
+		}
+		int final=0;
+		if(s1.empty())
+			{cout<<0<<endl;continue;}
+		else if(s2.empty())
+			{cout<<a<<endl;continue;}		
+
+		for(int i=1;i<=a;i++)
+		{
+			if(s1.empty())break;
+			itr1=s1.end();
+			itr1--;
+			int temp=*itr1;
+			if(s2.empty())break;
+			itr=s2.upper_bound(temp);
+			if(itr==s2.begin())
+				break;
+			s1.erase(temp);
+			itr--;
+			int c1=0;
+			while(c1<b-1)
+			{
+				int val=*itr;
+				c1++;
+				if(itr==s2.begin())
+					{s2.erase(val);break;}
+				else
+					{itr--;s2.erase(val);}
+			}
+			while(!s1.empty() && c1<b-1)
+			{
+				itr1=s1.begin();
+				int val=*itr1;
+				s1.erase(val);
+				c1++;
+			}
+			
+			if(c1==b-1)
+				final++;
+			else
+				break;
+		}
+		cout<<final+(s1.size())/b<<endl;
+		s1.clear();
+		s2.clear();
+	}
+}

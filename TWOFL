@@ -1,0 +1,115 @@
+    #include<bits/stdc++.h>
+    using namespace std;
+    int grid[2001][2001];
+    int visited[2001][2001][8]; // visited for sideindex
+    int n,m;
+    int isvalid(int a,int b)
+    {
+        if(a>=0&&a<=n-1&&b>=0&&b<=m-1) 
+        	return 1;
+        else
+        	return 0;
+    }
+    int val=0;
+    void dfs(int xx,int yy,int col1,int col2)
+    {
+    	int i;
+    	//printf("%d %d\n",xx,yy );
+    	//printf("%d\n",isvalid(xx,yy) );
+    	if(!isvalid(xx,yy))
+    		return;
+     
+    	if(grid[xx][yy]!=col1 && grid[xx][yy]!=col2)
+    		return;
+    	if(grid[xx][yy]==col1)
+    	{
+    		//printf("*\n");
+    		for(i=0;i<8;i++)
+    			if(visited[xx][yy][i]==col2)
+    				return;
+    		for(i=0;i<8;i++)
+    			if(visited[xx][yy][i]==0)
+    				break;
+    		if(i==8)
+    			return;
+    		//printf("%d**\n",i);
+    		visited[xx][yy][i]=col2;
+    		val++;
+    	}
+    	else if(grid[xx][yy]==col2)
+    	{
+    		//printf("#\n");
+    		for(i=0;i<8;i++)
+    			if(visited[xx][yy][i]==col1)
+    				return;
+    		for(i=0;i<8;i++)
+    			if(visited[xx][yy][i]==0)
+    				break;
+    		if(i==8)
+    			return;
+    		visited[xx][yy][i]=col1;
+    		val++;	
+     
+    	}
+    		dfs(xx+1,yy,col1,col2);
+            dfs(xx-1,yy,col1,col2);
+            dfs(xx,yy+1,col1,col2);
+            dfs(xx,yy-1,col1,col2);
+    }
+    int main()
+    {
+    	cin>>n>>m;
+    	int ans=0;
+    	for(int i=0;i<2001;i++)
+    	{
+    		for(int j=0;j<2001;j++)
+    		{
+    			for(int k=0;k<8;k++)
+    				visited[i][j][k]=0;
+    		}
+    	}
+    	for(int i=0;i<2001;i++)
+    	{
+    		for(int j=0;j<2001;j++)
+    		{
+    			grid[i][j]=0;
+    		}
+    	}
+    	for(int i=0;i<n;i++)
+    	{
+    		for(int j=0;j<m;j++)
+    		{
+    			cin>>grid[i][j];
+    		}
+    	}
+     
+    	if(n==1 && m==1)
+    	{
+    		printf("1\n");
+    		return 0;
+    	}
+    	for(int i=0;i<n;i++)
+    	{
+    		for(int j=0;j<m-1;j++)
+    		{
+    			val=0;
+    			dfs(i,j,grid[i][j],grid[i][j+1]);
+    			ans=max(ans,val);
+    		}
+     
+    	}
+    	
+    	for(int i=0;i<n-1;i++)
+    	{
+    		for(int j=0;j<m;j++)
+    		{
+    			val=0;
+    			dfs(i,j,grid[i][j],grid[i+1][j]);
+    			ans=max(ans,val);
+    		}
+     
+    	}
+     
+    	printf("%d\n",ans );
+    		
+    } 

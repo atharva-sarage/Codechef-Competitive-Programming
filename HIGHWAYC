@@ -1,0 +1,80 @@
+/*
+	Author-Atharva Sarage
+		IIT HYDERABAD
+		*/
+
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		double s,y,time;
+		double c2=0.000001;
+		int i,n;
+		double v[11],d[11],p[11],c[11];
+		scanf("%d %lf %lf",&n,&s,&y);
+		for(i=0;i<n;i++)
+			scanf("%lf",&v[i]);
+		for(i=0;i<n;i++)
+			scanf("%lf",&d[i]);
+		for(i=0;i<n;i++)
+			scanf("%lf",&p[i]);
+		for(i=0;i<n;i++)
+			scanf("%lf",&c[i]);
+		time=n*y/s ;
+		double current=0;
+		double c1=y/s;
+		//printf("%lf %lf\n",time,c1);
+		for(i=0;i<n;i++)
+		{
+			if(d[i]==0)
+				p[i]=p[i]-current*v[i];
+			else
+				p[i]=p[i]+current*v[i];
+
+			if(d[i]==1)
+			{
+				
+				
+				if(p[i]-c[i]>c2 || (-p[i]-c2)/v[i]>c1)
+					{
+						// not arrived or has departed
+						current=current+c1;
+					}
+				else if(p[i]-c[i]<=c2 || (-p[i]-c2)/v[i]<=c1)
+				{
+					// arrived
+					current=current+c1+(c2+c[i]-p[i])/v[i];
+				}
+				
+			}
+			else 
+			{
+				
+				
+				
+
+				if((p[i]+c[i])+c2<0 || (p[i]-c2)/v[i]>c1)
+						{
+							current=current+c1;
+						}
+
+				else if(p[i]+c[i]>=-c2 || (p[i]-c2)/v[i]<=c1)
+				{
+					current=current+c1+(p[i]+c[i]+c2)/v[i];
+				}
+				
+
+			}
+
+			
+			
+		}
+		printf("%lf\n",current);
+
+	}
+
+}

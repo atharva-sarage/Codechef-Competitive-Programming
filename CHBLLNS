@@ -1,0 +1,45 @@
+#include<stdio.h>
+int max(int long long a,int long long b)
+{
+	if(a>=b)
+	return a;
+	else
+	return b;
+}
+int max_3(int long long a,int long long b,int long long c)
+{
+	int long long max_1=max(a,b);
+	int long long max_2=max(max_1,c);
+	return max_2;
+}
+int min(int long long a,int long long b)
+{
+	if(a>=b)
+	return b;
+	else
+	return a;
+}
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int long long r,g,b,k;
+		scanf("%lld %lld %lld",&r,&g,&b);
+		scanf("%lld",&k);
+		if(max_3(r,g,b)==r)
+		{
+			printf("%lld\n",k+min(k-1,g)+min(k-1,b));
+		}
+		else if(max_3(r,g,b)==g)
+		{
+			printf("%lld\n",k+min(k-1,r)+min(k-1,b));
+		}
+		else if(max_3(r,g,b)==b)
+		{
+			printf("%lld\n",k+min(k-1,g)+min(k-1,r));
+		}
+		
+	}
+}

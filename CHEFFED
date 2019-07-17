@@ -1,0 +1,39 @@
+int sum_x(int n)
+{
+	int sum1=0;
+	do{
+		sum1=sum1+n;
+		n=n/10;
+		
+	}
+	while(n>=1);
+	return sum1;
+}
+int no_of_dig(int n)
+{
+	int count=0;
+	do{
+		n=n/10;
+		count++;
+	}
+	while(n>=1);
+	return count;
+}
+int main()
+{
+	int long long n;
+	scanf("%lld",&n);
+	int i,count3=0;
+	int no=no_of_dig(n);
+	
+	for(i=n-((no+1)*9);i<=n;i++)
+	{
+		if(i+sum_x(i)+sum_x(sum_x(i)) == n)
+		{
+			count3++;
+		
+		}
+	}
+	printf("%d\n",count3);
+	
+}

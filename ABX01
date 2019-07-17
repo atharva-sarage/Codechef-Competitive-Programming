@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<math.h>
+
+int noofdig(unsigned long long int a)
+{
+    int count=0;
+    while(a>=1)
+    {
+        a=a/10;
+        count++;
+    }
+    return count;
+}
+int strange(unsigned long long a)
+{
+    int i,c1=noofdig(a),sum=0;
+    if(c1==1)
+        return a;
+    else
+        {
+            for(i=0;i<c1;i++)
+            {
+                sum=sum+a;
+                a=a/10;
+            }
+            return strange(sum);
+        }
+}
+unsigned long long power(int x,unsigned long long y)
+{
+   long long  res = 1;     // Initialize result
+  
+    while (y > 0)
+    {
+        // If y is odd, multiply x with result
+        if (y & 1)
+            res = strange(res*x);
+  
+        // n must be even now
+        y = y>>1; // y = y/2
+        x = strange(x*x);  // Change x to x^2
+    }
+    return res;
+}
+
+int main()
+{
+    int t;
+    scanf("%d",&t);
+    while(t--)
+    {
+     unsigned long long a,n;
+        scanf("%llu %llu",&a,&n);
+        int c2=strange(a);
+        unsigned long long ans=power(c2,n);
+        //printf("%d\n",strange(ans));
+        printf("%llu\n",ans);
+
+    }
+}

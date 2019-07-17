@@ -1,0 +1,48 @@
+/*
+	Author-Atharva Sarage
+		IIT HYDERABAD
+*/
+#include<bits/stdc++.h>
+# define ll int long long
+# define mx 100005
+using namespace std;
+int main()
+{
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll a[mx],hl[mx],hr[mx];
+		ll n,sum=0;
+		cin>>n;
+		for(ll i=0;i<n;i++)
+			{
+			cin>>a[i];
+			sum+=a[i];
+			}
+		hl[0]=1;
+		for(ll i=1;i<n;i++)
+		{
+			if(a[i]>hl[i-1])
+				hl[i]=1+hl[i-1];
+			else
+				hl[i]=a[i];
+		}
+		hr[n-1]=1;
+		for(ll i=n-2;i>=0;i--)
+		{
+			if(a[i]>hr[i+1])
+				hr[i]=1+hr[i+1];
+			else
+				hr[i]=a[i];
+		}
+		ll cover=0;
+		
+		for(ll i=0;i<n;i++)
+		{
+			cover=max(cover,min(hr[i],hl[i])*min(hr[i],hl[i]));
+		}
+		
+		cout<<sum-cover<<endl;
+	}
+}

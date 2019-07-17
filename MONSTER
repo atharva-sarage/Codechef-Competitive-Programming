@@ -1,0 +1,70 @@
+/*
+	Author- Atharva Sarage
+		IIT HYDERABAD
+		*/
+
+#include<stdio.h>
+int long a[262145]={0};
+int main()
+{
+	int n,q,i,j,k,c1,count1;
+
+	scanf("%ld",&n);
+	for(i=0;i<n;i++)
+	{
+		scanf("%ld",&a[i]);
+	}
+	scanf("%d",&q);
+	n--;
+		int bits[19]={0};
+	for(i=0;i<q;i++)
+	{
+		int long x,y;
+	
+		scanf("%ld %ld",&x,&y);
+	
+			int k=0,count=0,count3=0;
+			while(x>=1)
+			{
+				c1=x%2;
+				
+				if(c1==1)
+				{
+					if(bits[k]!=1)
+				{
+					count++;
+					bits[k]=1;
+				}
+				else
+				{
+					count3++;
+				}
+				
+				}
+				k++;
+				x=x/2;
+			}
+			count1=0;
+			/*for(j=0;j<19;j++)
+			{
+				printf("%d ",bits[j]);
+				
+			}*/
+			if(i!=1)
+			{
+		
+			for(j=0;j<19;j++)
+			{
+				if(bits[j]==1)
+				count1++;
+			}
+		}
+			//printf("\n");
+			//printf("count is %d\n",count);
+			//n=n-(count*(count+1))/2- (((count1-count)*(count1-count+1))/2)*(count) ;
+			n=n-(count*(count+1))/2- (count3*(count3+1))/2*count;
+			
+			printf("%d\n",n);
+
+	}
+}

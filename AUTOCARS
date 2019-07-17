@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct point 
+{
+	int t,x,y,xx,yy;
+};
+bool compare(point a,point b)
+{
+	return a.t<b.t;
+}
+void print(point a)
+{
+	cout<<a.t<<" "<<a.x<<" "<<a.y<<" "<<a.xx<<" "<<a.yy<<endl;
+}
+bool valid(point b,point a)
+{
+	if(b.x==b.xx && b.y==b.yy )
+		return false;
+	if(a.x>b.x || a.xx>b.xx)
+		return false;
+	int f1=0,f2=0;
+	if(a.y!=b.y)
+		f1=1;
+	if(a.yy!=b.yy)
+		f2=1;
+	int d1=b.x-a.x;
+	int d2=b.xx-a.xx;
+	//cout<<d1<<" "<<d2<<" "<<f1<<" "<<f2<<endl;
+	if(d1+f1<=b.t-a.t && d2+f2<=b.t-a.t)
+		return true;
+	return false;
+
+}
+int main()
+{
+	int test;
+	cin>>test;
+	while(test--)
+	{
+		int n,flag=0;
+		cin>>n;
+		struct point p[n+5];
+		p[0]={0,1,1,1,2};
+		for(int i=1;i<=n;i++)
+		{
+			int t1,x1,y1,xx1,yy1;
+			cin>>t1>>y1>>x1>>yy1>>xx1;
+			p[i]={t1,x1,y1,xx1,yy1};
+		}
+		sort(p,p+n+1,compare);		
+		for(int i=1;i<=n;i++)
+		{
+			if(!valid(p[i],p[i-1]))
+			{
+				flag=1;break;
+			}
+		}
+		if(flag==1)
+			cout<<"no"<<endl;
+		else
+			cout<<"yes"<<endl;
+
+	}
+}

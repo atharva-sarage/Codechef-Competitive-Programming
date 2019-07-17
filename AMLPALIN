@@ -1,0 +1,28 @@
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+using namespace std;
+
+int main()
+{
+	int t,n,i;
+	cin>>t;
+	while(t--)
+	{
+		cin>>n;
+		string s;
+		unordered_map<string,int> counts;
+		while(n--)
+		{
+			cin>>s;
+			if(counts.find(s)==counts.end()) counts.insert(make_pair(s,1));
+			else counts[s]++;
+		}
+		string out="";
+		for(i=1;i<=(counts["aa"]/2);i++) out=out+"aa";
+		for(i=1;i<=min(counts["ab"],counts["ba"]);i++) out=out+"ab";
+		for(i=1;i<=(counts["bb"]/2);i++) out=out+"bb";
+		out=(counts["aa"]%2)?out+"a":((counts["bb"]%2)?out+"b":out);
+		cout<<out; reverse(out.begin(),out.end()); cout<<out<<endl;
+	}
+}

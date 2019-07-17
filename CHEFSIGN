@@ -1,0 +1,64 @@
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		char a[1000011];
+		scanf("%s",a);
+
+
+		int greatest=0,greatest_1=0;
+		int n=strlen(a);
+		int i,sum;
+		sum=1;
+		int sum_1=1;
+		for(i=0;i<n;i++)
+		{
+			if(a[i]=='<')
+			{
+			
+				sum=sum+1;
+			}
+			else if(a[i]=='>')
+			{
+				sum=1;
+			}
+			
+			if(sum>=greatest)
+			{
+				greatest=sum;
+			}
+						
+		}
+		for(i=0;i<n;i++)
+		{
+			if(a[i]=='>')
+			{
+			
+				sum_1=sum_1+1;
+			}
+			else if(a[i]=='<')
+			{
+				sum_1=1;
+			}
+			
+			if(sum_1>=greatest_1)
+			{
+				greatest_1=sum_1;
+			}
+						
+		}
+		
+	if(greatest>greatest_1)
+	{
+		printf("%d\n",greatest);
+	}
+	else
+	{
+		printf("%d\n",greatest_1);
+	}	
+		
+	
+}
+}

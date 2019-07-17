@@ -1,0 +1,37 @@
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,i,count=0,count1=0;
+		long p;
+		long a[i];
+		scanf("%d %ld",&n,&p);
+		for(i=0;i<n;i++)
+		{
+			scanf("%ld",&a[i]);
+			if(a[i]<=(p/10))
+			{
+				count++;
+			}
+			else if(a[i] >=(p/2))
+			{
+				count1++;
+			}
+		}
+		
+		if(count==2 && count1==1)
+		{
+			printf("\nyes");
+		}
+		else
+		{
+			printf("\nno");
+		}
+		
+		
+	}
+return 0;
+}

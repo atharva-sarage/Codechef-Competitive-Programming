@@ -1,0 +1,79 @@
+    /* Author-Atharva Sarage
+    	IIT HYDERABAD
+    	*/
+     
+     
+    #include<stdio.h>
+    int main()
+    {
+    	int long j,i,n,q,l,k,p,c1,h,count;
+    	int type;
+    	scanf("%ld %ld",&n,&q);
+    	int long a[100001];
+    	int long xor[100001];
+    	for(i=0;i<n;i++)
+    	{
+    		scanf("%ld",&a[i]);
+    	}
+    		xor[0]=a[0];
+     		xor[1]=a[0]^a[1];
+     	for(i=2;i<n;i++)
+     	{
+     		
+     		xor[i]=xor[i-1]^a[i];
+     	}
+    	
+    	for(j=0;j<q;j++)
+    	{
+    		
+    		scanf("%d %ld %ld",&type,&l,&k);
+    		if(type==1)
+    		{
+    			a[l-1]=k;
+    			if(l!=1)
+    			{
+    				c1=xor[l-2];
+    			xor[l-1]=c1^a[l-1];
+    			}
+    			else if(l==1)
+    			{
+    				xor[0]=a[l-1];
+    			}
+    			
+    			for(h=l;h<n;h++)
+    			{
+    				// update the xor array
+    				
+    				xor[h]=xor[h-1]^a[h];
+     
+    			}
+     
+    		}
+    		else if(type==2)
+    		{
+    			count=0;
+    			/*int ans=a[0]^a[1];
+    			
+    			if(a[0]==k)
+    				count++;
+    			if(ans==k)
+    				count++;
+    			for(i=2;i<l;i++)
+    			{
+    				ans=ans^(a[i]);
+    				
+    				if(ans==k)
+    					count++;
+    			}*/
+     
+    			for(p=0;p<l;p++)
+    			{
+    				if(xor[p]==k)
+    				{
+    					count++;
+    				}
+    			}
+    			printf("%ld\n",count);
+    		}
+    	}
+    } 

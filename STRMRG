@@ -1,0 +1,109 @@
+// length of longest common subsequence
+
+/*
+	AUTHOR- ATHARVA SARAGE
+		IIT HYDERABAD
+		*/
+#include<iostream>
+#include<string.h>
+
+int max(int a,int b)
+{
+	if(a>=b)
+	return a;
+	return b;
+	
+}
+int longestcs( char *X, char *Y, int m, int n )
+{
+   int L[m+1][n+1];
+   int i1, j1;
+  
+  
+   for (i1=0; i1<=m; i1++)
+   {
+     for (j1=0; j1<=n; j1++)
+     {
+       if (i1 == 0 || j1 == 0)
+         L[i1][j1] = 0;
+  
+       else if (X[i1-1] == Y[j1-1])
+         L[i1][j1] = L[i1-1][j1-1] + 1;
+  
+       else
+         L[i1][j1] = max(L[i1-1][j1], L[i1][j1-1]);
+     }
+   }
+    
+   
+   return L[m][n];
+}
+
+using namespace std;
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n,m,i,t=0,u=0,count2=0,count1=0,ans;
+		cin>>n;
+		cin>>m;
+		ans=m+n;
+		char str1[5002];
+		char str2[5002];
+		char str3[5002];
+		char str4[5002];
+		cin>>str1;
+		cin>>str2;
+		
+		for(i=0;i<n;i++)
+		{
+			str3[t]=str1[i];
+			t++;
+			if(i!=n-1);
+			{
+			
+			while(str1[i+1]==str1[i])
+			{
+				i++;
+				count1++;
+			}
+		}
+		}
+		for(i=0;i<m;i++)
+		{
+			str4[u]=str2[i];
+			u++;
+			if(i!=m-1);
+			{
+		
+			while(str2[i+1]==str2[i])
+			{
+				i++;
+				count2++;
+			}
+		}
+		}
+		//printf("%d %d\n",count1,count2);
+		str3[t]='\0';
+		str4[u]='\0';
+		
+		/*cout<<str3<<endl;
+		cout<<str4<<endl;
+		printf("%d %d\n",count1,count2);*/
+		
+		
+		
+		int ans1=longestcs(str3,str4,t,u);
+		//printf("%d**\n",ans1);
+		ans=ans-ans1-count1-count2;
+		
+		cout<<ans<<endl;	
+		/*cout<<str3<<endl;
+		cout<<str4<<endl;
+		printf("%d %d\n",count1,count2);*/
+		
+		
+	}
+}

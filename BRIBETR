@@ -1,0 +1,106 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define mx 1000000
+# define inf 10000000
+# define ff first
+# define ss second
+pair<int,int>a[mx],b[mx];
+int k;
+void merge(int start,int mid,int end)
+{
+	int l,r,mini,mini2;
+	l=r=start;
+	mini=mini2=inf;
+	for(int i=mid+1;i<=end;i++)
+	{
+		while(l<=mid && a[l].ff-a[i].ff<0)
+			{mini=min(mini,a[l].ss);l++;} // start to l-1 less than , l to r-1 greater
+		while(r<=mid && a[r].ff-a[i].ff<=k)
+			{mini2=min(mini2,a[r].ss);r++;}
+		if(r==start)
+			b[i].ss=inf;
+		else
+			b[i].ss=min(mini,mini2+1)+a[i].ss;
+		b[i].ff=a[i].ff;
+	}
+	mini=mini2=inf;
+	l=r=mid+1;
+	for(int i=start;i<mid+1;i++)
+	{
+		while(l<=end && a[l].ff-a[i].ff<0)
+			{mini=min(mini,a[l].ss);l++;}
+		while(r<=end && a[r].ff-a[i].ff<=k)
+			{mini2=min(mini2,a[r].ss);r++;}
+		if(r==mid+1)
+			b[i].ss=inf;
+		else
+			b[i].ss=min(mini,mini2+1)+a[i].ss;
+		b[i].ff=a[i].ff;
+	}
+	// all values updated
+	int i=start;
+	int j=mid+1;
+	int k=start;
+	while(i<=mid && j<=end)
+	{
+		if(b[i].ff<b[j].ff)
+			{a[k].ff=b[i].ff;a[k++].ss=b[i++].ss;}
+		if(b[i].ff>b[j].ff)
+			{a[k].ff=b[j].ff;a[k++].ss=b[j++].ss;}		
+	}
+	while(i<=mid)
+	{
+		a[k].ff=b[i].ff;a[k++].ss=b[i++].ss;
+	}
+	while(j<=end)
+	{
+		a[k].ff=b[j].ff;a[k++].ss=b[j++].ss;
+	}
+}
+void calc(int start,int end,int value,bool keep)
+{
+	int mid=(start+end)/2;
+	if(start==end && end==1)
+		goto lll;
+	if(start>=end)
+		return ;
+	calc(start,mid,value,false);
+	calc(mid+1,end,value,false);
+	merge(start,mid,end);
+	if(!keep)
+		return;
+	lll:
+	int temp=inf;
+	for(int i=start;i<=end;i++)
+	{
+		if(a[i].ff<a[0].ff)
+			temp=min(temp,a[i].ss);
+		else if(a[i].ff-a[0].ff<=k)
+			temp=min(temp,a[i].ss+1);
+	}
+	a[0].ss+=temp;
+}
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int h,s,final=0;
+		cin>>h>>k;
+		s=(1<<h);
+		for(int i=0;i<s;i++)
+			{int x;cin>>x;a[i]={x,0};}
+		int c=0;
+		for(int i=1;i<s;i+=(1<<(c-1)))
+		{
+			calc(i,i+(1<<c)-1,a[0].ff,true); // start , end , level to go
+			//cout<<a[0].ss<<"/////"<<i<<" "<<i+(1<<c)-1<<endl;
+			c++;
+		}
+		if(a[0].ss>=inf)
+			cout<<-1<<endl;
+		else
+			cout<<a[0].ss<<endl;
+	}
+}

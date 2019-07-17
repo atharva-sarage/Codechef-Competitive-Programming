@@ -1,0 +1,69 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef int long long ll;
+# define mod 1000000007
+ll fact2[5005],invfact2[5005];
+ll pow1(ll a, ll b)
+{
+    if (a==0)
+        return 0;
+
+    ll x=1,y=a;
+    while(b > 0)
+    {
+        if(b%2 == 1)
+        {
+            x=(x*y);
+            if(x>mod) x%=mod;
+        }
+        y = (y*y);
+        if(y>mod) y%=mod;
+        b /= 2;
+    }
+    return x%mod;
+}
+ll inveuler(ll a)
+{
+    return pow1(a,mod-2);   
+}
+
+void calculateFactorial(ll n)
+{                
+        fact2[0]=1LL;invfact2[0]=1;
+        for(ll i=1;i<=n;i++)
+        {
+            fact2[i]=(i*fact2[i-1])%mod;
+        }
+
+        invfact2[n]=inveuler(fact2[n]);
+        for(ll i=n;i>=1;i--)
+        {
+            invfact2[i-1]=(i*invfact2[i])%mod;
+        }
+}
+ll nck(ll n,ll k)
+{
+	if(n<k)
+        return 0;
+    ll ans=fact2[n];
+    ans=(ans*invfact2[k])%mod;
+    ans=(ans*invfact2[n-k])%mod;
+    return ans;
+}
+int main()
+{
+	calculateFactorial(5001);
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll n;
+		cin>>n;
+		ll final=0;
+		for(ll i=1;i<=n;i++)
+		{
+			final=(final+(((pow1(25,i-1)*(ll)26)%mod*nck(n,i))%mod*nck(n,i))%mod)%mod;
+		}
+		cout<<final<<endl;
+	}
+}

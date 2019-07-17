@@ -1,0 +1,29 @@
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		unsigned long long y,n,count;
+		int b,i;
+		count=0;
+		scanf("%llu",&y);
+		for(i=1;i<=700;i++)
+		{
+			if(y-i>0)
+			{
+				n=sqrt(y-i);
+				count=count+n;
+			}
+			else
+			{
+				break;
+			}
+
+			
+		}
+		printf("%llu\n",count);
+	}
+}

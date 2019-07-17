@@ -1,0 +1,40 @@
+#include<stdio.h>
+const unsigned int M= (int) 1e9 + 7;
+ long long  power1(long long x, long long y)
+{
+    long long  res = 1;     // Initialize result
+    //x=x%M;
+    while (y > 0)
+    {
+        // If y is odd, multiply x with result
+        if (y & 1)
+            res = (res*x)%M;
+ 
+        // n must be even now
+        y = y>>1; // y = y/2
+        x = (x*x)%M;  // Change x to x^2
+    }
+    return res;
+}
+int main()
+{
+    int t;
+    long long n,ans;
+    scanf("%d",&t);
+    while(t--)
+    {
+        
+        scanf("%lld",&n);
+        if(n==1)
+           {
+             printf("0\n");
+             continue;
+           }
+        else
+        {
+             ans=((power1(2,n-1)-2)%M);
+               printf("%lld\n",ans);
+        }
+       
+    }
+}

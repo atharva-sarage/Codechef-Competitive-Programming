@@ -1,0 +1,192 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf 1e9
+# define mx2 100005
+# define mx 300005
+# define D 20
+ll sub[mx],dp[mx],edge[mx],depth[mx],par[22][mx],dist[22][mx],n;
+vector <ll> adj[mx];
+void addedge(ll u,ll v)
+{
+	adj[u].pb(v);
+	adj[v].pb(u);
+}
+void dfs1(ll u,ll par)
+{
+	sub[u]=1;
+	for(auto k:adj[u])
+	{
+		if(k==par)continue;
+		dfs1(k,u);
+		sub[u]+=sub[k];
+	}
+}
+void dfs2(ll u,ll par)
+{
+	ll ans1=(sub[u]*(sub[u]+1))/2 ;
+	for(auto k:adj[u])
+	{
+		if(k==par)continue;
+		ans1-=(sub[k]*(sub[k]+1))/2;
+		dfs2(k,u);
+	}
+	dp[u]=ans1;
+}
+void dfs3(ll u,ll parent,ll level)
+{
+	if(parent!=-1)
+		edge[u]=dp[parent]-(sub[u]*(sub[parent]-sub[u])) ;// u to parc
+
+	par[0][u]=parent;
+	dist[0][u]=edge[u];
+	depth[u]=level;
+	//cout<<u<<" "<<par<<" :"<<edge[u]<<"\n";
+	for(auto k:adj[u])
+	{
+		if(k==parent)continue;
+			dfs3(k,u,level+1);
+	}	
+}
+void preprocess()
+{
+	dfs1(0,-1);
+	dfs2(0,-1);
+	dfs3(0,-1,0);
+	for(ll  d=1;d<=D;d++)
+		for(ll i=0;i<n;i++)
+			{ 
+				ll  mid=par[d-1][i];
+				if(mid!=-1)
+				{
+					par[d][i]=par[d-1][mid];
+					dist[d][i]=dist[d-1][i]+dist[d-1][mid];
+				}
+			}		
+}
+ll walk(ll  i,ll  k)
+{
+	for(ll  d=0;d<=D;d++)
+	{
+		if((k & 1<<d )>0)
+			i=par[d][i];
+	}
+	return i;
+}
+ll  lca(ll  i,ll  j)
+{
+	if(depth[i]>depth[j])
+		i=walk(i,depth[i]-depth[j]);
+	if(depth[i]<depth[j])
+		j=walk(j,depth[j]-depth[i]);
+	if(i==j)
+		return i;
+	for(ll  d=D;d>=0;d--)
+	{
+		if(par[d][i]!=par[d][j])
+		{
+			i=par[d][i];
+			j=par[d][j];
+		}
+	}
+	return par[0][i];
+}
+ll get_dist(ll  i,ll  j)
+{
+	return depth[i]+depth[j]-2*depth[lca(i,j)];
+}
+ll  get_cost(ll  i,ll  k)
+{
+	ll temp=0;
+    for(ll  d=0;d<=D;d++)
+    {
+        if((k & 1<<d )>0)
+        	{temp+=dist[d][i];
+            i=par[d][i];}
+        if(i==-1)
+        	return inf;
+    }
+    return temp;
+}
+void init(int n)
+{
+	for(int i=0;i<=n;i++)
+		for(int j=0;j<=20;j++)
+			{dist[j][i]=0;par[j][i]=-1;}
+	for(int i=0;i<n;i++)
+		{depth[i]=0,dp[i]=0,sub[i]=0;}
+}
+int main()
+{
+	IOS;
+	ll t;
+	cin>>t;
+	while(t--)	
+	{
+		ll q;
+		cin>>n>>q;
+		init(n);
+		for(ll i=0;i<n-1;i++)
+		{
+			ll x,y;
+			cin>>x>>y;
+			x--;y--;
+			addedge(x,y);
+		}
+		preprocess();
+		// for(ll i=1;i<=n;i++)
+		// 	cout<<i<<": "<<dp[i]<<" "<<sub[i]<<"\n";	
+		while(q--)		
+		{
+			ll u,v;
+			cin>>u>>v;
+			u--;v--;
+			ll l=lca(u,v);
+			if(u==v)
+			{
+				ll ans=dp[u]+sub[u]*(n-sub[u]);
+				cout<<ans<<"\n";
+			}
+			else if(l!=u && l!=v)
+			{
+				ll d1=get_dist(u,l);
+				ll d2=get_dist(v,l);
+				ll v1=walk(u,d1-1);
+				ll v2=walk(v,d2-1);
+				ll ans=get_cost(u,d1-1)+get_cost(v,d2-1)+dp[u]+dp[v];
+				ans+=(n-(sub[l]))*(sub[l]-sub[v1]-sub[v2]);
+				//cout<<d1<<" "<<d2<<" "<<v1<<" "<<v2<<" "<<ans<<" "<<dp[l]<<"\n";
+				ans+=dp[l]-((sub[v2]+sub[v1])*(sub[l]-sub[v1]-sub[v2]))-sub[v2]*sub[v1];
+				cout<<ans<<"\n";
+			}
+			else
+			{
+				if(v==lca(u,v))
+					swap(u,v);
+				// u is the lca
+				//printf("***\n");
+				ll d1=get_dist(v,u);
+				ll v1=walk(v,d1-1);
+				//cout<<d1<<" "<<v1<<"\n";
+				ll ans=get_cost(v,d1-1)+dp[v];
+				ans+=(n-(sub[u]))*(sub[u]-sub[v1]);
+				ans+=dp[l]-(sub[l]-sub[v1])*sub[v1];
+				cout<<ans<<"\n";
+			}
+
+		}
+		for(int i=0;i<n;i++)
+			adj[i].clear();
+	}
+}

@@ -1,0 +1,37 @@
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		char str[2000021];
+		int ans=0,i,j,count_c,count_h,count_e,count_f;
+		scanf("%s",str);
+		int n=strlen(str);
+		for(i=0;i<n-3;i++)
+		{
+			count_c=0;
+			count_h=0;
+			count_e=0;
+			count_f=0;
+			for(j=i;j<i+4;j++)
+			{
+				if(str[j]=='c')
+				count_c++;
+				else if(str[j]=='h')
+				count_h++;
+					else if(str[j]=='e')
+				count_e++;
+					else if(str[j]=='f')
+				count_f++;				
+			}
+			if(count_c==1 && count_h==1 && count_e==1 && count_f==1)
+				ans++;
+		}
+		if(ans==0)
+		printf("normal\n");
+		else
+		printf("lovely %d\n",ans);
+	}
+}

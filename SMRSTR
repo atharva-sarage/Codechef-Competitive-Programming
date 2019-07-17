@@ -1,0 +1,42 @@
+#include<stdio.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,q,i,e,k=0,j;
+		int long long pro=1;
+		int long long a[100001];
+		int long long max=0;
+		int long long qu[100001];
+		scanf("%d %d",&n,&q);
+		for(i=0;i<n;i++)
+		{
+			scanf("%lld",&a[i]);
+			
+		}
+	
+		for(j=0;j<q;j++)
+		{
+			scanf("%d",&qu[j]);
+			if(qu[j]>max)
+			max=qu[j];
+		}
+		while(pro<max && k<n)
+		{
+			pro=pro*a[k];
+			k++;
+		}
+		if(k<n && pro<max)
+		{
+			pro=pro*a[k];
+		}
+		
+		for(j=0;j<q;j++)
+		{
+			printf("%d ",qu[j]/pro);
+		}
+		printf("\n");
+	}
+} 

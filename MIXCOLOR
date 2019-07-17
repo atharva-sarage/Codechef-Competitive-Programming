@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n;
+		scanf("%d",&n);
+		int i;
+		int long a[100005];
+		for(i=0;i<n;i++)
+		{
+			scanf("%ld",&a[i]);
+		}
+		int ans=0;
+		sort(a,a+n);
+		for(i=0;i<n-1;i++)
+		{
+			int count=1;
+			while(a[i]==a[i+1] && i<n)
+				{
+					count++;
+					i++;
+				}
+			
+			ans=ans+count-1;
+			
+		}
+		printf("%d\n",ans);
+	}
+}

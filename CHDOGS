@@ -1,0 +1,13 @@
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		double s,v;
+		scanf("%lf %lf",&s,&v);
+		double a=2*s;
+		a=a/(3*v);
+		printf("%.8f\n",a);
+}
+}

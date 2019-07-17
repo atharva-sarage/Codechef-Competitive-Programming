@@ -1,0 +1,18 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int n; scanf("%d",&n);
+	int h[n] , dpl[n]={}, dpr[n]={};
+
+	for(int i=0;i<n and scanf("%d",h+i);++i)
+		for(int j=i;j--;)
+		{
+			if(h[j]>h[i]) dpr[j] = max(dpr[j],1+dpl[i]);
+			else if(h[j]<h[i]) dpl[i] = max(dpl[i],1+dpr[j]);
+		}
+
+	for(int i=0;i<n;++i) printf("%d ",max(dpr[i],dpl[i]));
+}

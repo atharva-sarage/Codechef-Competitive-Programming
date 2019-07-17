@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std;
+int mini(int a,int b)
+{
+	if(a>=b)
+		return b;
+	else 
+		return a;
+}
+int main()
+{
+	int n,k,i,j;
+	vector <int> vec;
+	scanf("%d %d",&n,&k);
+	int c3=k;
+	int a[30005];
+	for(i=0;i<n;i++)
+		scanf("%d",&a[i]);
+	int ans=INT_MAX;
+	for(i=0;i<n;i++)
+	{
+		int c1=a[i];
+		int min=a[i];
+		for(j=i;j<n;j++)
+		{
+			if(j>i)
+				{
+					min=mini(a[j],min);
+					c1=c1^a[j];
+				}
+			/*for(k=i;k<=j;k++)
+			{
+				if(a[k]<min)
+					min=a[k];
+				if(k>i)
+				c1=c1^a[k];
+			}*/
+
+			vec.push_back(c1*min);
+		}
+	}
+	
+	sort(vec.begin(),vec.end());
+	
+
+	printf("%d\n",vec[c3-1]);;
+}

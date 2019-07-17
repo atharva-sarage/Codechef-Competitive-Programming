@@ -1,0 +1,47 @@
+/*
+	Author-Atharva Sarage
+		IIT Hyderabad
+		*/
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+ll pow(ll a, ll b, ll mod) 
+{
+	if (a==0)
+		return 0;
+
+    ll x=1,y=a; 
+    while(b > 0)
+    {
+        if(b%2 == 1)
+        {
+            x=(x*y);
+            if(x>mod) x%=mod;
+        }
+        y = (y*y);
+        if(y>mod) y%=mod; 
+        b /= 2;
+    }
+    return x%mod;
+}
+
+ll InverseEuler(ll n, ll mod)
+{
+    return pow(n,mod-2,mod);
+}
+
+
+int main()
+{
+	ll k,n,mod=1000000007;
+	cin>>n>>k;
+	ll temp1=pow(2,n-1,mod);
+	ll ans=temp1-n;
+	if(ans<0)
+		ans+=mod;
+	ans=(ans*InverseEuler(temp1,mod))%mod;
+
+	cout<<ans<<endl;
+}

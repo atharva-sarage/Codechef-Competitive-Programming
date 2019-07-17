@@ -1,0 +1,98 @@
+#include<bits/stdc++.h>
+# define mod 1000000007
+# define ll long long
+using namespace std;
+vector<ll>vec[200005];
+ll fact2[250005];
+ll invfact2[250005];
+
+ll pow1(ll a, ll b)
+{
+    if (a==0)
+        return 0;
+    ll x=1,y=a;
+    while(b > 0)
+    {
+        if(b%2 == 1)
+        {
+            x=(x*y);
+            if(x>mod) x%=mod;
+        }
+        y = (y*y);
+        if(y>mod) y%=mod;
+        b /= 2;
+    }
+    return x%mod;
+}
+ll inveuler(ll a)
+{
+    return pow1(a,mod-2);   
+}
+void calculateFactorial(ll n)
+ {
+                
+        fact2[0]=1LL;      
+        for(ll i=1;i<=n;i++)
+        {
+            fact2[i]=(i*fact2[i-1])%mod;
+        }
+        invfact2[n]=inveuler(fact2[n]);
+        for(ll i=n;i>=1;i--)
+        {
+            invfact2[i-1]=(i*invfact2[i])%mod;
+        }
+}
+ll nck(ll n,ll k)
+{
+
+    if(n<k)
+        return 0;
+    ll ans=fact2[n];
+    ans=(ans*invfact2[k])%mod;
+    ans=(ans*invfact2[n-k])%mod;
+    return ans;
+}
+ll solve(ll s,ll e)
+{
+	if(s>e)
+		return 1;
+	if(vec[e].empty() || vec[e][0]>e || vec[e].back()<s)
+		return 0;
+	if(s==e)
+		return 1;
+	// bs in vec[k]
+	ll low=0;
+	ll high=vec[e].size()-1;
+	ll mid;
+	while(high>=low)
+	{
+		mid=low+(high-low)/2;
+		if(vec[e][mid]>=s)
+			high=mid-1;
+		else
+			low=mid+1;
+	}
+	low=vec[e][low];
+	return ((nck(e-s,low-s)*solve(s,low-1))%mod*solve(low+1,e))%mod;
+}
+int main()
+{
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	calculateFactorial(100000);
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll c[100005];
+		ll n;
+		cin>>n;
+		for(ll i=1;i<=n;i++)
+			{cin>>c[i];vec[c[i]+i].push_back(i);}
+		if(c[n]!=0)
+			{cout<<0<<endl;goto l;}
+		cout<<solve(1,n)<<endl;
+		l:
+		for(ll i=1;i<=2*n;i++)
+			vec[i].clear();
+	}
+}

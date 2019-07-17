@@ -1,0 +1,49 @@
+#include<stdio.h>
+struct point
+{
+	int x;
+	int y;
+};
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		struct point p[500];
+		
+		int n,i,j,l,k;
+		scanf("%d",&n);
+		for(i=0;i<n;i++)
+		{
+			scanf("%d %d",&p[i].x,&p[i].y);
+		}
+		int q;
+		scanf("%d",&q);
+		for(i=0;i<q;i++)
+		{
+			int ans=0,m;
+			scanf("%d",&m);
+			int point[500]={0};
+			for(j=0;j<m;j++)
+			{
+				scanf("%d",&point[j]);
+			}
+			for(k=0;k<n;k++)
+			{
+				int count=0;
+				for(l=0;l<m;l++)
+				{
+					if(point[l]>=p[k].x && point[l]<=p[k].y)
+						count++;
+				}
+				if(count%2==1)
+					ans++;
+			}
+
+			printf("%d\n",ans);
+
+		}
+	}
+}

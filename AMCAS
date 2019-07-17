@@ -1,0 +1,42 @@
+#include <iostream>
+#include <unordered_map>
+#include <algorithm>
+
+using namespace std;
+
+struct circcell {bool b[4]={};};
+const double pi = 3.141592653589793;
+
+const int dx[4] = {0,-1,-1,0};
+const int dy[4] = {0,0,-1,-1};
+const int dir[4]= {0,1,2,3};
+int main()
+{
+	int64_t n,m,a,c,x,y,id; cin>>n>>m>>a>>c;
+	auto valid = [&n,&m](int x,int y) {return 0<=x and x<n and 0<=y and y<m;};
+	unordered_map<int64_t,circcell> cell;
+	while(c--)
+	{
+		cin>>x>>y;
+		for(int i=0;i<4;++i)
+			if(valid(x+dx[i],y+dy[i]))
+			{
+				id = ((x+dx[i])<<30) + y+dy[i];
+				if(!cell.count(id)) cell.insert({id,circcell()});
+				cell[id].b[dir[i]] = 1;
+			}
+	}
+	double ans = 0;
+	for(auto c:cell)
+	{
+		int64_t x = (c.first>>30); int64_t y = c.first - (x<<30);
+		double temp;
+		bool (&b)[4] = c.second.b;
+		if((b[0] and b[2]) or (b[1] and b[3])) temp = 1;
+		else if(  b[0]+b[1]+b[2]+b[3] == 1 ) temp = pi/4.0;
+		else temp = 0.9566114774905181;
+
+		ans += temp * (  min(m-a,y) - max(0L,y+1-a)+1  ) * ( 1+min(n-a,x) - max(0L,x+1-a)  );
+	}
+	printf("%0.10lf",ans/((m-a+1)*(n-a+1)) );
+}

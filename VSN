@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef long double db;
+
+long double findRoots(db a, db b, db c)
+{
+	   
+     db d  = b*b - 4*a*c;
+     db sqrt_val = sqrt(abs(d));
+         
+         if(db(-b+sqrt_val)/2*a >=0 )     
+         	 return (-b + sqrt_val)/(2*a) ;    
+         else
+         	 return (-b - sqrt_val)/(2*a) ;    
+ }
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		db p1,p2,p3,q1,q2,q3,d1,d2,d3,c1,c2,c3;
+		long r;
+		cin>>p1>>p2>>p3>>q1>>q2>>q3>>d1>>d2>>d3>>c1>>c2>>c3>>r;
+
+		db t1=-p1+c1;
+		db t2=-p2+c2;
+		db t3=-p3+c3;
+		db t4=-p1+q1;
+		db t5=-p2+q2;
+		db t6=-p3+q3;
+		
+		db sin=r/sqrt(t1*t1+t2*t2+t3*t3);
+		//cout<<sin<<endl;
+		db a=sqrt(t1*t1+t2*t2+t3*t3)*sqrt(1-sin*sin);
+		a=a*a;
+		//cout<<a<<endl;
+		db b=t1*t4+t2*t5+t3*t6;
+		//cout<<b<<endl;
+		db e=t1*d1+t2*d2+t3*d3;
+		//cout<<e<<endl;
+		db f=t4*t4+t5*t5+t6*t6;
+		db g=(d1*d1+d2*d2+d3*d3);
+		db h=2*(t4*d1+t5*d2+t6*d3);
+		//cout<<h<<endl;
+		db n=2*b*e-a*h;
+		db q=b*b-a*f;
+		db m=e*e-a*g;
+		
+		//cout<<m<<" "<<n<<" "<<q<<endl;
+		db ans=findRoots(m,n,q);
+		db final;
+		if(ans<=1000000000)
+			final=ans;
+		else
+			final=-q/n;
+
+		printf("%.10Lf\n",final );
+	}
+
+}

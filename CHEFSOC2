@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define mx 1005
+# define mod 1000000007
+typedef int long long ll;
+ll a[mx],memo[mx][mx],freq[mx];
+ll n,m,s;
+ll solve(ll i,ll j)// starting at index 
+{
+	if(i<1 || i>n)return 0;
+	if(j==0)
+		return i==s;	
+				
+	ll &w=memo[i][j];
+	if(w!=-1)
+		return w;
+	w=0;
+	w=(w+(solve(i+a[j],j-1)+solve(i-a[j],j-1))%mod)%mod;
+	return w%mod;
+}
+int main()
+{
+	
+	ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+	
+		memset(memo,-1,sizeof(memo));
+		memset(a,0,sizeof(a));
+		cin>>n>>m>>s;
+		for(ll i=1;i<=m;i++)
+			cin>>a[i];
+		for(ll i=1;i<=n;i++)
+			cout<<solve(i,m)<<" ";
+		cout<<"\n";
+	}
+}

@@ -1,0 +1,79 @@
+#include<stdio.h>
+#include<limits.h>
+
+int a[1000];
+int b[1000];
+int lookup[4005];
+int min(int a,int b)
+{
+	if(a>=b)
+		return b;
+	return a;
+}
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,i,j,k,ans=0;
+		scanf("%d",&n);
+		for(i=0;i<=1000;i++)
+		{
+			a[i]=0;
+			b[i]=0;
+		}
+		for(i=0;i<=4000;i++)
+			lookup[i]=2000;
+
+		for(i=0;i<n;i++)
+		{
+			scanf("%d",&a[i]);
+			//printf("%d ",a[i]);
+		}
+		for(i=0;i<n;i++)
+		{
+			scanf("%d",&b[i]);
+			lookup[b[i]]=1;
+		}
+
+		lookup[0]=0;
+		for(i=1;i<=2000;i++)
+		{
+			int minimum=INT_MAX;
+
+			if(lookup[i]!=1)
+			{
+				for(j=0;j<=i/2;j++)
+				{
+					
+					
+						minimum=min(lookup[i-j]+lookup[j],minimum);
+				}
+
+				lookup[i]=minimum;
+				
+
+			}
+
+
+			/*for(k=0;k<n;k++)
+		{
+			printf("%d ",a[k]);
+		}*/
+		
+			
+		}
+		for(i=0;i<n;i++)
+		{
+			ans=ans+lookup[2*a[i]];
+			//printf("%d ",a[i]);
+			//printf("%d**%d\n",lookup[2*a[i]],2*a[i]);
+		}
+
+		
+		//printf("\n");
+
+		printf("%d\n",ans);
+	}
+}

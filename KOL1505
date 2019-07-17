@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<string.h>
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		char str1[51],temp1[51],temp2[51];
+		char str2[51];
+		scanf("%s",str1);
+		scanf("%s",str2);
+		int n1=strlen(str1);
+		int n2=strlen(str2);
+		int t=0,u=0,i;
+		for(i=0;i<n1;i++)
+		{
+			
+			if(str1[i]!=str1[i-1])
+			{
+				temp1[t]=str1[i];
+				t++;
+			}
+
+		}
+		temp1[t]='\0';
+		for(i=0;i<n2;i++)
+		{
+			
+			if(str2[i]!=str2[i-1])
+			{
+				temp2[u]=str2[i];
+				u++;
+			}
+
+		}
+		temp2[u]='\0';
+		//printf("%s %s",temp1,temp2);
+		if(!strcmp(temp1,temp2))
+			printf("Yes\n");
+		else
+			printf("No\n");
+
+
+
+	}
+}

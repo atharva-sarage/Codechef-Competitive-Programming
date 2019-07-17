@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef int long long ll;
+double nCr(int e,int i)
+{
+	double final=1.0;
+	for(int j=e;j>=e-i+1;j--)
+		final=final*(double)j;
+	for(int j=i;j>=1;j--)
+		final/=double(j);
+	return final;
+}
+int main()
+{
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		int a[1005];
+		ll n,e=0;
+		double ans=0.0;
+		cin>>n;
+		for(ll i=0;i<n;i++)
+		{
+			cin>>a[i];
+			if(a[i]==-1)
+				e++;
+		}
+		e--;	
+		
+		cout<<e*0.5+1<<endl;
+	}
+}

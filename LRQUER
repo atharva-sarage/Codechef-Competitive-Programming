@@ -1,0 +1,41 @@
+#include<limits.h>
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,q,i,j,x,r,y,l,o;
+		int long long u;
+		scanf("%d %d",&n,&q);
+	
+		int long long a[100001];
+		for(i=0;i<n;i++)
+		{
+			scanf("%d",&a[i]);
+		}
+	
+		for(j=0;j<q;j++)
+		{
+			scanf("%d %d %d",&x,&o,&u);
+			if(x==1)
+			{
+				int long max=0;	
+			for(i=o-1;i<u;i++)
+		{
+			if(max<(a[i]-a[o-1])*(a[u-1]-a[i]))
+			max=(a[i]-a[o-1])*(a[u-1]-a[i]);
+		}
+		
+		printf("%lld\n",max);
+				
+		}	
+			else
+			{
+				a[o-1]=u;
+			}
+		}
+		
+		
+	}
+}

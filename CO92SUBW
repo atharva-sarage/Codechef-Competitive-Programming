@@ -1,0 +1,32 @@
+#include<stdio.h>
+int long min(int long a,int long b)
+{
+	if(a>=b)
+		return b;
+		return a;
+}
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int long n;
+		scanf("%ld",&n);
+	
+		int long i;
+		for(i=1;i*i<=2*n;i++)
+		{
+			if(((i*i+i)/2)<=n && ((i+1)*(i+2)/2) >n)
+				{
+					break;					
+				}
+			
+		}
+		//printf("%ld\n",i);
+		int long ans=i+(n-((i)*(i+1))/2);
+		int long ans2=i+1+(((i+1)*(i+2))/2)-n;
+		
+		printf("%ld\n",min(ans,ans2));
+	}
+}

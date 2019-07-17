@@ -1,0 +1,53 @@
+/******************************************
+*    AUTHOR:         Atharva Sarage       *
+*    INSTITUITION:   IIT HYDERABAD        *
+******************************************/
+#include<bits/stdc++.h>
+#warning Check Max_Limit,Overflows
+using namespace std;
+# define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+# define ff first
+# define ss second
+# define pb push_back
+# define mod 1000000007
+# define ll long long 
+# define db double
+# define inf 1e9
+# define mx2 100005
+# define mx 100005
+# define inv 500000004
+ll a[mx][305];
+int large[4*mx];
+int small[4*mx][300];
+ll solve(ll n,ll k)
+{
+	ll ans=(k-1)%mod;
+	ll start=k-n;
+	if(start<=0)
+		return ans;
+	ll diff=n-1;
+	ll terms=(start+diff-1)/diff;
+	//cout<<start<<" "<<diff<<" "<<terms<<endl;
+	assert(start-(terms-1)*diff >0);
+	assert(start-(terms)*diff <=0);
+	start=start%mod;
+	diff=diff%mod;
+	terms=terms%mod;
+
+	ll sum=((2LL*start)%mod+(mod-(((terms-1+mod)%mod)*diff)%mod+mod))%mod; 
+	sum=(sum*terms)%mod;
+	sum=(sum*inv)%mod;
+	return (sum+ans)%mod;
+}
+int main()
+{
+	IOS;
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		ll n,k;
+		cin>>n>>k;
+		cout<<solve(n,k)<<endl;
+	}
+}

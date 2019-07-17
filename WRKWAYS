@@ -1,0 +1,145 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef  int long long l;
+vector<l> fac;
+vector <l> vec;
+vector <l> final;
+void show(vector <l>&vec)
+{
+	for(l i=0;i<vec.size();i++)
+		printf("%lld ",vec[i] );
+	
+	printf("\n");
+}
+int check(l c,vector<l> &vec,l index,l n)
+{
+	
+	fac=vec;
+	//show(fac);
+	l current=fac[index];
+	l cur2=current;
+	//cout<<current<<endl;
+	vector <l> :: iterator itr;
+	itr=fac.begin()+index;
+	//cout<<*itr<<endl;
+	//fac.erase(itr);
+	l count=1,flag=0;
+	while(count<n)
+	{
+		itr=upper_bound(fac.begin(),fac.end(),min(c/current,cur2+1));		
+		itr--;
+
+		//prlf("****\n");
+		if(c/current %*itr!=0)
+		{
+			fac.erase(itr);
+			continue;
+		}
+		current=current* (*itr);
+		cur2=*itr;
+		//fac.erase(itr);
+		if(c==current)
+			{
+				flag=1;
+				break;
+			}
+		//show(fac);
+		//cout<<current<<endl;
+		count++;
+	}
+	fac.clear();
+	if(flag==1)
+		return 1;
+	else
+		return 0;	
+
+}
+int main()
+{
+	l t;
+	scanf("%lld",&t);
+	while(t--)
+	{
+		l n,c;
+		scanf("%lld %lld",&n,&c);
+		if(n==1)
+		{
+			printf("%lld\n",c );;
+			continue;
+		}
+		
+		for (l i=1; i<=(l)sqrt(c); i++)
+    	{
+        	if (c%i == 0)
+        {
+            if (c/i == i)
+                vec.push_back(i);
+ 
+            else 
+                {
+                	vec.push_back(i);
+                	vec.push_back(c/i);
+                }
+ 	       }
+  		}
+  		sort(vec.begin(),vec.end());
+
+  		l low=0;
+  		l high=vec.size(),mid;
+  		//cout<<check(c,vec,1,n)<<endl;
+  		while(high>=low)
+  		{
+  			mid=low+(high-low)/2;
+
+  			if(check(c,vec,mid,n))
+  				high=mid-1;
+  			else
+  				low=mid+1;
+  		}
+  		//cout<<low<<"************"<<endl;
+  		final.push_back(vec[low]);
+  		l current=vec[low];
+  		l cur2=vec[low];
+  		vector <l> :: iterator itr;
+  		itr=vec.begin()+low;
+  		//vec.erase(itr);
+  		l count=1;
+  		while(count<n)
+  		{
+  			//show(final);
+  			itr=upper_bound(vec.begin(),vec.end(),min(c/current,cur2+1));
+  			itr--;
+  			if(c/current %*itr!=0)
+		{
+			vec.erase(itr);
+			continue;
+		}
+		current=current* (*itr);
+		cur2=*itr;
+		final.push_back(*itr);
+		//vec.erase(itr);
+		count++;
+		if(c==current)
+			break;			
+  		}
+  		
+  		//show(final);
+  		l x=final.size();
+  		for(l i=0;i<n-x;i++)
+  			final.push_back(1);
+  		
+  		reverse(final.begin(),final.end());
+  		//show(final);
+  		for(l i=0;i<n;i++)
+  		{
+  			final[i]+=i;
+  		}
+  		show(final);
+  		//printf("\n");
+
+  		vec.clear();
+  		final.clear();
+
+	}
+	
+}

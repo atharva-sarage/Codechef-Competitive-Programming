@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct point{
+	int long x,y,z;
+};
+int long min3(int long a,int long b,int long c)
+{
+	return min(min(a,b),c);
+}
+int long max3(int long a,int long b,int long c)
+{
+	return max(max(a,b),c);
+}
+int main()
+{
+	int long t;
+	cin>>t;
+	while(t--)
+	{
+		int long a[15];
+		struct point dp[15][2];
+		memset(dp,INT_MAX,sizeof(dp));
+	int long n;
+	cin>>n;
+	for(int long i=0;i<n;i++)
+		cin>>a[i];
+	
+	
+	dp[0][0].x=a[0];
+	dp[0][0].y=a[0];
+	dp[0][0].z=a[0];
+
+	dp[0][1].x=a[0];
+	dp[0][1].y=a[0];
+	dp[0][1].z=a[0];
+	int long temp1,temp2,temp3;
+	for(int long i=1;i<n;i++)
+	{
+		dp[i][0].x=min3(dp[i-1][0].x+a[i],dp[i-1][0].y+a[i],dp[i-1][0].z+a[i]);
+			temp1=min3(dp[i-1][1].x+a[i],dp[i-1][1].y+a[i],dp[i-1][1].z+a[i]);
+			dp[i][0].x=min(dp[i][0].x,temp1);
+		
+		dp[i][0].y=min3(dp[i-1][0].x*a[i],dp[i-1][0].y*a[i],dp[i-1][0].z*a[i]);
+			temp2=min3(dp[i-1][1].x*a[i],dp[i-1][1].y*a[i],dp[i-1][1].z*a[i]);
+			dp[i][0].y=min(dp[i][0].y,temp2);
+
+		dp[i][0].z=min3(dp[i-1][0].x-a[i],dp[i-1][0].y-a[i],dp[i-1][0].z-a[i]);
+			temp3=min3(dp[i-1][1].x-a[i],dp[i-1][1].y-a[i],dp[i-1][1].z-a[i]);
+			dp[i][0].z=min(dp[i][0].z,temp3);
+
+		dp[i][1].x=max3(dp[i-1][1].x+a[i],dp[i-1][1].y+a[i],dp[i-1][1].z+a[i]);
+			temp1=max3(dp[i-1][0].x+a[i],dp[i-1][0].y+a[i],dp[i-1][0].z+a[i]);
+			dp[i][1].x=max(dp[i][1].x,temp1);
+
+		dp[i][1].y=max3(dp[i-1][1].x*a[i],dp[i-1][1].y*a[i],dp[i-1][1].z*a[i]);
+			temp2=max3(dp[i-1][0].x*a[i],dp[i-1][0].y*a[i],dp[i-1][0].z*a[i]);
+			dp[i][1].y=max(dp[i][1].y,temp2);
+
+		dp[i][1].z=max3(dp[i-1][1].x-a[i],dp[i-1][1].y-a[i],dp[i-1][1].z-a[i]);
+			temp3=max3(dp[i-1][0].x-a[i],dp[i-1][0].y-a[i],dp[i-1][0].z-a[i]);
+			dp[i][1].z=max(dp[i][1].z,temp3);
+
+
+	}
+	//cout<<dp[n-1][0].x<<" "<<dp[n-1][1].x<<" "<<dp[n-1][0].y<<" "<<dp[n-1][1].y<<" "<<dp[n-1][0].z<<" "<<dp[n-1][1].z<<endl;
+	cout<<min3(min(dp[n-1][0].x,dp[n-1][1].x),min(dp[n-1][0].y,dp[n-1][1].y),min(dp[n-1][0].z,dp[n-1][1].z))<<endl;
+	}
+	
+}

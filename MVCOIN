@@ -1,0 +1,46 @@
+#include<stdio.h>
+int function(int n,int k)
+{
+	if(n%k==0)
+		return n/k;
+	else
+		return (n/k) +1;
+}
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,k,ans=0,i,flag_1=0;
+		int x[1000];
+		int flag[10000]={0};
+		scanf("%d %d",&n,&k);
+		for(i=0;i<n;i++)
+		{
+			scanf("%d",&x[i]);
+			flag[x[i]]=1;
+		}
+		int coin=1;
+		for(i=x[n-1]-1;i>=1;i--)
+		{
+			while(flag[i]==1)
+				{
+					coin++;
+					i--;
+					if(i==0)
+					{
+						flag_1=1;
+					}
+
+				}
+				if(flag_1==1)
+					break;
+
+			ans=ans+function(coin,k);
+		}
+		printf("%d\n",ans);
+
+
+	}
+}

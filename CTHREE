@@ -1,0 +1,83 @@
+/* 
+	Author-Atharva Sarage
+		IIT HYDERABAD
+*/
+    #include<stdio.h>
+    #include<math.h>
+    int long min(int long a,int long b)
+    {
+    	if(a>=b)
+    	return b;
+    	return a;
+    }
+    int main()
+    {
+    	int t;
+    	scanf("%d",&t);
+    	while(t--)
+    	{
+    		int long n,a,b,c,sum=0;
+    		scanf("%ld",&n);
+    		scanf("%ld %ld %ld",&a,&b,&c);
+    		int j,i;
+    		for(i=1;i<=min(a,sqrt(n));i++)
+    		{
+    			if(n%i==0) // i is our x1
+    			{
+    				int long p=n/i;
+    				int root=sqrt(p);
+    				for(j=1;(j<=b && j<=root);j++)
+    				{
+    					if(p%j==0)
+    					{
+    						if(p/j<=c)
+    						{
+    							sum++;
+    							//printf("%d %d %d\n",i,j,p/j);
+    						}
+    						
+    						if(j<=c && p/j<=b)
+    							{
+    							sum++;
+    							//printf("%d %d %d\n",i,p/j,j);
+    						}
+    						
+    						if(j==p/j)
+    						sum--;
+    					}
+    					
+    				}
+    				int long q=i;
+    				if(q!=p && n/i <=a)
+    				{
+    						for(j=1;j<=min(b,sqrt(q));j++)
+    				{
+    					if(q%j==0)
+    					{
+    						if(q/j<=c)
+    						{
+    							sum++;
+    							//printf("%d %d %d\n",n/i,j,q/j);
+    						}
+    						
+    						
+    						if(q<=c && q/j<=b)
+    						{
+    							sum++;
+    							//printf("%d %d %d\n",n/i,q/j,j);
+    						}
+    						
+    						if(j==q/j)
+    						sum--;
+    					}
+    					
+    				}	
+    				}
+    			
+    				
+    			}
+    		}
+    		printf("%ld\n",sum);
+    		
+    	}
+    } 

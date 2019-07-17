@@ -1,0 +1,73 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define pb push_back
+vector<int>p;
+vector<int>vec;
+void sieve(int n) 
+{ 
+    bool is[n+1]; 
+    memset(is, true, sizeof(is));  
+    for (int j=2; j*j<=n; j++) 
+    { 
+        if (is[j] == true) 
+        { 
+            for (int i=j*2; i<=n; i += j) 
+                is[i] = false; 
+        } 
+    }  
+    for (int p1=2; p1<=n; p1++) 
+       if (is[p1] && p1!=3 && p1!=2) 
+            p.pb(p1);
+} 
+
+int main()
+{
+	sieve(1000000);
+	vec.pb(2*p[1]);vec.pb(p[1]*p[2]);vec.pb(p[2]*p[3]);vec.pb(p[3]*p[4]);vec.pb(p[4]*p[5]);vec.pb(p[5]*p[6]);
+	int c=1;
+	while(vec.size()<50050)
+	{
+		vec.pb(p[6*c]*p[1]);
+		vec.pb(p[6*c+1]*p[1]);
+		vec.pb(p[6*c+1]*p[2]);
+		vec.pb(p[6*c+2]*p[2]);
+		vec.pb(p[6*c+2]*p[3]);
+		vec.pb(p[6*c+3]*p[3]);
+		vec.pb(p[6*c+3]*p[4]);
+		vec.pb(p[6*c+4]*p[4]);
+		vec.pb(p[6*c+4]*p[5]);
+		vec.pb(p[6*c+5]*p[5]);
+		vec.pb(p[6*c+5]*p[6]);
+		vec.pb(p[6*c+6]*p[6]);
+		c++;
+	}
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n;
+		cin>>n;
+		for(int i=0;i<n-2;i++)
+			printf("%d ",vec[i]);
+		int temp1=vec[n-2];
+		int temp2=vec[n-1];
+		if((n-7)%6!=0)
+		{
+		int gcd=__gcd(temp1,temp2);
+		temp1/=gcd;
+		temp2/=gcd;
+		temp2*=6;
+		temp1*=3;
+		}
+		else
+		{
+			int gcd=__gcd(temp2,vec[0]);
+			temp2/=gcd;
+			temp2*=2;
+		}
+		cout<<temp1<<" "<<temp2<<endl;
+		assert(__gcd(temp1,temp2)!=1 && __gcd(vec[n-3],__gcd(temp1,temp2))==1);
+		assert(__gcd(vec[0],__gcd(temp1,temp2))==1);
+		assert(__gcd(temp2,__gcd(vec[0],vec[1]))==1);
+	}
+}
